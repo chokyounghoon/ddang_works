@@ -50,7 +50,7 @@ const INITIAL_STEPS: AgentStep[] = [
 // BFF 서버 요청 페이로드
 const AGENT_PAYLOADS: Record<string, { url: string; body: object }> = {
   match: {
-    url: 'http://localhost:3000/api/v1/ai/agent/match',
+    url: '/api/v1/ai/agent/match',
     body: {
       workerId: 'LEE-JISUNG-001',
       currentBalance: 312500,
@@ -62,7 +62,7 @@ const AGENT_PAYLOADS: Record<string, { url: string; body: object }> = {
     },
   },
   predict: {
-    url: 'http://localhost:3000/api/v1/ai/employer/predict',
+    url: '/api/v1/ai/employer/predict',
     body: {
       workerId: 'PARK-SUNGSIK-002',
       attendanceHistory: [
@@ -76,7 +76,7 @@ const AGENT_PAYLOADS: Record<string, { url: string; body: object }> = {
     },
   },
   credit: {
-    url: 'http://localhost:3000/api/v1/ai/credit/evaluate',
+    url: '/api/v1/ai/credit/evaluate',
     body: {
       workerId: 'LEE-JISUNG-001',
       checkInTime: '08:45',
