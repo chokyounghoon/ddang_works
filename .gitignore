@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Cloudflare Wrangler
+.wrangler/
+.vercel/
+
+# Env
+.env
+.env.local
+.env*.local
+
+# OpenAI key
+*.key

@@ -1,0 +1,10 @@
+name = "alba-super-sol"
+compatibility_date = "2024-03-20"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "alba-db"
+database_id = "1fbd4520-ff0c-4d18-abf0-84b78d5711ec"
+preview_database_id = "DB"
