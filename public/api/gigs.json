@@ -1,0 +1,14 @@
+{
+  "gigs": [
+    { "id": "g1", "title": "인근 빽다방 오후알바", "lat": 0.0012, "lng": 0.0015, "hourly_wage": 13000, "is_surge": true, "status": "OPEN" },
+    { "id": "g2", "title": "파리바게뜨 빵 포장", "lat": -0.0021, "lng": -0.0018, "hourly_wage": 11000, "is_surge": false, "status": "OPEN" },
+    { "id": "g3", "title": "CU 편의점 땜빵", "lat": 0.0035, "lng": -0.0025, "hourly_wage": 15000, "is_surge": true, "status": "OPEN" },
+    { "id": "g4", "title": "올리브영 재고정리", "lat": 0.0020, "lng": 0.0040, "hourly_wage": 14500, "is_surge": true, "status": "OPEN" },
+    { "id": "g5", "title": "스타벅스 리저브 마감", "lat": -0.0030, "lng": 0.0022, "hourly_wage": 12500, "is_surge": false, "status": "OPEN" },
+    { "id": "g6", "title": "쉑쉑버거 홀서빙 급구", "lat": 0.0045, "lng": 0.0010, "hourly_wage": 18000, "is_surge": true, "status": "OPEN" },
+    { "id": "g7", "title": "메가커피 테이크아웃", "lat": -0.0015, "lng": 0.0035, "hourly_wage": 10500, "is_surge": false, "status": "OPEN" },
+    { "id": "g8", "title": "교보문고 도서 분류", "lat": 0.0050, "lng": -0.0015, "hourly_wage": 11500, "is_surge": false, "status": "OPEN" },
+    { "id": "g9", "title": "CGV 매점 미소지기", "lat": -0.0040, "lng": -0.0030, "hourly_wage": 13000, "is_surge": true, "status": "OPEN" },
+    { "id": "g10", "title": "무신사 스탠다드 피팅룸", "lat": 0.0010, "lng": -0.0045, "hourly_wage": 14000, "is_surge": true, "status": "OPEN" }
+  ]
+}

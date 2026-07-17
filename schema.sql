@@ -66,3 +66,38 @@ CREATE TABLE IF NOT EXISTS ai_agent_sessions (
 
 CREATE INDEX IF NOT EXISTS idx_agent_worker ON ai_agent_sessions(worker_id);
 CREATE INDEX IF NOT EXISTS idx_agent_type   ON ai_agent_sessions(agent_type);
+
+-- 1. 유저 테이블 (워커 및 점주)
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  role TEXT NOT NULL, -- 'worker' or 'employer'
+  name TEXT NOT NULL,
+  trust_score INTEGER DEFAULT 1000, -- D-GCS 신용점수
+  current_lat REAL, -- 실시간 위도 (워커 위치 트래킹용)
+  current_lng REAL  -- 실시간 경도
+);
+
+-- 2. 긱(알바) 공고 테이블 (지도 마커용)
+CREATE TABLE IF NOT EXISTS gigs (
+  id TEXT PRIMARY KEY,
+  employer_id TEXT,
+  title TEXT NOT NULL,
+  hourly_wage INTEGER NOT NULL,
+  is_surge BOOLEAN DEFAULT 0, -- 할증(다이내믹 프라이싱) 여부
+  lat REAL NOT NULL, -- 매장 위도
+  lng REAL NOT NULL, -- 매장 경도
+  status TEXT DEFAULT 'OPEN' -- OPEN, MATCHED, COMPLETED
+);
+
+-- 3. S-BRIDGE 정산 원장 테이블
+CREATE TABLE IF NOT EXISTS transactions (
+  tx_id TEXT PRIMARY KEY,
+  gig_id TEXT,
+  worker_id TEXT,
+  total_amount INTEGER,
+  bank_status TEXT,   -- 신한은행 정산결과
+  invest_status TEXT, -- 신한투자증권 스윕결과
+  card_status TEXT,   -- 신한카드 한도증액결과
+  life_status TEXT,   -- 신한라이프 보험결과
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

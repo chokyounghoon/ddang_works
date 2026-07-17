@@ -1,0 +1,26 @@
+{
+  "summary": {
+    "totalTransactions": 1420,
+    "totalGrossPay": 71000000,
+    "totalNetDeposit": 70787000,
+    "lastUpdated": "2026-07-17T12:00:00.000Z"
+  },
+  "subsidiaries": {
+    "bank": { "name": "신한은행", "color": "#0052FF", "revenuePerTx": 150, "annualProjection": 360000000, "metrics": {} },
+    "card": { "name": "신한카드", "color": "#EC4899", "revenuePerTx": 200, "annualProjection": 480000000, "metrics": {} },
+    "life": { "name": "신한라이프", "color": "#10B981", "revenuePerTx": 302, "annualProjection": 724800000, "metrics": {} },
+    "invest": { "name": "신한투자증권", "color": "#F59E0B", "revenuePerTx": 850, "annualProjection": 2040000000, "metrics": {} },
+    "ds": { "name": "신한DS", "color": "#8B5CF6", "revenuePerTx": 200, "annualProjection": 480000000, "metrics": {} }
+  },
+  "competitive": {
+    "pgCostCompetitor": "3.0%",
+    "pgCostShinhan": "0.0%",
+    "annualSavings": 1500000000,
+    "marketShareCapture": "82%"
+  },
+  "recentTransactions": [
+    { "txId": "TX-SH-9081", "userId": "WORKER-8012", "grossPay": 50000, "lifePremium": 302, "investSweep": 850, "netDeposit": 49150, "dsBaasFee": 200, "createdAt": "2026-07-17T11:55:00.000Z" },
+    { "txId": "TX-SH-9080", "userId": "WORKER-1204", "grossPay": 50000, "lifePremium": 302, "investSweep": 850, "netDeposit": 49150, "dsBaasFee": 200, "createdAt": "2026-07-17T11:50:00.000Z" }
+  ],
+  "mode": "MOCK"
+}

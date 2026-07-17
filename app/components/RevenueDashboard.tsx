@@ -132,9 +132,9 @@ function TransactionFeed({ transactions }: { transactions: Array<{ txId: string;
 export default function RevenueDashboard() {
   const { data, loading, fetchRevenue, simulatedTx, simulateTransaction } = useRevenueStore();
   const [simulating, setSimulating] = useState(false);
-  const totalTx = useCountUp((data?.summary.totalTransactions ?? 0) + simulatedTx, 800);
+  const totalTx = useCountUp((data?.summary?.totalTransactions ?? 0) + simulatedTx, 800);
   const totalRevenue = useCountUp(
-    ((data?.summary.totalGrossPay ?? 0) + simulatedTx * 48500) * 0.03 +
+    ((data?.summary?.totalGrossPay ?? 0) + simulatedTx * 48500) * 0.03 +
     simulatedTx * 302 + simulatedTx * 200,
     1000
   );
@@ -150,24 +150,7 @@ export default function RevenueDashboard() {
   const handleSimulate = async () => {
     setSimulating(true);
     simulateTransaction();
-
-    // 실제 checkout API 호출 시뮬레이션
-    try {
-      await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Idempotency-Key': `SIM-${crypto.randomUUID()}`,
-        },
-        body: JSON.stringify({
-          userId: `WORKER-${Math.floor(Math.random() * 9000) + 1000}`,
-          storeId: 'STORE-DEMO-01',
-          hoursWorked: 4,
-          hourlyWage: 12125,
-        }),
-      });
-      await fetchRevenue();
-    } catch { /* 무시 */ }
+    await fetchRevenue();
     setSimulating(false);
   };
 
@@ -223,7 +206,7 @@ export default function RevenueDashboard() {
             },
             {
               label: 'PG 절감 (vs 경쟁사)',
-              value: data ? `₩${Math.round(data.competitive.annualSavings / 100000000)}억/년` : '계산 중...',
+              value: data ? `₩${Math.round((data?.competitive?.annualSavings ?? 0) / 100000000)}억/년` : '계산 중...',
               sub: '3% → 0% · 100만 워커 기준',
               color: 'from-violet-500/20 to-purple-500/10',
               border: 'border-violet-500/30',
@@ -258,8 +241,8 @@ export default function RevenueDashboard() {
           ))}
         </div>
 
-        {/* 하단 — 모바일 1열, sm+ 2열 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* 하단 — 상하로 배치 */}
+        <div className="grid grid-cols-1 gap-4">
           {/* 실시간 피드 */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between mb-3">

@@ -200,56 +200,36 @@ export default function AIAgentScreen() {
     setSteps(INITIAL_STEPS);
 
     let totalMs = 0;
+    const mockLatencies: Record<string, number> = {
+      match: 1450,
+      predict: 1820,
+      credit: 1210
+    };
+
+    const mockResults: Record<string, string> = {
+      match: '☔ 맑은 날씨엔 야외 이벤트 알바가 딱이에요! 아이패드까지 ₩187,500 남았는데, 하루 2시간씩만 모으면 14일 안에 달성 가능해요 💪',
+      predict: '노쇼 확률 45% (MEDIUM) — 최근 1건 노쇼 + 비 날씨 + 8.5km 감안. 출근 1시간 전 확인 연락 권장.',
+      credit: '패턴 감지: 연속 조기 출근 (3회) + 고평점 유지 (4.9점) → +10점, ₩500,000 한도 증액 자격',
+    };
 
     for (let i = 0; i < INITIAL_STEPS.length; i++) {
       const step = INITIAL_STEPS[i];
       setActiveIdx(i);
       updateStep(step.id, { status: 'running' });
 
-      const t0 = performance.now();
-      try {
-        const res = await fetch(AGENT_PAYLOADS[step.id].url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(AGENT_PAYLOADS[step.id].body),
-          signal: AbortSignal.timeout(8000),
-        });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const data = await res.json() as any;
-        const latency = Math.round(performance.now() - t0);
-        totalMs += latency;
+      // LLM 추론 중 모의 딜레이
+      const latency = mockLatencies[step.id];
+      await new Promise(r => setTimeout(r, latency));
+      totalMs += latency;
 
-        // 결과 요약 텍스트
-        let resultText = '';
-        if (step.id === 'match') {
-          resultText = data.message ?? '추천 완료';
-        } else if (step.id === 'predict') {
-          resultText = `노쇼 확률 ${data.noshowProbability}% (${data.riskLevel}) — ${data.recommendation}`;
-        } else if (step.id === 'credit') {
-          resultText = data.detectedPatterns?.length
-            ? `패턴 감지: ${data.detectedPatterns[0]} → +${data.creditScoreDelta}점, ₩${data.creditLimitIncrease?.toLocaleString()} 한도 증액`
-            : data.evaluationComment ?? '평가 완료';
-        }
-
-        updateStep(step.id, { status: 'success', result: resultText, latency });
-      } catch {
-        // BFF 서버 미가동 시 Mock 결과로 대체
-        const latency = Math.round(performance.now() - t0);
-        totalMs += latency;
-        const mockResults: Record<string, string> = {
-          match: '☔ 맑은 날씨엔 야외 이벤트 알바가 딱이에요! 아이패드까지 ₩187,500 남았는데, 하루 2시간씩만 모으면 14일 안에 달성 가능해요 💪',
-          predict: '노쇼 확률 45% (MEDIUM) — 최근 1건 노쇼 + 비 날씨 + 8.5km 감안. 출근 1시간 전 확인 연락 권장.',
-          credit: '패턴 감지: 연속 조기 출근 (3회) + 고평점 유지 (4.9점) → +10점, ₩500,000 한도 증액 자격',
-        };
-        updateStep(step.id, {
-          status: 'success',
-          result: mockResults[step.id],
-          latency,
-        });
-      }
+      updateStep(step.id, {
+        status: 'success',
+        result: mockResults[step.id],
+        latency,
+      });
 
       // 다음 단계 전 잠시 대기
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 400));
     }
 
     setTotalLatency(totalMs);
