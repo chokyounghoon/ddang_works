@@ -265,10 +265,10 @@ export default function RevenueDashboard() {
           <div className="bg-gradient-to-br from-indigo-500/10 to-purple-500/5 border border-indigo-500/20 rounded-2xl p-4 backdrop-blur-sm flex flex-col justify-between gap-3">
             <div>
               <h3 className="text-sm font-bold text-white/80 mb-1">⚡ 퇴근 정산 시뮬레이션</h3>
-              <p className="text-[11px] text-white/50 mb-3">이지성 4시간 → BFF Saga 실행</p>
+              <p className="text-[11px] text-white/50 mb-3">이지성 4시간 → BFF Saga 실행 (총 ₩52,500)</p>
               <div className="space-y-1.5">
                 {[
-                  { icon: '🏦', label: '신한은행', value: '₩49,850 즉시 이체', color: 'text-blue-400' },
+                  { icon: '🏦', label: '신한은행', value: '₩50,000 즉시 이체', color: 'text-blue-400' },
                   { icon: '☂️', label: '신한라이프', value: '₩302 차감', color: 'text-emerald-400' },
                   { icon: '💳', label: '신한카드', value: 'ACS +5점', color: 'text-red-400' },
                   { icon: '📈', label: '신한투자증권', value: '₩850 ETF', color: 'text-orange-400' },
