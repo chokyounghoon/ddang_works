@@ -515,12 +515,12 @@ function CheckoutTab({ walletConnected, walletAddress, solcBalance, setSolcBalan
       timestamp: new Date().toISOString(),
       financialImpact: {
         grossPay: 50000,
-        netDeposit: 49850,
+        netDeposit: 50000,
         breakdown: {
           bank: {
             title: '신한은행',
             color: '#0052FF',
-            value: '₩49,850 즉시 이체 완료',
+            value: '₩50,000 즉시 이체 완료',
             revenuePerTx: 1500,
             metrics: { pgFeeSaved: 1500, cacSaved: 15000, rpProfit: 0.15 },
             description: 'PG 수수료 ₩1,500 절감 (3% → 0%)',

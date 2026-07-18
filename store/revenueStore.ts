@@ -82,7 +82,7 @@ export const useRevenueStore = create<RevenueStore>((set, get) => ({
         summary: {
           totalTransactions: baseData.summary.totalTransactions + simulatedCount,
           totalGrossPay: baseData.summary.totalGrossPay + (simulatedCount * 50000),
-          totalNetDeposit: baseData.summary.totalNetDeposit + (simulatedCount * 49850),
+          totalNetDeposit: baseData.summary.totalNetDeposit + (simulatedCount * 50000),
           lastUpdated: new Date().toISOString(),
         }
       };
@@ -93,7 +93,7 @@ export const useRevenueStore = create<RevenueStore>((set, get) => ({
         summary: {
           totalTransactions: 1420 + get().simulatedTx,
           totalGrossPay: (1420 + get().simulatedTx) * 50000,
-          totalNetDeposit: (1420 + get().simulatedTx) * 49850,
+          totalNetDeposit: (1420 + get().simulatedTx) * 50000,
           lastUpdated: new Date().toISOString(),
         },
         subsidiaries: {
