@@ -95,7 +95,7 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
   return (
     <div className="space-y-4">
       {/* 내 지갑 요약 */}
-      <div className="bg-gradient-to-br from-indigo-950 via-slate-950 to-slate-950 rounded-2xl p-4 border border-indigo-700/30">
+      <div className="bg-gradient-to-br from-indigo-950 via-slate-950 to-slate-950 rounded-2xl p-4 border border-indigo-700/50 shadow-lg">
         <p className="text-[9px] font-black text-indigo-400 tracking-widest uppercase mb-3">내 SOLC 지갑</p>
         <div className="flex items-end gap-2 mb-1">
           <span className="text-3xl font-black text-white">
@@ -107,9 +107,9 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
             {T.priceChange24h >= 0 ? '+' : ''}{T.priceChange24h}%
           </span>
         </div>
-        <p className="text-sm text-slate-400">≈ ₩<AnimatedNumber value={userKRW} /></p>
+        <p className="text-sm text-slate-300">≈ ₩<AnimatedNumber value={userKRW} /></p>
         {address && (
-          <p className="text-[9px] text-slate-600 font-mono mt-2">{address.slice(0, 20)}…</p>
+          <p className="text-[9px] text-slate-500 font-mono mt-2">{address.slice(0, 20)}…</p>
         )}
       </div>
 
@@ -121,17 +121,17 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
           { label: '24h 거래량', value: `₩${(T.volume24hKRW / 1_000_000).toFixed(0)}M`, sub: 'Volume' },
           { label: '유통 공급량', value: `${(T.circulating / 1_000_000).toFixed(1)}M`, sub: `${((T.circulating / T.totalSupply) * 100).toFixed(1)}% of Total` },
         ].map(item => (
-          <div key={item.label} className="bg-slate-900/60 border border-slate-700/40 rounded-xl p-2.5">
-            <p className="text-[9px] text-slate-500">{item.label}</p>
-            <p className="text-sm font-black text-slate-200">{item.value}</p>
-            <p className="text-[8px] text-slate-600">{item.sub}</p>
+          <div key={item.label} className="bg-slate-900 border border-slate-700/80 rounded-xl p-2.5 shadow-md">
+            <p className="text-[9px] text-slate-400 font-medium">{item.label}</p>
+            <p className="text-sm font-black text-white">{item.value}</p>
+            <p className="text-[8px] text-slate-400">{item.sub}</p>
           </div>
         ))}
       </div>
 
       {/* 토큰 분배 */}
-      <div className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-4">
-        <p className="text-[9px] font-black text-slate-400 tracking-widest uppercase mb-3">토큰 분배 (Total 100M SOLC)</p>
+      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl p-4 shadow-md">
+        <p className="text-[9px] font-black text-slate-300 tracking-widest uppercase mb-3">토큰 분배 (Total 100M SOLC)</p>
         <div className="flex items-center gap-4">
           <DonutChart data={DISTRIBUTION} />
           <div className="flex-1 space-y-2">
@@ -140,10 +140,10 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
                 <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: d.color }} />
                 <div className="flex-1">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] text-slate-300">{d.label}</span>
-                    <span className="text-[10px] font-black text-slate-200">{d.pct}%</span>
+                    <span className="text-[10px] text-slate-200">{d.label}</span>
+                    <span className="text-[10px] font-black text-white">{d.pct}%</span>
                   </div>
-                  <p className="text-[8px] text-slate-600">{d.detail}</p>
+                  <p className="text-[8px] text-slate-400">{d.detail}</p>
                 </div>
               </div>
             ))}
@@ -152,26 +152,26 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
       </div>
 
       {/* 스테이킹 패널 */}
-      <div className="bg-gradient-to-br from-violet-950/40 to-slate-950 border border-violet-700/30 rounded-2xl p-4 space-y-3">
+      <div className="bg-gradient-to-br from-violet-950 via-slate-950 to-slate-950 border border-violet-700 rounded-2xl p-4 space-y-3 shadow-lg">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[9px] font-black text-violet-400 tracking-widest uppercase">SOLC 스테이킹</p>
-            <p className="text-xs text-slate-300 font-bold">연 APY {T.stakingApy}%</p>
+            <p className="text-xs text-slate-200 font-bold">연 APY {T.stakingApy}%</p>
           </div>
-          <div className="bg-violet-500/20 border border-violet-500/40 rounded-xl px-3 py-1.5 text-right">
-            <p className="text-[9px] text-violet-400">스테이킹 중</p>
-            <p className="text-sm font-black text-violet-300">{staked.toFixed(2)} SOLC</p>
+          <div className="bg-violet-900/50 border border-violet-500/50 rounded-xl px-3 py-1.5 text-right">
+            <p className="text-[9px] text-violet-300 font-semibold">스테이킹 중</p>
+            <p className="text-sm font-black text-violet-200">{staked.toFixed(2)} SOLC</p>
           </div>
         </div>
 
         {staked > 0 && (
-          <div className="bg-emerald-950/30 border border-emerald-700/30 rounded-xl p-2.5">
+          <div className="bg-emerald-950/50 border border-emerald-700/50 rounded-xl p-2.5">
             <div className="flex justify-between text-[10px]">
-              <span className="text-slate-400">오늘 예상 수익</span>
+              <span className="text-slate-300">오늘 예상 수익</span>
               <span className="text-emerald-400 font-black">+{stakedEarnings.toFixed(4)} SOLC</span>
             </div>
             {stakedAt && (
-              <p className="text-[8px] text-slate-600 mt-0.5">
+              <p className="text-[8px] text-slate-400 mt-0.5">
                 스테이킹 시작: {stakedAt.toLocaleTimeString('ko-KR')}
               </p>
             )}
@@ -184,12 +184,12 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
             value={stakeAmount}
             onChange={e => setStakeAmount(e.target.value)}
             placeholder="수량 입력"
-            className="flex-1 bg-slate-800/60 border border-slate-600/40 rounded-xl px-3 py-2 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-violet-500/60"
+            className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-400 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
           />
           <button
             onClick={handleStake}
             disabled={isStaking || !stakeAmount}
-            className="px-4 py-2 bg-violet-600 disabled:opacity-40 text-white font-black text-xs rounded-xl transition-all active:scale-95 flex items-center gap-1"
+            className="px-4 py-2 bg-violet-600 disabled:opacity-40 hover:bg-violet-500 text-white font-black text-xs rounded-xl transition-all active:scale-95 flex items-center gap-1 shadow-md cursor-pointer disabled:cursor-not-allowed"
           >
             {isStaking ? (
               <span className="animate-spin">⟳</span>
@@ -198,20 +198,20 @@ export default function TokenDashboard({ userBalance, address }: TokenDashboardP
             )}
           </button>
         </div>
-        <p className="text-[8px] text-slate-600 text-center">
+        <p className="text-[8px] text-slate-500 text-center">
           스테이킹 트랜잭션은 신한 PoA 체인에 기록됩니다
         </p>
       </div>
 
       {/* Burn 통계 */}
-      <div className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-3 flex items-center gap-3">
+      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl p-3 flex items-center gap-3 shadow-md">
         <Zap className="w-8 h-8 text-orange-400 flex-shrink-0" />
         <div>
           <p className="text-[10px] font-black text-orange-400">소각(Burn) 현황</p>
-          <p className="text-sm font-black text-slate-200">{T.burned.toLocaleString()} SOLC</p>
-          <p className="text-[9px] text-slate-500">총 발행량의 {((T.burned / T.totalSupply) * 100).toFixed(4)}% 소각</p>
+          <p className="text-sm font-black text-white">{T.burned.toLocaleString()} SOLC</p>
+          <p className="text-[9px] text-slate-400">총 발행량의 {((T.burned / T.totalSupply) * 100).toFixed(4)}% 소각</p>
         </div>
-        <ArrowUpRight className="w-4 h-4 text-slate-600 ml-auto" />
+        <ArrowUpRight className="w-4 h-4 text-slate-500 ml-auto" />
       </div>
     </div>
   );

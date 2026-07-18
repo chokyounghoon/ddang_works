@@ -74,22 +74,26 @@ export default function BlockFeed({ compact = false }: { compact?: boolean }) {
 
   // 3초마다 새 블록 생성
   useEffect(() => {
+    let clearTimer: NodeJS.Timeout;
+    let pendingTimer: NodeJS.Timeout;
+
     const interval = setInterval(() => {
       const newBlockNum = currentBlockNumber();
       setLatestBlock(newBlockNum);
 
       // 펜딩 → 컨펌
-      setPendingTxs(prev => {
-        const confirmed = prev.map(tx => ({ ...tx, status: 'confirmed' as const }));
-        setTimeout(() => setPendingTxs([]), 1200);
-        return confirmed;
-      });
+      setPendingTxs(prev => prev.map(tx => ({ ...tx, status: 'confirmed' as const })));
+
+      // 1.2초 후 펜딩 리스트 비우기
+      clearTimer = setTimeout(() => {
+        setPendingTxs([]);
+      }, 1200);
 
       const newBlock = generateBlock(newBlockNum);
       setBlocks(prev => [newBlock, ...prev].slice(0, compact ? 3 : 5));
 
-      // 새 펜딩 트랜잭션
-      setTimeout(() => {
+      // 1.5초 후 새 펜딩 트랜잭션 추가
+      pendingTimer = setTimeout(() => {
         const pending = Array.from({ length: Math.ceil(Math.random() * 4) }, () => {
           const tx = generateMockTransaction(TX_TYPES[Math.floor(Math.random() * TX_TYPES.length)]);
           return { ...tx, status: 'pending' as const };
@@ -97,7 +101,12 @@ export default function BlockFeed({ compact = false }: { compact?: boolean }) {
         setPendingTxs(pending);
       }, 1500);
     }, 3000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(clearTimer);
+      clearTimeout(pendingTimer);
+    };
   }, [compact]);
 
   if (compact) {
