@@ -27,13 +27,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
+      <body className="min-h-full flex flex-col">
+        {children}
         <Script
           src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=6fdbed77a229d105034026990013707b&libraries=services,clusterer&autoload=false`}
           strategy="beforeInteractive"
         />
-      </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      </body>
     </html>
   );
 }
