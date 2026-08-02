@@ -98,8 +98,8 @@ function AgentTab() {
   ]);
 
 
-  // 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 모달 팝업 상태
-  const [showAlbamonModal, setShowAlbamonModal] = useState(true);
+  // 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 모달 팝업 상태 (기본값 false: 자동으로 뜨지 않음)
+  const [showAlbamonModal, setShowAlbamonModal] = useState(false);
   // 지도 핀 선택 상태 (선택된 긱 ID → 해당 업체만 목록에 표시, null → 전체)
   const [mapSelectedGigId, setMapSelectedGigId] = useState<string | null>(null);
   // 지도 gig ID → storeName 매핑 (지도 핀과 목록 카드 연결)
