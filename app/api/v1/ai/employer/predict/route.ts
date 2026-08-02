@@ -3,8 +3,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 // ─── 시그널 가중치 상수 ──────────────────────────────────────────────────────
 const SIGNAL_WEIGHTS = {
   DGCS_WEIGHT:      0.40,  // D-GCS 신용점수

@@ -1,9 +1,4 @@
-// app/api/v1/ai/chat/route.ts
-// 땡겨요 웍스 AI 매칭 비서 '도담이' - Real AI Chat API Route
-
 import { NextRequest, NextResponse } from 'next/server';
-
-export const runtime = 'edge';
 
 // ── 긱 지도 시드 데이터베이스 (지역별 및 업종별 동적 매칭) ──
 const GIG_DATABASE = [

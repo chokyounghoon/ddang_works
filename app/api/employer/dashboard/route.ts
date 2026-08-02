@@ -1,9 +1,5 @@
 // app/api/employer/dashboard/route.ts
-// 점주 대시보드 데이터 API — Cloudflare D1 연동 (로컬 및 미연결 시 Fallback 100% 보장)
-
 import { NextRequest, NextResponse } from 'next/server';
-
-export const runtime = 'edge';
 
 /* ------------------------------------------------------------------
    로컬·개발 환경 및 에러 발생 시 100% 보장용 Fallback 데이터
