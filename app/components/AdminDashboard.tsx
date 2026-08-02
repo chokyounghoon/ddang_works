@@ -154,6 +154,101 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* 7대 계열사 시너지 메커니즘 총괄 보고서 카드 */}
+            <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#090D16] rounded-3xl p-5 border border-indigo-500/40 text-white space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />
+                  <div>
+                    <h4 className="font-black text-base text-white">One Shinhan 7대 계열사 독점 시너지 메커니즘 분석</h4>
+                    <p className="text-[11px] text-slate-300">플랫폼 100% 무료 선언의 비결: 백엔드 금융 독점 가치 창출</p>
+                  </div>
+                </div>
+                <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm">
+                  C-Suite Executive Summary
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                {/* 1. 신한은행 */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-blue-500/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-blue-400 text-xs">🏦 1. 신한은행 (CASA 유입 & 에스크로)</span>
+                    <span className="text-[9.5px] font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30">연간 +₩3.2억원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    알바비 0.1초 즉시 정산 모계좌 개설(저원가성 예금 CASA 유입)과 점주 정산금 예치, 노쇼 방지 에스크로 스마트계약 유휴 자금을 운용하여 파생 이자 수익 창출.
+                  </p>
+                </div>
+
+                {/* 2. 신한EZ손해보험 */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-emerald-500/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-emerald-400 text-xs">🛡️ 2. 신한EZ손해보험 (마이크로 상해보험)</span>
+                    <span className="text-[9.5px] font-bold bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">연간 +₩1.8억원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    출근 스와이프 1번으로 점주 지불 5% 수수료 중 건당 ₩1,450 자동 차감 가입. 손해율 12% 미만의 초단기 긱워크 마이크로 상해보험 시장 독점.
+                  </p>
+                </div>
+
+                {/* 3. 신한카드 */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-red-500/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-red-400 text-xs">💳 3. 신한카드 (가맹점 결제 & ACS)</span>
+                    <span className="text-[9.5px] font-bold bg-red-500/20 text-red-300 px-2 py-0.5 rounded border border-red-500/30">연간 +₩2.4억원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    점주 인건비 결제 가맹점 카드 수수료 수익 및 알바생 성실 출근 데이터(D-GCS) 기반 대안신용평가(ACS) 전용 체크·신용카드 발급 락인.
+                  </p>
+                </div>
+
+                {/* 4. 신한라이프 */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-teal-500/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-teal-400 text-xs">🌿 4. 신한라이프 (마이크로 연금)</span>
+                    <span className="text-[9.5px] font-bold bg-teal-500/20 text-teal-300 px-2 py-0.5 rounded border border-teal-500/30">연간 +₩3.1억원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    알바비 0.1초 입금 시 1% 자동 떼기 마이크로 연금 펀드로 2030 긱워커층의 장기 자산관리 타깃 고객을 극초기에 전격 선점.
+                  </p>
+                </div>
+
+                {/* 5. 신한투자증권 */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-purple-500/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-purple-400 text-xs">📈 5. 신한투자증권 (잔돈 ETF 소수점 매수)</span>
+                    <span className="text-[9.5px] font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded border border-purple-500/30">연간 +₩8.5천만원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    알바비 끝전(1천원 미만)과 점주 수수료 지원금 매칭으로 KODEX/TIGER/SOL ETF 소수점 자동 매수 수수료 및 토큰증권(STO) 파생 수익.
+                  </p>
+                </div>
+
+                {/* 6. 신한저축은행/캐피탈 */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-amber-500/30 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-amber-400 text-xs">🏦 6. 신한저축은행/캐피탈 (맞춤 대출)</span>
+                    <span className="text-[9.5px] font-bold bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">연간 +₩4.2억원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    점주 비상 인건비 대출 및 D-GCS 고신용 알바생 대상 0초 서류검증 비상금 소액대출(1인당 250만원) 운영 이자 수익.
+                  </p>
+                </div>
+
+                {/* 7. 신한DS */}
+                <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-indigo-500/30 space-y-1.5 col-span-1 md:col-span-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-indigo-400 text-xs">⚙️ 7. 신한DS (Web3 S-BRIDGE BaaS 인프라 통행료)</span>
+                    <span className="text-[9.5px] font-bold bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">연간 +₩2.1억원</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                    블록체인 온체인 원장(SOLC 토큰 & D-GCS SBT) 및 7개 계열사 API 트랜잭션 처리 건당 BaaS 통행료(₩600) 독점 수임.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <RevenueDashboard />
           </motion.div>
         )}

@@ -2171,7 +2171,7 @@ function MyPageScreen({
 // ─── 메인 ────────────────────────────────────────────────────────────────────
 
 type Tab = 'agent' | 'checkout' | 'dgcs' | 'mypage' | 'employer' | 'employer_finance' | 'employer_applicants' | 'admin';
-type UserRole = 'worker' | 'employer';
+type UserRole = 'worker' | 'employer' | 'admin';
 
 const workerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
   { id: 'agent',    Icon: Sparkles,    label: 'AI 매칭' },
@@ -2185,6 +2185,13 @@ const employerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
   { id: 'employer_finance',    Icon: CreditCard,  label: '인건비/카드' },
   { id: 'employer_applicants', Icon: FileText,    label: '지원자 관리' },
   { id: 'admin',               Icon: Activity,    label: '관리자/마이' },
+];
+
+const adminTabs: Array<{ id: Tab; Icon: any; label: string }> = [
+  { id: 'admin',               Icon: Activity,    label: '그룹 시너지' },
+  { id: 'dgcs',                Icon: ShieldCheck, label: 'D-GCS 평가' },
+  { id: 'checkout',            Icon: DollarSign,  label: 'BaaS 정산' },
+  { id: 'mypage',              Icon: User,        label: '시스템 마이' },
 ];
 
 export default function ShinhanDDangApp() {
@@ -2203,7 +2210,7 @@ export default function ShinhanDDangApp() {
   const solcBalance     = wallet.solcBalance;
   const setSolcBalance  = (_: number) => {}; // useWallet 내부 관리
 
-  const currentTabs = userRole === 'worker' ? workerTabs : employerTabs;
+  const currentTabs = userRole === 'worker' ? workerTabs : userRole === 'employer' ? employerTabs : adminTabs;
 
   const tiers = [
     { name: 'Silver',   rate: 70,  limit: 30,  color: 'text-slate-600', bg: 'bg-slate-100',   border: 'border-slate-300' },
@@ -2257,7 +2264,7 @@ export default function ShinhanDDangApp() {
               <h1 className="font-black text-xs sm:text-sm text-[#0F172A] leading-tight whitespace-nowrap">땡겨요 웍스</h1>
             </div>
             
-            {/* 동적 역할 모드 스위처 캡슐 버튼 */}
+            {/* 동적 역할 모드 스위처 캡슐 버튼 (워커 / 점주 / 관리자 3가지 스위칭) */}
             <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0">
               <button
                 onClick={() => {
@@ -2284,6 +2291,19 @@ export default function ShinhanDDangApp() {
                 }`}
               >
                 🏪 점주
+              </button>
+              <button
+                onClick={() => {
+                  setUserRole('admin');
+                  setActiveTab('admin');
+                }}
+                className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
+                  userRole === 'admin'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                🏢 관리자
               </button>
             </div>
           </div>
