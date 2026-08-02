@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Map, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { MapPin, DollarSign, CheckCircle2, ChevronRight, Landmark, CreditCard, ShieldCheck, TrendingUp, Cpu, LocateFixed } from 'lucide-react';
@@ -34,6 +34,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
 
   const { appliedGig, setAppliedGig } = useGigStore();
 
+  const mapRef = useRef<any>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.4979, lng: 127.0276 }); // 기본 강남역
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
 
@@ -136,7 +137,30 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
   };
 
   const centerToUser = () => {
-    if (userLocation) setMapCenter(userLocation);
+    const map = mapRef.current;
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+          setUserLocation(loc);
+          setMapCenter(loc);
+          if (map && window.kakao?.maps) {
+            map.panTo(new window.kakao.maps.LatLng(loc.lat, loc.lng));
+          }
+        },
+        (error) => {
+          console.warn('Geolocation error:', error);
+          if (userLocation && map && window.kakao?.maps) {
+            map.panTo(new window.kakao.maps.LatLng(userLocation.lat, userLocation.lng));
+          } else if (map && window.kakao?.maps) {
+            map.panTo(new window.kakao.maps.LatLng(mapCenter.lat, mapCenter.lng));
+          }
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    } else if (userLocation && map && window.kakao?.maps) {
+      map.panTo(new window.kakao.maps.LatLng(userLocation.lat, userLocation.lng));
+    }
   };
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -177,6 +201,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
         {/* 지도 영역 */}
         {isLoaded ? (
           <Map
+            onCreate={(map) => { mapRef.current = map; }}
             center={mapCenter}
             style={{ width: '100%', height: '100%' }}
             level={4}
