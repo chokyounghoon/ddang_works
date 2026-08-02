@@ -2083,22 +2083,22 @@ export default function ShinhanDDangApp() {
 
         {/* 상단 헤더 & 역할 모드 스위처 */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
-        <div className="flex items-center justify-between px-3.5 py-2 gap-1">
+        <div className="flex items-center justify-between px-2.5 sm:px-3.5 py-1.5 sm:py-2 gap-1 overflow-x-auto scrollbar-none">
           {/* 로고 및 역할 스위처 */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <div className="whitespace-nowrap">
-              <p className="text-[8px] font-black text-[#0052FF] tracking-widest uppercase leading-none">Shinhan WORKS</p>
-              <h1 className="font-black text-sm text-[#0F172A] leading-tight whitespace-nowrap">땡겨요 웍스</h1>
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            <div className="whitespace-nowrap leading-none">
+              <p className="text-[7px] sm:text-[8px] font-black text-[#0052FF] tracking-widest uppercase leading-none hidden xs:block">Shinhan WORKS</p>
+              <h1 className="font-black text-xs sm:text-sm text-[#0F172A] leading-tight whitespace-nowrap">땡겨요 웍스</h1>
             </div>
             
             {/* 동적 역할 모드 스위처 캡슐 버튼 */}
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0 ml-0.5">
+            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0">
               <button
                 onClick={() => {
                   setUserRole('worker');
                   setActiveTab('agent');
                 }}
-                className={`px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
+                className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
                   userRole === 'worker'
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
@@ -2111,7 +2111,7 @@ export default function ShinhanDDangApp() {
                   setUserRole('employer');
                   setActiveTab('employer');
                 }}
-                className={`px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
+                className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
                   userRole === 'employer'
                     ? 'bg-indigo-600 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
@@ -2123,16 +2123,16 @@ export default function ShinhanDDangApp() {
           </div>
 
           {/* 우측 지갑 & D-GCS 정보 영역 */}
-          <div className="flex items-center gap-1 shrink-0 overflow-hidden">
+          <div className="flex items-center gap-1 shrink-0">
             {wallet.isConnecting ? (
-              <button disabled className="bg-blue-50 text-[#0052FF] text-[9.5px] font-black px-2 py-1 rounded-full border border-blue-200 flex items-center gap-1 whitespace-nowrap">
+              <button disabled className="bg-blue-50 text-[#0052FF] text-[8.5px] sm:text-[9.5px] font-black px-2 py-1 rounded-full border border-blue-200 flex items-center gap-1 whitespace-nowrap">
                 <span className="animate-spin w-2.5 h-2.5 border-2 border-blue-600/30 border-t-[#0052FF] rounded-full" />
                 연결 중...
               </button>
             ) : !walletConnected ? (
               <button 
                 onClick={triggerWalletConnect}
-                className="bg-[#0052FF] hover:bg-blue-700 active:scale-95 text-white text-[9.5px] font-black px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap"
+                className="bg-[#0052FF] hover:bg-blue-700 active:scale-95 text-white text-[8.5px] sm:text-[9.5px] font-black px-2 sm:px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap"
               >
                 신한 슈퍼SOL
               </button>
@@ -2142,13 +2142,13 @@ export default function ShinhanDDangApp() {
                   setShowWalletDropdown(!showWalletDropdown);
                   setShowCreditDropdown(false);
                 }}
-                className="flex items-center gap-1 active:scale-95 transition-transform text-right shrink-0"
+                className="flex items-center gap-0.5 sm:gap-1 active:scale-95 transition-transform text-right shrink-0"
               >
-                <span className="relative overflow-hidden inline-flex items-center text-[9px] font-black px-1.5 py-0.5 rounded-full animate-hologram bg-[linear-gradient(120deg,#6366f1,#a855f7,#ec4899,#3b82f6,#6366f1)] text-white shadow-sm whitespace-nowrap">
+                <span className="relative overflow-hidden inline-flex items-center text-[8.5px] sm:text-[9px] font-black px-1.5 py-0.5 rounded-full animate-hologram bg-[linear-gradient(120deg,#6366f1,#a855f7,#ec4899,#3b82f6,#6366f1)] text-white shadow-sm whitespace-nowrap">
                   D-GCS 990점
                 </span>
-                <span className="text-[9.5px] font-black text-indigo-600 flex items-center gap-0.5 whitespace-nowrap bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded-md">
-                  🪙 {solcBalance.toFixed(1)} SOLC
+                <span className="text-[8.5px] sm:text-[9.5px] font-black text-indigo-600 flex items-center gap-0.5 whitespace-nowrap bg-indigo-50 border border-indigo-100 px-1 sm:px-1.5 py-0.5 rounded-md">
+                  🪙 {solcBalance.toFixed(1)}
                 </span>
               </button>
             )}

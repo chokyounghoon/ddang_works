@@ -64,7 +64,7 @@ function SubsidiaryCard({
       onClick={onClick}
       style={{ borderColor: isSelected ? item.color : item.color + '30' }}
       className={`
-        relative rounded-2xl border p-4 backdrop-blur-sm cursor-pointer transition-all duration-300 overflow-hidden text-left
+        relative rounded-2xl border p-3.5 backdrop-blur-sm cursor-pointer transition-all duration-300 overflow-hidden text-left break-keep shrink-0 snap-start min-w-[135px] md:min-w-0 flex-1
         ${isSelected ? 'bg-white/15 shadow-xl shadow-indigo-950/50 scale-[1.02]' : 'bg-white/5 hover:bg-white/10'}
       `}
     >
@@ -214,7 +214,7 @@ export default function RevenueDashboard() {
         </div>
 
         {/* KPI 카드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 break-keep">
           {[
             {
               label: '누적 7-Core 트랜잭션',
@@ -243,26 +243,26 @@ export default function RevenueDashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.1 }}
-              className={`bg-gradient-to-br ${kpi.color} border ${kpi.border} rounded-2xl p-4 backdrop-blur-sm`}
+              className={`bg-gradient-to-br ${kpi.color} border ${kpi.border} rounded-2xl p-4 backdrop-blur-sm break-keep`}
             >
-              <p className="text-white/60 text-xs mb-1 font-medium">{kpi.label}</p>
-              <p className="text-xl sm:text-2xl font-black text-white">{kpi.value}</p>
-              <p className="text-[10px] text-white/40 mt-1">{kpi.sub}</p>
+              <p className="text-white/70 text-xs mb-1 font-medium leading-snug break-keep">{kpi.label}</p>
+              <p className="text-xl sm:text-2xl font-black text-white whitespace-nowrap">{kpi.value}</p>
+              <p className="text-[10px] text-white/50 mt-1 break-keep leading-tight">{kpi.sub}</p>
             </motion.div>
           ))}
         </div>
 
         {/* 7개 계열사 그리드 */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
-              신한 7대 계열사 비즈니스 시너지 파이프라인 (클릭 시 상세 메커니즘 확인)
+          <div className="flex items-center justify-between mb-3 break-keep">
+            <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5 break-keep">
+              <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+              <span>신한 7대 계열사 비즈니스 시너지 파이프라인</span>
             </h3>
-            <span className="text-[11px] text-white/40">7개사 무중단 가동</span>
+            <span className="text-[10px] text-white/40 whitespace-nowrap shrink-0">7개사 가동</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+          <div className="flex overflow-x-auto pb-3 gap-2.5 snap-x scrollbar-none md:grid md:grid-cols-4 lg:grid-cols-7">
             {subOrder.map(({ id, item }, idx) => (
               <SubsidiaryCard
                 key={id}
