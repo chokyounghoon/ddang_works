@@ -8,7 +8,7 @@ import {
   Clock, CloudRain, Zap, ChevronRight, TrendingUp,
   Banknote, Trophy, Flame, BarChart3, Lock, Unlock,
   AlertCircle, ChevronDown, Copy, LogOut, ExternalLink,
-  Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2,
+  Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2, Camera, X, Check,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useWallet } from './hooks/useWallet';
@@ -1491,6 +1491,18 @@ function MyPageScreen({
   matched: boolean;
 }) {
   const [role, setRole] = useState<'worker' | 'employer'>('worker');
+  const [profileImg, setProfileImg] = useState<string>('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80');
+  const [showPortfolioModal, setShowPortfolioModal] = useState(false);
+  const [selectedPortfolio, setSelectedPortfolio] = useState('KODEX 미국S&P500');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setProfileImg(url);
+    }
+  };
 
   return (
     <div className="space-y-5 pb-8 px-4">
@@ -1528,8 +1540,30 @@ function MyPageScreen({
           <div className="relative overflow-hidden bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-slate-800 rounded-3xl p-5 text-white shadow-xl">
             <div className="absolute top-0 right-0 w-36 h-36 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
             <div className="flex items-center gap-4">
-              <div className="w-15 h-15 rounded-2xl bg-gradient-to-tr from-blue-500 via-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-blue-500/30">
-                지성
+              {/* 클릭 시 실시간 사진 변경 가능한 프로필 아바타 */}
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="relative w-15 h-15 rounded-2xl overflow-hidden cursor-pointer group shrink-0 border-2 border-blue-500/50 shadow-lg shadow-blue-500/30"
+                title="클릭하여 프로필 사진 변경"
+              >
+                <img 
+                  src={profileImg} 
+                  alt="조이수 프로필" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <Camera className="w-5 h-5 text-white" />
+                </div>
+                <div className="absolute bottom-0 right-0 p-1 bg-blue-600 rounded-tl-lg text-white">
+                  <Camera className="w-3 h-3" />
+                </div>
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleImageUpload} 
+                  accept="image/*" 
+                  className="hidden" 
+                />
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
@@ -1633,8 +1667,12 @@ function MyPageScreen({
                 <p className="text-[10px] text-purple-300 font-bold">누적 신한투자증권 ETF 자산</p>
                 <p className="text-lg font-black text-white mt-0.5">₩48,500 <span className="text-xs text-emerald-400 font-bold font-mono">(+₩2,230)</span></p>
               </div>
-              <button className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-black text-[11px] rounded-xl shadow-md transition-all active:scale-95">
-                포트폴리오 변경
+              <button 
+                onClick={() => setShowPortfolioModal(true)}
+                className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-110 text-white font-black text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1 shrink-0"
+              >
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>포트폴리오 변경</span>
               </button>
             </div>
 
@@ -1656,8 +1694,8 @@ function MyPageScreen({
                 <div className="flex items-center gap-2">
                   <span className="text-base">🇺🇸</span>
                   <div>
-                    <p className="font-bold text-slate-800">KODEX 미국S&P500 (소수점)</p>
-                    <p className="text-[9px] text-slate-400">끝전 400원 매일 자동 매수</p>
+                    <p className="font-bold text-slate-800">{selectedPortfolio} (소수점)</p>
+                    <p className="text-[9px] text-slate-400">끝전 400원 매일 자동 매수 (신한투자증권)</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -1915,6 +1953,134 @@ function MyPageScreen({
               </div>
             </div>
           </div>
+
+          {/* 📈 신한투자증권 포트폴리오 변경 바텀시트 모달 */}
+          <AnimatePresence>
+            {showPortfolioModal && (
+              <div className="fixed inset-0 z-50 flex flex-col justify-end">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowPortfolioModal(false)}
+                  className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+                />
+
+                <motion.div
+                  initial={{ y: '100%' }}
+                  animate={{ y: 0 }}
+                  exit={{ y: '100%' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  className="relative z-10 w-full bg-[#0F172A] border-t border-slate-700/80 rounded-t-[28px] p-5 text-white shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto"
+                >
+                  <div className="w-10 h-1 bg-slate-700 rounded-full mx-auto" />
+
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-purple-400" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-base text-white">신한투자증권 ETF 포트폴리오 변경</h3>
+                        <p className="text-[10px] text-slate-400">알바비 끝전 + 점주 수수료 지원금 0.1초 자동소수점 매수</p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => setShowPortfolioModal(false)}
+                      className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* 전략 리스트 */}
+                  <div className="space-y-2.5">
+                    {[
+                      {
+                        name: 'KODEX 미국S&P500',
+                        badge: '미국 우량주',
+                        yield: '+5.2%',
+                        desc: '미국 대표 500개 기업 분산 소수점 매수 (기본 픽)',
+                        color: 'from-blue-600/20 to-indigo-600/20',
+                        borderColor: 'border-blue-500/40',
+                      },
+                      {
+                        name: 'TIGER 미국나스닥100',
+                        badge: '빅테크 성장주',
+                        yield: '+8.4%',
+                        desc: '애플·엔비디아·마이크로소프트 등 초고성장 IT 집중',
+                        color: 'from-purple-600/20 to-pink-600/20',
+                        borderColor: 'border-purple-500/40',
+                      },
+                      {
+                        name: 'SOL 미국배당다우존스',
+                        badge: '월배당 복리',
+                        yield: '+4.1%',
+                        desc: '매달 주휴수당처럼 들어오는 짭짤한 월배당 혜택',
+                        color: 'from-emerald-600/20 to-teal-600/20',
+                        borderColor: 'border-emerald-500/40',
+                      },
+                      {
+                        name: 'KODEX 반도체',
+                        badge: 'K-반도체 대장주',
+                        yield: '+6.7%',
+                        desc: '삼성전자·SK하이닉스 대표 반도체 섹터 집중',
+                        color: 'from-amber-600/20 to-orange-600/20',
+                        borderColor: 'border-amber-500/40',
+                      },
+                      {
+                        name: 'KODEX 200',
+                        badge: '코스피 대형주',
+                        yield: '+3.2%',
+                        desc: '국내 코스피 200 지수 추종 대표 안정형 ETF',
+                        color: 'from-slate-700/20 to-slate-800/20',
+                        borderColor: 'border-slate-600/40',
+                      },
+                    ].map((item) => {
+                      const isSelected = selectedPortfolio === item.name;
+                      return (
+                        <div
+                          key={item.name}
+                          onClick={() => setSelectedPortfolio(item.name)}
+                          className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                            isSelected 
+                              ? `bg-gradient-to-r ${item.color} ${item.borderColor} ring-2 ring-purple-500` 
+                              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-black text-sm text-white">{item.name}</span>
+                              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                {item.badge}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-black text-emerald-400">{item.yield}</span>
+                              {isSelected && <Check className="w-4 h-4 text-purple-400" />}
+                            </div>
+                          </div>
+                          <p className="text-[11px] text-slate-300">{item.desc}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* 하단 확인 버튼 */}
+                  <button
+                    onClick={() => {
+                      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                      alert(`[신한투자증권] 자동 투자 포트폴리오가 '${selectedPortfolio}'(으)로 변경되었습니다.`);
+                      setShowPortfolioModal(false);
+                    }}
+                    className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white font-black text-sm shadow-xl active:scale-[0.98] transition-all"
+                  >
+                    신한투자증권 포트폴리오 변경 적용하기
+                  </button>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
         </motion.div>
       ) : (
         /* 점주 마이페이지 탭 */
