@@ -16,6 +16,11 @@ type Gig = {
   status: string;
 };
 
+interface GigMapViewProps {
+  initialCenter?: { lat: number; lng: number };
+  onGigSelect?: (gigId: string | null) => void;
+}
+
 // 가상의 점주 모드 - 워커 대기 인원 오프셋 (기준점 대비)
 const WORKER_OFFSETS = [
   { id: 'w1', dLat: 0.0006, dLng: 0.0004 },
@@ -47,7 +52,7 @@ const WORKER_OFFSETS = [
 
 import { useGigStore } from '../../store/useGigStore';
 
-export default function GigMapView({ initialCenter }: { initialCenter?: { lat: number; lng: number } }) {
+export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mode, setMode] = useState<'worker' | 'employer'>('worker');
   const [gigs, setGigs] = useState<Gig[]>([]);
@@ -256,12 +261,21 @@ export default function GigMapView({ initialCenter }: { initialCenter?: { lat: n
                 clickable={true}
               >
                 <motion.div 
-                  onClick={() => setSelectedGig(gig)}
+                  onClick={() => {
+                    const isAlreadySelected = selectedGig?.id === gig.id;
+                    const next = isAlreadySelected ? null : gig;
+                    setSelectedGig(next);
+                    onGigSelect?.(next ? next.id : null);
+                  }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   animate={gig.is_surge ? { y: [0, -6, 0] } : {}}
                   transition={{ repeat: gig.is_surge ? Infinity : 0, duration: 1.5, ease: "easeInOut" }}
-                  className={`relative flex items-center justify-center px-3.5 py-2 rounded-full font-black text-xs shadow-xl cursor-pointer ${
+                  className={`relative flex items-center justify-center px-3.5 py-2 rounded-full font-black text-xs shadow-xl cursor-pointer transition-all ${
+                    selectedGig?.id === gig.id
+                      ? 'ring-2 ring-white ring-offset-1 ring-offset-transparent scale-110'
+                      : ''
+                  } ${
                     gig.is_surge ? 'bg-gradient-to-r from-[#FF5A5F] to-[#ff3b41] text-white border border-[#ff3b41]/50' : 'bg-[#0F172A]/90 backdrop-blur-md text-white border border-slate-600'
                   }`}
                 >
@@ -308,7 +322,7 @@ export default function GigMapView({ initialCenter }: { initialCenter?: { lat: n
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => !checkoutResult && setSelectedGig(null)}
+                onClick={() => { if (!checkoutResult) { setSelectedGig(null); onGigSelect?.(null); } }}
                 className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-sm z-20"
               />
 

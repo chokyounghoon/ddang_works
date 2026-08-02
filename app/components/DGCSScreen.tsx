@@ -378,6 +378,95 @@ export default function DGCSScreen() {
         </div>
       </div>
 
+      {/* 🛡️ 점주 납부 5% 시너지 수수료의 투명한 안전망 & 보험 집행 명세 */}
+      <div className="px-5 mb-6">
+        <div className="bg-gradient-to-br from-[#0B132B] via-[#1C2541] to-[#0A192F] border-2 border-emerald-500/40 rounded-3xl p-5 text-white shadow-2xl space-y-4 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <span className="text-[9.5px] font-black text-emerald-400 uppercase tracking-widest block">One Shinhan Safety Transparency</span>
+                <h4 className="font-black text-base text-white">점주 5% 수수료 안전·보험 사용 명세</h4>
+              </div>
+            </div>
+            <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
+              투명성 100% 검증
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-300 leading-relaxed">
+            점주님이 지불한 5% 시너지 수수료(₩50,000 구인 기준 <strong>₩2,500</strong>)는 알바몬처럼 단순 광고비로 사라지지 않습니다. <strong>알바생의 0원 무상 상해보험과 미래 자산 형성</strong>을 위해 백엔드에서 아래와 같이 100% 투명하게 자동 분배됩니다.
+          </p>
+
+          {/* 수수료 4대 100% 분배 명세 카드 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+            {/* 1. 신한EZ 손해보험 (50% / ₩1,250) */}
+            <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-emerald-500/30 space-y-1.5 shadow-md">
+              <div className="flex items-center justify-between">
+                <span className="font-black text-emerald-400 text-xs flex items-center gap-1">
+                  🛡️ ① 신한EZ 마이크로 상해보험
+                </span>
+                <span className="text-[10px] font-black font-mono text-emerald-300 bg-emerald-500/20 px-1.5 py-0.5 rounded-md">50% (₩1,250)</span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-normal">
+                출근 스와이프 개시 시 <strong>0원 무상 자동 가입</strong>되는 18시간 비급여 단체 상해보험 재원. (부상·사고 치료비 최대 1,000만 원 보장, 사장님 산재/배상책임 100% 면책)
+              </p>
+            </div>
+
+            {/* 2. 신한투자증권 ETF (17% / ₩425) */}
+            <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-purple-500/30 space-y-1.5 shadow-md">
+              <div className="flex items-center justify-between">
+                <span className="font-black text-purple-400 text-xs flex items-center gap-1">
+                  📈 ② 신한투자증권 ETF 매칭
+                </span>
+                <span className="text-[10px] font-black font-mono text-purple-300 bg-purple-500/20 px-1.5 py-0.5 rounded-md">17% (₩425)</span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-normal">
+                근무 완료 즉시 알바생 이름의 CMA 계좌로 소수점 KODEX/TIGER ETF 자동 매수적립 (사장님이 일한 만큼 알바생 자산 형성 지원)
+              </p>
+            </div>
+
+            {/* 3. 신한라이프 마이크로 연금 (17% / ₩425) */}
+            <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-blue-500/30 space-y-1.5 shadow-md">
+              <div className="flex items-center justify-between">
+                <span className="font-black text-blue-400 text-xs flex items-center gap-1">
+                  🌿 ③ 신한라이프 마이크로 연금
+                </span>
+                <span className="text-[10px] font-black font-mono text-blue-300 bg-blue-500/20 px-1.5 py-0.5 rounded-md">17% (₩425)</span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-normal">
+                초단기 1시간 긱워커도 근무할 때마다 차곡차곡 쌓이는 신한라이프 1% 마이크로 퇴직 연금 자산 계좌 적립
+              </p>
+            </div>
+
+            {/* 4. 신한DS 7-Core Infra (16% / ₩400) */}
+            <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-amber-500/30 space-y-1.5 shadow-md">
+              <div className="flex items-center justify-between">
+                <span className="font-black text-amber-400 text-xs flex items-center gap-1">
+                  ⚙️ ④ 신한DS 7-Core 인프라
+                </span>
+                <span className="text-[10px] font-black font-mono text-amber-300 bg-amber-500/20 px-1.5 py-0.5 rounded-md">16% (₩400)</span>
+              </div>
+              <p className="text-[11px] text-slate-300 leading-normal">
+                노쇼 방지 0.1초 에스크로 스마트 계약, SBT 근태 영구 증명, 3.0% PG 수수료 0원 고정 및 7대 계열사 무중단 인프라 가동
+              </p>
+            </div>
+          </div>
+
+          {/* 법적 3대 의무 고지 사항 */}
+          <div className="bg-black/50 border border-white/10 rounded-2xl p-3.5 text-[10.5px] text-slate-400 space-y-1.5">
+            <p className="font-black text-slate-200">⚖️ 전자상거래법 및 금융소비자보호법 의무 고지사항:</p>
+            <p>• [고지 1] 본 5% 수수료는 구인공고 판매 대금이 아니며, 상생 금융 백엔드 결제 락업 서비스 비용으로 정산됩니다.</p>
+            <p>• [고지 2] 신한EZ손해보험 단체 상해보험 증권은 출근 스와이프 타임스탬프와 동시 효력이 발효되며 별도 청구비가 0원입니다.</p>
+            <p>• [고지 3] 알바생의 미출근/노쇼 발생 시 예치된 급여 원금과 수수료는 0.1초 만에 점주 계좌로 100% 전액 즉시 자동 반환됩니다.</p>
+          </div>
+        </div>
+      </div>
+
       {/* 3단계 금융 페널티 */}
       <div className="px-5 mb-6">
         <h3 className="text-sm font-black text-white/70 uppercase tracking-widest mb-1">
