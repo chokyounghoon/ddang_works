@@ -2423,20 +2423,20 @@ export default function ShinhanDDangApp() {
               key={id}
               onClick={() => setActiveTab(id)}
               className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-2xl transition-all active:scale-90 ${
-                activeTab === id || (id === 'employer' && (activeTab === 'employer_finance' || activeTab === 'employer_applicants')) || (id === 'mypage' && activeTab === 'dgcs')
+                activeTab === id
                   ? 'text-[#0052FF]'
                   : 'text-slate-400'
               }`}
             >
               <div className={`p-2 rounded-xl transition-all ${
-                activeTab === id || (id === 'employer' && (activeTab === 'employer_finance' || activeTab === 'employer_applicants')) || (id === 'mypage' && activeTab === 'dgcs')
+                activeTab === id
                   ? 'bg-blue-50'
                   : ''
               }`}>
                 <Icon className={`w-5 h-5 ${activeTab === id ? 'stroke-[2.5]' : 'stroke-2'}`} />
               </div>
               <span className={`text-[10px] font-black tracking-tight ${
-                activeTab === id || (id === 'employer' && (activeTab === 'employer_finance' || activeTab === 'employer_applicants')) || (id === 'mypage' && activeTab === 'dgcs')
+                activeTab === id
                   ? 'text-[#0052FF]'
                   : 'text-slate-400'
               }`}>
