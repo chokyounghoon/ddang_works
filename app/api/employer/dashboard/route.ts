@@ -1,12 +1,12 @@
 // app/api/employer/dashboard/route.ts
-// 점주 대시보드 데이터 API — Cloudflare D1 연동 (로컬 및 미연결 시 Fallback 보장)
+// 점주 대시보드 데이터 API — Cloudflare D1 연동 (로컬 및 미연결 시 Fallback 100% 보장)
 
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
 /* ------------------------------------------------------------------
-   로컬·개발 환경용 Fallback 데이터
+   로컬·개발 환경 및 에러 발생 시 100% 보장용 Fallback 데이터
    ------------------------------------------------------------------ */
 const FALLBACK_TRANSACTIONS = [
   { tx_id: 'tx_001', type: 'out', label: '조이수 알바비 정산',           amount: 58000,  date: '08.02 22:01', method: '신한 에스크로 0.1초 즉시',  detail: '하남돼지집 부평역점 야간 서빙 4h',                            category: '인건비' },
@@ -65,123 +65,94 @@ const INVEST_ALLOC = [
 ];
 
 export async function GET(request: NextRequest) {
-  const employer_id = request.nextUrl.searchParams.get('employer_id') ?? 'employer-demo';
-
   try {
-    let env: any = null;
+    const url = new URL(request.url);
+    const employer_id = url.searchParams.get('employer_id') ?? 'employer-demo';
+
     try {
       const { getRequestContext } = await import('@cloudflare/next-on-pages');
       const ctx = getRequestContext();
-      env = ctx?.env;
+      const env = ctx?.env as any;
+
+      if (env?.DB) {
+        const txResult = await env.DB.prepare(
+          `SELECT
+             t.tx_id, t.total_amount, t.bank_status, t.created_at,
+             g.title AS gig_title, g.status AS gig_status,
+             u.name AS worker_name, u.trust_score AS dgcs
+           FROM transactions t
+           LEFT JOIN gigs  g ON t.gig_id    = g.id
+           LEFT JOIN users u ON t.worker_id = u.id
+           ORDER BY t.created_at DESC
+           LIMIT 30`
+        ).all().catch(() => null);
+
+        const gigResult = await env.DB.prepare(
+          `SELECT
+             g.id, g.title, g.hourly_wage, g.status,
+             u.name AS worker_name, u.trust_score AS dgcs, t.total_amount
+           FROM gigs g
+           LEFT JOIN transactions t ON t.gig_id   = g.id
+           LEFT JOIN users u        ON t.worker_id = u.id
+           WHERE g.employer_id = ? OR g.employer_id IS NULL
+           ORDER BY g.id DESC
+           LIMIT 20`
+        ).bind(employer_id).all().catch(() => null);
+
+        const ledger = await env.DB.prepare(
+          `SELECT
+             COALESCE(SUM(invest_sweep_amount),    0) AS total_etf,
+             COALESCE(SUM(life_premium_collected), 0) AS total_pension,
+             COUNT(*)                                  AS tx_count
+           FROM gig_revenue_ledger`
+        ).first().catch(() => null);
+
+        if (txResult?.results?.length > 0 || gigResult?.results?.length > 0) {
+          const transactions = (txResult?.results ?? []).map((row: any, i: number) => ({
+            tx_id: row.tx_id ?? `d1_tx_${i}`,
+            type: 'out',
+            label: row.worker_name ? `${row.worker_name} 알바비 정산` : '정산 처리',
+            amount: row.total_amount ?? 0,
+            date: new Date(row.created_at ?? Date.now()).toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+            method: row.bank_status === 'PENDING' ? '처리중' : '신한 에스크로 0.1초 즉시',
+            detail: `${row.gig_title ?? '알바 긱'} · D-GCS ${row.dgcs ?? '-'}점`,
+            category: '인건비',
+          }));
+
+          const albaList = (gigResult?.results ?? []).map((row: any, i: number) => ({
+            id: `d1_${i}`,
+            name: row.worker_name ?? '미배정',
+            age: 22,
+            gender: '-',
+            role: row.title ?? '근무',
+            store: '스타벅스 강남2호점',
+            date: '-',
+            pay: row.total_amount ?? row.hourly_wage ?? 0,
+            dgcs: row.dgcs ?? 0,
+            noshow: row.status === 'CANCELLED',
+          }));
+
+          return NextResponse.json({
+            source: 'd1',
+            dataTimestamp: new Date().toISOString(),
+            transactions: transactions.length > 0 ? transactions : FALLBACK_TRANSACTIONS,
+            albaList: albaList.length > 0 ? albaList : FALLBACK_ALBA,
+            investAlloc: INVEST_ALLOC,
+            kpi: {
+              revenue: 710000, laborCost: 238000, feePaid: 11900,
+              netProfit: 460100, feeRefund: 4250, effectiveFee: 7650,
+              etfAccum: Number(ledger?.total_etf ?? 0) || 42500,
+              pensionAccum: Number(ledger?.total_pension ?? 0) || 18900,
+              feeRebate: 18200, netSaved: 43800,
+              txCount: Number(ledger?.tx_count ?? 0),
+            },
+          });
+        }
+      }
     } catch {
-      env = null;
+      // D1 쿼리 에러 발생 시 Fallback
     }
 
-    if (!env || !env.DB) {
-      return NextResponse.json({
-        source: 'fallback',
-        dataTimestamp: new Date().toISOString(),
-        transactions: FALLBACK_TRANSACTIONS,
-        albaList: FALLBACK_ALBA,
-        investAlloc: INVEST_ALLOC,
-        kpi: {
-          revenue: 710000, laborCost: 238000, feePaid: 11900,
-          netProfit: 460100, feeRefund: 4250, effectiveFee: 7650,
-          etfAccum: 42500, pensionAccum: 18900, feeRebate: 18200, netSaved: 43800, txCount: 10,
-        },
-      });
-    }
-
-    // D1 Query (safely catch query errors)
-    const txResult = await env.DB.prepare(
-      `SELECT
-         t.tx_id,
-         t.total_amount,
-         t.bank_status,
-         t.created_at,
-         g.title      AS gig_title,
-         g.status     AS gig_status,
-         u.name       AS worker_name,
-         u.trust_score AS dgcs
-       FROM transactions t
-       LEFT JOIN gigs  g ON t.gig_id    = g.id
-       LEFT JOIN users u ON t.worker_id = u.id
-       ORDER BY t.created_at DESC
-       LIMIT 30`
-    ).all().catch(() => ({ results: [] }));
-
-    const gigResult = await env.DB.prepare(
-      `SELECT
-         g.id, g.title, g.hourly_wage, g.status,
-         u.name        AS worker_name,
-         u.trust_score AS dgcs,
-         t.total_amount
-       FROM gigs g
-       LEFT JOIN transactions t ON t.gig_id   = g.id
-       LEFT JOIN users u        ON t.worker_id = u.id
-       WHERE g.employer_id = ? OR g.employer_id IS NULL
-       ORDER BY g.id DESC
-       LIMIT 20`
-    ).bind(employer_id).all().catch(() => ({ results: [] }));
-
-    const ledger = await env.DB.prepare(
-      `SELECT
-         COALESCE(SUM(invest_sweep_amount),    0) AS total_etf,
-         COALESCE(SUM(life_premium_collected), 0) AS total_pension,
-         COUNT(*)                                  AS tx_count
-       FROM gig_revenue_ledger`
-    ).first().catch(() => null);
-
-    const transactions = (txResult?.results ?? []).length > 0
-      ? (txResult.results as any[]).map((row, i) => ({
-          tx_id: row.tx_id ?? `d1_tx_${i}`,
-          type: 'out',
-          label: row.worker_name ? `${row.worker_name} 알바비 정산` : '정산 처리',
-          amount: row.total_amount ?? 0,
-          date: new Date(row.created_at ?? Date.now()).toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
-          method: row.bank_status === 'PENDING' ? '처리중' : '신한 에스크로 0.1초 즉시',
-          detail: `${row.gig_title ?? '알바 긱'} · D-GCS ${row.dgcs ?? '-'}점`,
-          category: '인건비',
-        }))
-      : FALLBACK_TRANSACTIONS;
-
-    const albaList = (gigResult?.results ?? []).length > 0
-      ? (gigResult.results as any[]).map((row, i) => ({
-          id: `d1_${i}`,
-          name: row.worker_name ?? '미배정',
-          age: 22,
-          gender: '-',
-          role: row.title ?? '근무',
-          store: '스타벅스 강남2호점',
-          date: '-',
-          pay: row.total_amount ?? row.hourly_wage ?? 0,
-          dgcs: row.dgcs ?? 0,
-          noshow: row.status === 'CANCELLED',
-        }))
-      : FALLBACK_ALBA;
-
-    return NextResponse.json({
-      source: 'd1',
-      dataTimestamp: new Date().toISOString(),
-      transactions,
-      albaList,
-      investAlloc: INVEST_ALLOC,
-      kpi: {
-        revenue: 710000,
-        laborCost: 238000,
-        feePaid: 11900,
-        netProfit: 460100,
-        feeRefund: 4250,
-        effectiveFee: 7650,
-        etfAccum: Number(ledger?.total_etf ?? 0) || 42500,
-        pensionAccum: Number(ledger?.total_pension ?? 0) || 18900,
-        feeRebate: 18200,
-        netSaved: 43800,
-        txCount: Number(ledger?.tx_count ?? 0),
-      },
-    });
-
-  } catch {
     return NextResponse.json({
       source: 'fallback',
       dataTimestamp: new Date().toISOString(),
@@ -194,5 +165,19 @@ export async function GET(request: NextRequest) {
         etfAccum: 42500, pensionAccum: 18900, feeRebate: 18200, netSaved: 43800, txCount: 10,
       },
     });
+  } catch {
+    // 100% 500 방지 이중 안전망
+    return NextResponse.json({
+      source: 'fallback_error_recovery',
+      dataTimestamp: new Date().toISOString(),
+      transactions: FALLBACK_TRANSACTIONS,
+      albaList: FALLBACK_ALBA,
+      investAlloc: INVEST_ALLOC,
+      kpi: {
+        revenue: 710000, laborCost: 238000, feePaid: 11900,
+        netProfit: 460100, feeRefund: 4250, effectiveFee: 7650,
+        etfAccum: 42500, pensionAccum: 18900, feeRebate: 18200, netSaved: 43800, txCount: 10,
+      },
+    }, { status: 200 });
   }
 }
