@@ -191,7 +191,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
               exit={{ opacity: 0, scale: 0.8 }}
               whileTap={{ scale: 0.9 }}
               onClick={centerToUser}
-              className="absolute bottom-6 right-4 z-10 bg-white/90 backdrop-blur-md p-3.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/50 text-[#0052FF] hover:bg-white transition-colors"
+              className="absolute bottom-6 right-4 z-10 bg-white/90 backdrop-blur-md p-3.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/50 text-[#FF5517] hover:bg-white transition-colors"
             >
               <LocateFixed className="w-6 h-6" />
             </motion.button>
@@ -299,7 +299,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
                         <p className="text-slate-500 text-sm mt-1.5 font-medium">강남역 2번 출구 · 14:00 - 18:00 (4h)</p>
                       </div>
                       <div className="text-right pl-4">
-                        <p className={`text-2xl font-black ${selectedGig.is_surge ? 'text-[#FF5A5F]' : 'text-[#0052FF]'}`}>
+                        <p className={`text-2xl font-black ${selectedGig.is_surge ? 'text-[#FF5A5F]' : 'text-[#FF5517]'}`}>
                           ₩{selectedGig.hourly_wage.toLocaleString()}
                         </p>
                         <p className="text-[11px] font-bold text-slate-400 mt-0.5">수수료 0원</p>
@@ -311,7 +311,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
                       whileTap={{ scale: 0.96 }}
                       onClick={handleApply}
                       disabled={isProcessing}
-                      className="relative w-full bg-[#0052FF] disabled:bg-[#0052FF]/70 text-white font-black py-4.5 rounded-2xl text-lg flex justify-center items-center gap-2 shadow-[0_8px_30px_rgba(0,82,255,0.4)] transition-all overflow-hidden"
+                      className="relative w-full bg-[#FF5517] hover:bg-[#E04106] disabled:bg-[#FF5517]/70 text-white font-black py-4.5 rounded-2xl text-lg flex justify-center items-center gap-2 shadow-[0_8px_30px_rgba(255,85,23,0.4)] transition-all overflow-hidden"
                     >
                       {/* 버튼 빛나는 효과 */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] animate-[shimmer_2s_infinite]" />

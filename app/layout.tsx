@@ -1,16 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-noto-sans-kr",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +25,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-  themeColor: "#050514",
+  themeColor: "#FF5517",
 };
 
 export default function RootLayout({
@@ -40,9 +36,9 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark select-none`}
+      className={`${notoSansKr.variable} h-full antialiased dark select-none`}
     >
-      <body className="min-h-full flex flex-col bg-[#03030d] text-slate-100 overflow-x-hidden touch-manipulation">
+      <body className="min-h-full flex flex-col bg-[#060713] text-slate-100 overflow-x-hidden touch-manipulation font-sans">
         {children}
         <Script
           src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=6fdbed77a229d105034026990013707b&libraries=services,clusterer&autoload=false`}

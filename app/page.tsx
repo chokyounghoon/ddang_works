@@ -232,7 +232,7 @@ function AgentTab() {
       <ShinhanVsAlbamonModal isOpen={showAlbamonModal} onClose={() => setShowAlbamonModal(false)} />
       {/* 대화형 AI 매칭 비서 */}
       <div className="bg-[#0F172A] p-3.5 rounded-3xl shadow-xl flex flex-col h-[210px] relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#0052FF] opacity-15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5517] opacity-15 rounded-full blur-2xl pointer-events-none" />
         
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-2 shrink-0">
@@ -674,7 +674,7 @@ function EmployerTab({ matched, setMatched }: { matched: boolean; setMatched: Re
       <div className="bg-white rounded-3xl border border-slate-200 shadow-md p-5 space-y-4">
         <div className="border-b border-slate-100 pb-3">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black text-[#0052FF] tracking-widest uppercase">Fee Transparency & Legal Disclosure</span>
+            <span className="text-[10px] font-black text-[#FF5517] tracking-widest uppercase">Fee Transparency & Legal Disclosure</span>
             <span className="text-xs font-mono font-bold text-slate-500">총 결제액 ₩52,500</span>
           </div>
           <h4 className="font-black text-base text-slate-900 mt-0.5">5% 시너지 수수료 (₩2,500) 상세 분배 & 법적 보장 약관</h4>
@@ -1202,7 +1202,7 @@ function CheckoutTab({ walletConnected, walletAddress, solcBalance, setSolcBalan
         breakdown: {
           bank: {
             title: '신한은행',
-            color: '#0052FF',
+            color: '#FF5517',
             value: 'CASA 모계좌 ₩50,000 즉시 이체 완료 (SBT 박제)',
             revenuePerTx: 150,
             metrics: { pgFeeSaved: 1500, cacSaved: 15000, rpProfit: 0.15 },
@@ -2231,7 +2231,7 @@ export default function ShinhanDDangApp() {
       <div className="hidden sm:block absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-950/30 via-[#03030d] to-black pointer-events-none" />
 
       {/* 모바일 디바이스 프레임 (데스크톱: 430px 마이크로 쉘, 모바일: 100% 풀스크린) */}
-      <div className="w-full sm:max-w-[430px] min-h-screen sm:min-h-[850px] sm:max-h-[900px] bg-[#F4F6FA] text-slate-900 sm:rounded-[44px] sm:border-[8px] sm:border-slate-800/80 shadow-[0_0_60px_rgba(0,82,255,0.25)] flex flex-col relative overflow-hidden transition-all duration-300">
+      <div className="w-full sm:max-w-[430px] min-h-screen sm:min-h-[850px] sm:max-h-[900px] bg-[#F4F6FA] text-slate-900 sm:rounded-[44px] sm:border-[8px] sm:border-slate-800/80 shadow-[0_0_60px_rgba(255,85,23,0.25)] flex flex-col relative overflow-hidden transition-all duration-300">
         <style>{`
           @keyframes hologram {
             0% { background-position: 0% 50%; }
@@ -2260,7 +2260,7 @@ export default function ShinhanDDangApp() {
           {/* 로고 및 역할 스위처 */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             <div className="whitespace-nowrap leading-none">
-              <p className="text-[7px] sm:text-[8px] font-black text-[#0052FF] tracking-widest uppercase leading-none hidden xs:block">Shinhan WORKS</p>
+              <p className="text-[7px] sm:text-[8px] font-black text-[#FF5517] tracking-widest uppercase leading-none hidden xs:block">Shinhan WORKS</p>
               <h1 className="font-black text-xs sm:text-sm text-[#0F172A] leading-tight whitespace-nowrap">땡겨요 웍스</h1>
             </div>
             
@@ -2273,7 +2273,7 @@ export default function ShinhanDDangApp() {
                 }}
                 className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
                   userRole === 'worker'
-                    ? 'bg-blue-600 text-white shadow-xs'
+                    ? 'bg-[#FF5517] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2311,14 +2311,14 @@ export default function ShinhanDDangApp() {
           {/* 우측 지갑 & D-GCS 정보 영역 */}
           <div className="flex items-center gap-1 shrink-0">
             {wallet.isConnecting ? (
-              <button disabled className="bg-blue-50 text-[#0052FF] text-[8.5px] sm:text-[9.5px] font-black px-2 py-1 rounded-full border border-blue-200 flex items-center gap-1 whitespace-nowrap">
-                <span className="animate-spin w-2.5 h-2.5 border-2 border-blue-600/30 border-t-[#0052FF] rounded-full" />
+              <button disabled className="bg-orange-50 text-[#FF5517] text-[8.5px] sm:text-[9.5px] font-black px-2 py-1 rounded-full border border-orange-200 flex items-center gap-1 whitespace-nowrap">
+                <span className="animate-spin w-2.5 h-2.5 border-2 border-[#FF5517]/30 border-t-[#FF5517] rounded-full" />
                 연결 중...
               </button>
             ) : !walletConnected ? (
               <button 
                 onClick={triggerWalletConnect}
-                className="bg-[#0052FF] hover:bg-blue-700 active:scale-95 text-white text-[8.5px] sm:text-[9.5px] font-black px-2 sm:px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap"
+                className="bg-[#FF5517] hover:bg-[#E04106] active:scale-95 text-white text-[8.5px] sm:text-[9.5px] font-black px-2 sm:px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap"
               >
                 신한 슈퍼SOL
               </button>
@@ -2434,7 +2434,7 @@ export default function ShinhanDDangApp() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] font-black text-[#0052FF] tracking-widest uppercase mb-1">Dynamic Credit</p>
+                  <p className="text-[10px] font-black text-[#FF5517] tracking-widest uppercase mb-1">Dynamic Credit</p>
                   <h4 className="font-black text-base text-slate-900">출근율 → 금융 한도 직결</h4>
                   <p className="text-xs text-slate-400 mt-0.5">배지 달성 즉시 신한카드 한도 증액 (사용자 정보)</p>
                 </div>
@@ -2610,20 +2610,20 @@ export default function ShinhanDDangApp() {
               onClick={() => setActiveTab(id)}
               className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-2xl transition-all active:scale-90 ${
                 activeTab === id
-                  ? 'text-[#0052FF]'
+                  ? 'text-[#FF5517]'
                   : 'text-slate-400'
               }`}
             >
               <div className={`p-2 rounded-xl transition-all ${
                 activeTab === id
-                  ? 'bg-blue-50'
+                  ? 'bg-orange-50'
                   : ''
               }`}>
                 <Icon className={`w-5 h-5 ${activeTab === id ? 'stroke-[2.5]' : 'stroke-2'}`} />
               </div>
               <span className={`text-[10px] font-black tracking-tight ${
                 activeTab === id
-                  ? 'text-[#0052FF]'
+                  ? 'text-[#FF5517]'
                   : 'text-slate-400'
               }`}>
                 {label}

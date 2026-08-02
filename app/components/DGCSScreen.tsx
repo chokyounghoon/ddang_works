@@ -99,7 +99,7 @@ const weights = [
   },
   {
     id: 'W4', label: '금융 연계 성실도', pct: 10, score: 81, max: 100,
-    icon: Banknote, color: '#0052FF', desc: '잔돈 스윕 유지율 + CASA 예치 기간',
+    icon: Banknote, color: '#FF5517', desc: '잔돈 스윕 유지율 + CASA 예치 기간',
     detail: '끝전 스윕 유지율 92% · 신한은행 CASA 예치 평균 8.3일',
   },
 ];
