@@ -181,7 +181,7 @@ export default function AdminDashboard() {
             <TokenDashboard userBalance={48.85} address="0x71C8a9dF2309110a" />
 
             {/* SBT 영구 증명서 뷰어 */}
-            <SBTViewer address="0x71C8a9dF2309110a" score={990} workerName="이지성" />
+            <SBTViewer address="0x71C8a9dF2309110a" score={990} workerName="조이수" />
 
             {/* 온체인 블록 피드 익스플로러 */}
             <BlockFeed />

@@ -10,7 +10,7 @@ export const runtime = 'edge';
    — D1이 연결되지 않은 환경(next dev)에서 사용
    ------------------------------------------------------------------ */
 const FALLBACK_TRANSACTIONS = [
-  { tx_id: 'tx_001', type: 'out', label: '이지성 알바비 정산',           amount: 58000,  date: '08.02 22:01', method: '신한 에스크로 0.1초 즉시',  detail: '하남돼지집 부평역점 야간 서빙 4h',                            category: '인건비' },
+  { tx_id: 'tx_001', type: 'out', label: '조이수 알바비 정산',           amount: 58000,  date: '08.02 22:01', method: '신한 에스크로 0.1초 즉시',  detail: '하남돼지집 부평역점 야간 서빙 4h',                            category: '인건비' },
   { tx_id: 'tx_002', type: 'out', label: '5% 시너지 수수료',             amount: 2900,   date: '08.02 22:01', method: '신한DS 자동 정산',           detail: '신한EZ보험₩1,450 + ETF기여분₩850(점주100%부담) + Infra₩600', category: '수수료' },
   { tx_id: 'tx_003', type: 'in',  label: '신한카드 매출 입금',           amount: 423000, date: '08.02 18:30', method: '신한카드 가맹점 정산',        detail: '스타벅스 강남2호점 D-1 정산',                                  category: '매출'   },
   { tx_id: 'tx_004', type: 'out', label: '박민준 알바비 정산',           amount: 54000,  date: '08.02 14:00', method: '신한 에스크로 0.1초 즉시',   detail: '스타벅스 강남2호점 홀서빙 4h',                                 category: '인건비' },
@@ -23,7 +23,7 @@ const FALLBACK_TRANSACTIONS = [
 ];
 
 const FALLBACK_ALBA = [
-  { id: 'a1', name: '이지성', age: 24, gender: '남', role: '야간 서빙',   store: '하남돼지집 부평역점', date: '08.02 18:00–22:00', pay: 58000, dgcs: 980, noshow: false },
+  { id: 'a1', name: '조이수', age: 24, gender: '남', role: '야간 서빙',   store: '하남돼지집 부평역점', date: '08.02 18:00–22:00', pay: 58000, dgcs: 980, noshow: false },
   { id: 'a2', name: '박민준', age: 22, gender: '남', role: '홀 서빙',     store: '스타벅스 강남2호점',  date: '08.02 14:00–18:00', pay: 54000, dgcs: 920, noshow: false },
   { id: 'a3', name: '김수아', age: 21, gender: '여', role: '음료 조리',   store: '컴포즈커피 역삼역점', date: '08.01 11:30–13:30', pay: 30000, dgcs: 860, noshow: false },
   { id: 'a4', name: '최현우', age: 25, gender: '남', role: '편의점 세팅', store: 'CU 강남파이낸스점',   date: '07.31 12:00–13:00', pay: 16000, dgcs: 640, noshow: true  },

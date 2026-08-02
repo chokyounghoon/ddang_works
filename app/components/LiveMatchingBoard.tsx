@@ -123,7 +123,7 @@ const CATEGORIES = [
 ];
 
 const LIVE_NOTIFICATIONS = [
-  '⚡ 3초 전 이지성님 [하남돼지집 부평역점] ₩58,000 0.1초 즉시 정산 완료!',
+  '⚡ 3초 전 조이수님 [하남돼지집 부평역점] ₩58,000 0.1초 즉시 정산 완료!',
   '🔒 신한은행 에스크로 스마트 계약 ₩54,000 원장 예치 확정',
   '🛡️ 신한EZ손해보험 비급여 상해 보장 출근 스와이프 개시',
   '📈 1천원 미만 잔돈 신한투자증권 KODEX ETF 자동 매수 완료',
@@ -165,7 +165,7 @@ function InstaworkShiftCard({ gig, index, onApply }: { gig: LiveGig; index: numb
 
     triggerPush({
       title: `[지원 접수] ${gig.storeName}`,
-      body: `이지성님의 ${gig.role} 시프트 지원서가 정상 접수되었습니다. (신한 에스크로 락업 대기)`,
+      body: `조이수님의 ${gig.role} 시프트 지원서가 정상 접수되었습니다. (신한 에스크로 락업 대기)`,
       type: 'apply',
       actionText: '지원 상태 보기',
     });
@@ -173,7 +173,7 @@ function InstaworkShiftCard({ gig, index, onApply }: { gig: LiveGig; index: numb
     setTimeout(() => {
       triggerPush({
         title: `[점주 알림 수신] ${gig.storeName}`,
-        body: `이지성 지원자(D-GCS 980점 Gold Pro)의 맞춤 시프트 지원서가 점주 앱으로 전송되었습니다.`,
+        body: `조이수 지원자(D-GCS 980점 Gold Pro)의 맞춤 시프트 지원서가 점주 앱으로 전송되었습니다.`,
         type: 'confirm',
         actionText: '점주 탭 바로가기',
       });

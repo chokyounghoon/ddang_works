@@ -169,5 +169,5 @@ function generateDoddamiReply(userText: string, gig: typeof GIG_DATABASE[0]): st
     return `땡겨요 웍스는 퇴근 스와이프 0.1초 만에 신한은행 모계좌로 즉시 정산해 드려요! 💳 일당 끝전 1천원 미만은 신한투자증권 ETF로 자동 소수점 매수까지 연동된답니다!`;
   }
 
-  return `이지성님, 요청하신 질문에 딱 맞는 최적의 긱을 지도에 불러왔어요! 🎯 '${gig.title}' (${gig.location}) 공고는 시급 ${gig.wage.toLocaleString()}원에 에스크로 보증금 잠금이 완료된 안전한 일자리예요!`;
+  return `조이수님, 요청하신 질문에 딱 맞는 최적의 긱을 지도에 불러왔어요! 🎯 '${gig.title}' (${gig.location}) 공고는 시급 ${gig.wage.toLocaleString()}원에 에스크로 보증금 잠금이 완료된 안전한 일자리예요!`;
 }

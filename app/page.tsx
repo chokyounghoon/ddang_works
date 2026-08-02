@@ -59,7 +59,7 @@ const GaugeBar = ({ label, value, max, color, suffix = '' }: {
 
 function AgentTab() {
   const [messages, setMessages] = useState<{role: 'assistant'|'user', text: string}[]>([
-    { role: 'assistant', text: '이지성님, 안녕하세요! 땡겨요 웍스 AI 매칭 비서 도담이예요. 원하시는 위치나 업종을 편하게 말씀해 주세요! 🎯 (예: "부평지역 서빙 알바 찾아줘")' }
+    { role: 'assistant', text: '조이수님, 안녕하세요! 땡겨요 웍스 AI 매칭 비서 도담이예요. 원하시는 위치나 업종을 편하게 말씀해 주세요! 🎯 (예: "부평지역 서빙 알바 찾아줘")' }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -75,7 +75,7 @@ function AgentTab() {
   // 실시간 롤링 티커 상태
   const [notificationIdx, setNotificationIdx] = useState(0);
   const LIVE_NOTIFICATIONS = [
-    '⚡ 3초 전 이지성님 [하남돼지집 부평역점] ₩58,000 0.1초 즉시 정산 완료!',
+    '⚡ 3초 전 조이수님 [하남돼지집 부평역점] ₩58,000 0.1초 즉시 정산 완료!',
     '🔒 신한은행 에스크로 스마트 계약 ₩54,000 원장 예치 확정',
     '🛡️ 신한EZ손해보험 비급여 상해 보장 출근 스와이프 개시',
     '📈 1천원 미만 잔돈 신한투자증권 KODEX ETF 자동 매수 완료',
@@ -133,7 +133,7 @@ function AgentTab() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: updatedMessages,
-          userContext: { workerName: '이지성', currentTier: 'Gold' },
+          userContext: { workerName: '조이수', currentTier: 'Gold' },
         }),
       });
 
@@ -164,7 +164,7 @@ function AgentTab() {
     setMatchedGigsState(prev => prev.map(g => g.id === gigId ? { ...g, applied: true } : g));
     triggerPush({
       title: `[지원 접수] ${storeName}`,
-      body: `이지성님의 ${role} 지원서가 AI 매칭 비서를 통해 정상 접수되었습니다. (신한 에스크로 원장 예치 대기)`,
+      body: `조이수님의 ${role} 지원서가 AI 매칭 비서를 통해 정상 접수되었습니다. (신한 에스크로 원장 예치 대기)`,
       type: 'apply',
       actionText: '지원 상태 보기',
     });
@@ -172,7 +172,7 @@ function AgentTab() {
     setTimeout(() => {
       triggerPush({
         title: `[점주 수신 알림] ${storeName}`,
-        body: `이지성 지원자(D-GCS 980점 Gold)의 AI 맞춤 지원서가 점주 앱으로 전송되었습니다.`,
+        body: `조이수 지원자(D-GCS 980점 Gold)의 AI 맞춤 지원서가 점주 앱으로 전송되었습니다.`,
         type: 'confirm',
         actionText: '점주 탭 바로가기',
       });
@@ -621,7 +621,7 @@ function EmployerTab({ matched, setMatched }: { matched: boolean; setMatched: Re
           </div>
           <div>
             <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-              <h4 className="font-black text-base text-slate-900">이지성 알바생</h4>
+              <h4 className="font-black text-base text-slate-900">조이수 알바생</h4>
               <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
                 👨 남성 · 24세 (2002년생)
               </span>
@@ -660,7 +660,7 @@ function EmployerTab({ matched, setMatched }: { matched: boolean; setMatched: Re
 
           <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-1 text-xs">
             <div className="flex justify-between items-center text-slate-300 text-[10px]">
-              <span>지원자: 이지성 (거리 800m)</span>
+              <span>지원자: 조이수 (거리 800m)</span>
               <span className="text-amber-400 font-bold">비 날씨 감지</span>
             </div>
             <p className="text-[11px] text-slate-200 leading-relaxed pt-1 border-t border-slate-800">
@@ -933,14 +933,14 @@ function EmployerTab({ matched, setMatched }: { matched: boolean; setMatched: Re
               confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
               triggerPush({
                 title: '🎉 [매칭 확정 완료] 스타벅스 강남2호점',
-                body: '이지성 알바생의 출근 매칭이 최종 확정되었습니다! 신한은행 에스크로 ₩52,500 원장 예치 완료',
+                body: '조이수 알바생의 출근 매칭이 최종 확정되었습니다! 신한은행 에스크로 ₩52,500 원장 예치 완료',
                 type: 'confirm',
                 actionText: '정산 탭 확인',
               });
 
               setTimeout(() => {
                 triggerPush({
-                  title: '🔔 [출근 및 근로계약 알림] 이지성 알바생',
+                  title: '🔔 [출근 및 근로계약 알림] 조이수 알바생',
                   body: '오늘 18:00 근무를 위해 스타벅스 강남2호점으로 이동해 주세요. (신한인증서 0초 전자근로계약 자동 서명 대기)',
                   type: 'escrow',
                 });
@@ -1533,7 +1533,7 @@ function MyPageScreen({
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <h3 className="font-black text-lg text-white">이지성</h3>
+                  <h3 className="font-black text-lg text-white">조이수</h3>
                   <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
                     👨 남성 · 24세 (2002년생)
                   </span>

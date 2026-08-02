@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const remaining = (targetBalance || 1500000) - (currentBalance || 1380000);
     const formattedRemaining = (remaining / 10000).toFixed(0);
     
-    let aiText = `이지성님, 아이패드 구매 목표까지 ${formattedRemaining}만 원 남았어요! `;
+    let aiText = `조이수님, 아이패드 구매 목표까지 ${formattedRemaining}만 원 남았어요! `;
     if (weather === 'Rainy') {
       aiText += `내일 비 예보가 있어 배달 단가가 올랐습니다. 동선이 겹치는 '스타벅스 강남점(48,000원)'을 다녀오시면 이번 주 목표 달성 확률 99%입니다.`;
     } else {
