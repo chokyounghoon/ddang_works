@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
+
+export const runtime = 'edge';
 
 export async function PUT(request: NextRequest) {
   try {
@@ -11,8 +14,7 @@ export async function PUT(request: NextRequest) {
     }
 
     try {
-      const { getRequestContext } = await import('@cloudflare/next-on-pages');
-      const ctx = getRequestContext();
+      const ctx = getOptionalRequestContext();
       const env = ctx?.env as any;
       if (env?.DB) {
         await env.DB.prepare(

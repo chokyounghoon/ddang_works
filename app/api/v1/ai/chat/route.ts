@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const runtime = 'edge';
+
 // ── 긱 지도 시드 데이터베이스 (지역별 및 업종별 동적 매칭) ──
 const GIG_DATABASE = [
   {

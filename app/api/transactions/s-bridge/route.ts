@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
+
+export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,8 +16,7 @@ export async function POST(request: NextRequest) {
     const tx_id = `tx_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
     try {
-      const { getRequestContext } = await import('@cloudflare/next-on-pages');
-      const ctx = getRequestContext();
+      const ctx = getOptionalRequestContext();
       const env = ctx?.env as any;
       if (env?.DB) {
         await env.DB.prepare(
