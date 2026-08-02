@@ -2091,35 +2091,7 @@ export default function ShinhanDDangApp() {
               <h1 className="font-black text-sm text-[#0F172A] leading-tight whitespace-nowrap">땡겨요 웍스</h1>
             </div>
             
-            {/* 동적 역할 모드 스위처 캡슐 버튼 */}
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0 ml-0.5">
-              <button
-                onClick={() => {
-                  setUserRole('worker');
-                  setActiveTab('agent');
-                }}
-                className={`px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
-                  userRole === 'worker'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
-              >
-                👷 워커
-              </button>
-              <button
-                onClick={() => {
-                  setUserRole('employer');
-                  setActiveTab('employer');
-                }}
-                className={`px-2 py-0.5 rounded-full text-[9px] font-black transition-all ${
-                  userRole === 'employer'
-                    ? 'bg-indigo-600 text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
-              >
-                🏪 점주
-              </button>
-            </div>
+            {/* 동적 역할 모드 스위처 캡슐 버튼 (점주 모드 제거됨) */}
           </div>
 
           {/* 우측 지갑 & D-GCS 정보 영역 */}

@@ -21,45 +21,16 @@ interface GigMapViewProps {
   onGigSelect?: (gigId: string | null) => void;
 }
 
-// 가상의 점주 모드 - 워커 대기 인원 오프셋 (기준점 대비)
-const WORKER_OFFSETS = [
-  { id: 'w1', dLat: 0.0006, dLng: 0.0004 },
-  { id: 'w2', dLat: -0.0004, dLng: -0.0006 },
-  { id: 'w3', dLat: 0.0011, dLng: -0.0011 },
-  { id: 'w4', dLat: -0.0019, dLng: 0.0014 },
-  { id: 'w5', dLat: 0.0026, dLng: -0.0026 },
-  { id: 'w6', dLat: -0.0029, dLng: 0.0009 },
-  { id: 'w7', dLat: 0.0016, dLng: 0.0029 },
-  { id: 'w8', dLat: 0.0036, dLng: -0.0016 },
-  { id: 'w9', dLat: -0.0034, dLng: -0.0001 },
-  { id: 'w10', dLat: -0.0009, dLng: -0.0036 },
-  { id: 'w11', dLat: 0.0041, dLng: 0.0014 },
-  { id: 'w12', dLat: 0.0009, dLng: 0.0034 },
-  { id: 'w13', dLat: -0.0044, dLng: 0.0004 },
-  { id: 'w14', dLat: -0.0024, dLng: -0.0021 },
-  { id: 'w15', dLat: 0.0021, dLng: -0.0031 },
-  { id: 'w16', dLat: 0.0031, dLng: 0.0041 },
-  { id: 'w17', dLat: -0.0014, dLng: 0.0046 },
-  { id: 'w18', dLat: 0.0046, dLng: -0.0041 },
-  { id: 'w19', dLat: -0.0051, dLng: 0.0024 },
-  { id: 'w20', dLat: -0.0039, dLng: -0.0049 },
-  { id: 'w21', dLat: 0.0015, dLng: 0.0051 },
-  { id: 'w22', dLat: -0.0021, dLng: -0.0054 },
-  { id: 'w23', dLat: -0.0054, dLng: -0.0022 },
-  { id: 'w24', dLat: 0.0055, dLng: 0.0021 },
-  { id: 'w25', dLat: -0.0042, dLng: 0.0044 },
-];
+// 점주 모드 및 WORKER_OFFSETS 제거됨
 
 import { useGigStore } from '../../store/useGigStore';
 
 export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mode, setMode] = useState<'worker' | 'employer'>('worker');
   const [gigs, setGigs] = useState<Gig[]>([]);
   const [selectedGig, setSelectedGig] = useState<Gig | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutResult, setCheckoutResult] = useState<any>(null);
-  const [showEmployerApplicant, setShowEmployerApplicant] = useState(true);
 
   const { appliedGig, setAppliedGig } = useGigStore();
 
@@ -144,7 +115,6 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
       // Simulate success instead of actual checkout
       setCheckoutResult({ success: true });
       setAppliedGig(selectedGig);
-      setShowEmployerApplicant(true);
       
       confetti({
         particleCount: 150,
@@ -186,39 +156,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
   return (
     <>
       <div className="relative w-full h-full overflow-hidden bg-[#0F172A]">
-        {/* 모드 토글 (상단 플로팅 글래스모피즘) */}
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 p-1 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex items-center">
-          <button
-            onClick={() => { setMode('worker'); setSelectedGig(null); setCheckoutResult(null); }}
-            className={`relative px-5 py-2 rounded-full text-xs font-black transition-colors duration-300 ${
-              mode === 'worker' ? 'text-white' : 'text-slate-200 hover:text-white'
-            }`}
-          >
-            {mode === 'worker' && (
-              <motion.div
-                layoutId="active-pill"
-                className="absolute inset-0 bg-[#0052FF] rounded-full shadow-lg"
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              />
-            )}
-            <span className="relative z-10">워커 모드</span>
-          </button>
-          <button
-            onClick={() => { setMode('employer'); setSelectedGig(null); setCheckoutResult(null); }}
-            className={`relative px-5 py-2 rounded-full text-xs font-black transition-colors duration-300 ${
-              mode === 'employer' ? 'text-white' : 'text-slate-200 hover:text-white'
-            }`}
-          >
-            {mode === 'employer' && (
-              <motion.div
-                layoutId="active-pill"
-                className="absolute inset-0 bg-emerald-500 rounded-full shadow-lg"
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              />
-            )}
-            <span className="relative z-10">점주 모드</span>
-          </button>
-        </div>
+        {/* 모드 토글 (제거됨) */}
 
         {/* 내 위치 가기 FAB */}
         <AnimatePresence>
@@ -246,7 +184,10 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
             {/* 현재 내 위치 마커 */}
             {userLocation && (
               <CustomOverlayMap position={userLocation}>
-                <div className="relative flex items-center justify-center w-6 h-6">
+                <div 
+                  className="relative flex items-center justify-center w-6 h-6 cursor-pointer"
+                  onClick={centerToUser}
+                >
                   <div className="absolute w-full h-full bg-blue-400 rounded-full animate-ping opacity-75" />
                   <div className="relative w-3 h-3 bg-blue-600 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.8)] border-2 border-white" />
                 </div>
@@ -254,7 +195,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
             )}
 
             {/* 워커 모드: 긱 공고 렌더링 */}
-            {mode === 'worker' && gigs.map(gig => (
+            {gigs.map(gig => (
               <CustomOverlayMap
                 key={gig.id}
                 position={{ lat: gig.lat, lng: gig.lng }}
@@ -287,25 +228,6 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
                 </motion.div>
               </CustomOverlayMap>
             ))}
-
-            {/* 점주 모드: 펄스 이펙트 점 렌더링 */}
-            {mode === 'employer' && WORKER_OFFSETS.map(w => {
-              const baseLat = userLocation ? userLocation.lat : 37.4979;
-              const baseLng = userLocation ? userLocation.lng : 127.0276;
-              return (
-                <CustomOverlayMap
-                  key={w.id}
-                  position={{ lat: baseLat + w.dLat, lng: baseLng + w.dLng }}
-                >
-                  <div className="relative flex items-center justify-center w-8 h-8">
-                    {/* Pulse Effect */}
-                    <div className="absolute w-full h-full bg-emerald-400 rounded-full animate-ping opacity-75" />
-                    {/* Core Dot */}
-                    <div className="relative w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(52,211,153,0.9)] border-[2.5px] border-white" />
-                  </div>
-                </CustomOverlayMap>
-              );
-            })}
           </Map>
         ) : (
           <div className="flex items-center justify-center w-full h-full bg-[#0F172A]">
@@ -410,80 +332,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
           )}
         </AnimatePresence>
 
-        {/* 점주 모드: 지원자 확인 바텀 시트 */}
-        <AnimatePresence>
-          {mode === 'employer' && appliedGig && showEmployerApplicant && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setShowEmployerApplicant(false)}
-                className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-sm z-20"
-              />
-              <motion.div
-                initial={{ y: '100%' }}
-                animate={{ y: 0 }}
-                exit={{ y: '100%' }}
-                transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-                className="absolute bottom-0 left-0 w-full bg-white rounded-t-[32px] shadow-[0_-20px_50px_rgba(0,0,0,0.2)] z-30 pb-safe"
-              >
-                <div className="p-6 pt-4">
-                  <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6" />
-                  
-                  <div className="mb-6 border-b border-slate-100 pb-6">
-                    <h3 className="text-2xl font-black text-[#0F172A] mb-2">{appliedGig.title}</h3>
-                    <p className="text-slate-500 text-sm font-medium">새로운 지원자가 접수되었습니다!</p>
-                  </div>
-
-                  {/* 지원자 정보 카드 */}
-                  <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 mb-6 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 opacity-10 rounded-bl-full" />
-                    <div className="flex items-center gap-4 mb-4 relative z-10">
-                      <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">👨‍🎓</span>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="text-lg font-black text-[#0F172A]">이지성</h4>
-                          <span className="text-[10px] bg-[#0F172A] text-white px-2 py-0.5 rounded-full font-bold">24세·남</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
-                          <CheckCircle2 className="w-3.5 h-3.5" /> AI 핏 매칭률 98%
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 relative z-10">
-                      <div className="bg-white p-3 rounded-xl border border-slate-100">
-                        <p className="text-[10px] text-slate-400 font-bold mb-1 uppercase">D-GCS (신용점수)</p>
-                        <p className="text-base font-black text-indigo-600">872<span className="text-xs text-slate-400">/1000</span></p>
-                      </div>
-                      <div className="bg-white p-3 rounded-xl border border-slate-100">
-                        <p className="text-[10px] text-slate-400 font-bold mb-1 uppercase">최근 한달 결근</p>
-                        <p className="text-base font-black text-[#0F172A]">0<span className="text-xs text-slate-400">회</span></p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <button onClick={() => setShowEmployerApplicant(false)} className="flex-1 py-4.5 rounded-2xl font-black text-slate-500 bg-slate-100 hover:bg-slate-200 transition-colors">거절</button>
-                    <button 
-                      onClick={() => {
-                        alert('알바생 채용이 확정되었습니다!');
-                        setShowEmployerApplicant(false);
-                        setAppliedGig(null);
-                      }}
-                      className="flex-[2] py-4.5 rounded-2xl font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 shadow-[0_8px_30px_rgba(16,185,129,0.3)] transition-transform active:scale-95"
-                    >
-                      채용 수락하기
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        {/* 점주 모드: 지원자 확인 바텀 시트 제거됨 */}
       </div>
 
       <style jsx global>{`
