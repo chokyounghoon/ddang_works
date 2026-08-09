@@ -14,6 +14,9 @@ type Gig = {
   lat: number;
   lng: number;
   status: string;
+  hours?: number;
+  startTime?: string;
+  endTime?: string;
 };
 
 interface GigMapViewProps {
@@ -32,7 +35,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutResult, setCheckoutResult] = useState<any>(null);
 
-  const { appliedGig, setAppliedGig } = useGigStore();
+  const { appliedGig, setAppliedGig, setSelectedMapGig, setChatTriggerMessage, highlightedGigIds } = useGigStore();
 
   const mapRef = useRef<any>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.4979, lng: 127.0276 }); // 기본 강남역
@@ -54,11 +57,11 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
       console.warn('Failed to fetch gigs from server, using local dynamic generation:', err);
       // 혹시 모를 네트워크 유실 대안
       const localGigs: Gig[] = [
-        { id: 'g1', title: '인근 빽다방 오후알바', lat: lat + 0.0012, lng: lng + 0.0015, hourly_wage: 13000, is_surge: true, status: 'OPEN' },
-        { id: 'g2', title: '파리바게뜨 빵 포장', lat: lat - 0.0021, lng: lng - 0.0018, hourly_wage: 11000, is_surge: false, status: 'OPEN' },
-        { id: 'g3', title: 'CU 편의점 땜빵', lat: lat + 0.0035, lng: lng - 0.0025, hourly_wage: 15000, is_surge: true, status: 'OPEN' },
-        { id: 'g4', title: '올리브영 재고정리', lat: lat + 0.0020, lng: lng + 0.0040, hourly_wage: 14500, is_surge: true, status: 'OPEN' },
-        { id: 'g5', title: '스타벅스 리저브 마감', lat: lat - 0.0030, lng: lng + 0.0022, hourly_wage: 12500, is_surge: false, status: 'OPEN' }
+        { id: 'g1', title: 'CU 강남파이낸스점 1시간 물류알바', lat: lat + 0.0012, lng: lng + 0.0015, hourly_wage: 16000, is_surge: true, status: 'OPEN', hours: 1, startTime: '12:00', endTime: '13:00' },
+        { id: 'g2', title: '컴포즈커피 역삼역점 2시간 음료조리', lat: lat - 0.0021, lng: lng - 0.0018, hourly_wage: 15000, is_surge: false, status: 'OPEN', hours: 2, startTime: '11:30', endTime: '13:30' },
+        { id: 'g3', title: '인근 빽다방 오후알바', lat: lat + 0.0035, lng: lng - 0.0025, hourly_wage: 14000, is_surge: true, status: 'OPEN', hours: 1, startTime: '14:00', endTime: '15:00' },
+        { id: 'g4', title: '올리브영 재고정리', lat: lat + 0.0020, lng: lng + 0.0040, hourly_wage: 14500, is_surge: true, status: 'OPEN', hours: 4, startTime: '15:00', endTime: '19:00' },
+        { id: 'g5', title: '스타벅스 리저브 마감', lat: lat - 0.0030, lng: lng + 0.0022, hourly_wage: 12500, is_surge: false, status: 'OPEN', hours: 3, startTime: '19:00', endTime: '22:00' }
       ];
       setGigs(localGigs);
     }
@@ -232,23 +235,42 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
                     const next = isAlreadySelected ? null : gig;
                     setSelectedGig(next);
                     onGigSelect?.(next ? next.id : null);
+                    if (next) {
+                      setSelectedMapGig(next);
+                      setChatTriggerMessage(`'${next.title}' 시프트에 대해 바로 지원할 수 있게 조건 안내해줘!`);
+                    }
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   animate={gig.is_surge ? { y: [0, -6, 0] } : {}}
                   transition={{ repeat: gig.is_surge ? Infinity : 0, duration: 1.5, ease: "easeInOut" }}
-                  className={`relative flex items-center justify-center px-3.5 py-2 rounded-full font-black text-xs shadow-xl cursor-pointer transition-all ${
+                  className={`relative flex flex-col items-center justify-center px-3 py-1.5 rounded-2xl shadow-xl cursor-pointer transition-all ${
                     selectedGig?.id === gig.id
                       ? 'ring-2 ring-white ring-offset-1 ring-offset-transparent scale-110'
                       : ''
                   } ${
-                    gig.is_surge ? 'bg-gradient-to-r from-[#FF5A5F] to-[#ff3b41] text-white border border-[#ff3b41]/50' : 'bg-[#0F172A]/90 backdrop-blur-md text-white border border-slate-600'
+                    highlightedGigIds.includes(gig.id) ? 'ring-4 ring-emerald-400 ring-offset-1 scale-110 shadow-[0_0_25px_rgba(16,185,129,0.8)] z-30 animate-pulse' : ''
+                  } ${
+                    gig.is_surge
+                      ? 'bg-gradient-to-r from-red-600 via-red-500 to-rose-600 text-white border border-red-400/80 shadow-[0_4px_16px_rgba(220,38,38,0.65)] z-20'
+                      : 'bg-[#09090B] text-white border border-zinc-700/90 shadow-md'
                   }`}
                 >
-                  {gig.is_surge ? `🔥 ₩${gig.hourly_wage.toLocaleString()}` : `₩${gig.hourly_wage.toLocaleString()}`}
+                  {/* 상단: 금액 */}
+                  <div className="font-black text-xs leading-tight tracking-tight flex items-center gap-1">
+                    {gig.is_surge ? `🔥 ₩${gig.hourly_wage.toLocaleString()}` : `₩${gig.hourly_wage.toLocaleString()}`}
+                  </div>
+
+                  {/* 하단: 근무 시간대 (1시간 이내 임박: 붉은색, 1시간 이후: 검은색) */}
+                  <div className={`text-[9px] font-bold mt-0.5 px-1.5 py-0.2 rounded whitespace-nowrap tracking-tighter ${
+                    gig.is_surge ? 'bg-black/50 text-yellow-300' : 'bg-zinc-800 text-zinc-300'
+                  }`}>
+                    {gig.is_surge ? `🚨 임박 (${gig.startTime}-${gig.endTime})` : `🕐 ${gig.startTime}-${gig.endTime}`}
+                  </div>
+
                   {/* 말풍선 꼬리 */}
-                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 ${
-                    gig.is_surge ? 'bg-[#ff3b41]' : 'bg-[#0F172A]/90 border-r border-b border-slate-600'
+                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 ${
+                    gig.is_surge ? 'bg-rose-600 border-r border-b border-red-400' : 'bg-[#09090B] border-r border-b border-zinc-700'
                   }`} />
                 </motion.div>
               </CustomOverlayMap>
@@ -283,26 +305,26 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
                 dragConstraints={{ top: 0 }}
                 dragElastic={0.2}
                 onDragEnd={handleDragEnd}
-                className="absolute bottom-0 left-0 w-full bg-white rounded-t-[32px] shadow-[0_-20px_50px_rgba(0,0,0,0.2)] z-30 pb-safe"
+                className="absolute bottom-0 left-0 w-full max-h-[92%] overflow-y-auto bg-white rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.25)] z-30 pb-safe custom-scrollbar"
               >
                 {!checkoutResult ? (
-                  <div className="p-6 pt-4">
+                  <div className="p-4 pt-2.5 space-y-3">
                     {/* 드래그 핸들 */}
-                    <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6 cursor-grab active:cursor-grabbing" />
+                    <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto cursor-grab active:cursor-grabbing" />
                     
-                    <div className="flex justify-between items-start mb-8">
-                      <div>
-                        <div className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[11px] font-black mb-3">
-                          <CheckCircle2 className="w-3.5 h-3.5" /> AI 매칭 98%
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="min-w-0">
+                        <div className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full text-[10px] font-black mb-1">
+                          <CheckCircle2 className="w-3 h-3" /> AI 매칭 98%
                         </div>
-                        <h3 className="text-3xl font-black text-[#0F172A] leading-tight">{selectedGig.title}</h3>
-                        <p className="text-slate-500 text-sm mt-1.5 font-medium">강남역 2번 출구 · 14:00 - 18:00 (4h)</p>
+                        <h3 className="text-base font-black text-[#0F172A] leading-snug truncate">{selectedGig.title}</h3>
+                        <p className="text-slate-500 text-xs mt-0.5 font-medium truncate">강남역 2번 출구 · 14:00 - 18:00 (4h)</p>
                       </div>
-                      <div className="text-right pl-4">
-                        <p className={`text-2xl font-black ${selectedGig.is_surge ? 'text-[#FF5A5F]' : 'text-[#FF5517]'}`}>
+                      <div className="text-right shrink-0">
+                        <p className={`text-lg font-black ${selectedGig.is_surge ? 'text-[#FF5A5F]' : 'text-[#FF5517]'}`}>
                           ₩{selectedGig.hourly_wage.toLocaleString()}
                         </p>
-                        <p className="text-[11px] font-bold text-slate-400 mt-0.5">수수료 0원</p>
+                        <p className="text-[10px] font-bold text-slate-400">수수료 0원</p>
                       </div>
                     </div>
 
@@ -311,15 +333,15 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
                       whileTap={{ scale: 0.96 }}
                       onClick={handleApply}
                       disabled={isProcessing}
-                      className="relative w-full bg-[#FF5517] hover:bg-[#E04106] disabled:bg-[#FF5517]/70 text-white font-black py-4.5 rounded-2xl text-lg flex justify-center items-center gap-2 shadow-[0_8px_30px_rgba(255,85,23,0.4)] transition-all overflow-hidden"
+                      className="relative w-full bg-[#FF5517] hover:bg-[#E04106] disabled:bg-[#FF5517]/70 text-white font-black py-3 rounded-2xl text-sm flex justify-center items-center gap-2 shadow-[0_4px_20px_rgba(255,85,23,0.3)] transition-all overflow-hidden"
                     >
                       {/* 버튼 빛나는 효과 */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] animate-[shimmer_2s_infinite]" />
                       
                       {isProcessing ? (
                         <>
-                          <span className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
-                          <span className="text-[15px]">사장님께 지원 알림 전송 중...</span>
+                          <span className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full" />
+                          <span className="text-xs">사장님께 지원 알림 전송 중...</span>
                         </>
                       ) : (
                         '해당 긱에 지원하기'

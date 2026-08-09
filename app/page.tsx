@@ -8,7 +8,8 @@ import {
   Clock, CloudRain, Zap, ChevronRight, TrendingUp,
   Banknote, Trophy, Flame, BarChart3, Lock, Unlock,
   AlertCircle, ChevronDown, Copy, LogOut, ExternalLink,
-  Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2, Camera, X, Check,
+  Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2, Camera, X, Check, RefreshCw,
+  MessageSquare, Users, UserCheck, Star, Navigation, Award,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useWallet } from './hooks/useWallet';
@@ -26,7 +27,11 @@ const LiveMatchingBoard = dynamic(() => import('./components/LiveMatchingBoard')
 const EmployerMyPage    = dynamic(() => import('./components/EmployerMyPage'),    { ssr: false });
 const AdminDashboard    = dynamic(() => import('./components/AdminDashboard'),    { ssr: false });
 const ShinhanVsAlbamonModal = dynamic(() => import('./components/ShinhanVsAlbamonModal'), { ssr: false });
+const AlbamonChatScreen = dynamic(() => import('./components/AlbamonChatScreen'), { ssr: false });
+const AlbamonCommunityScreen = dynamic(() => import('./components/AlbamonCommunityScreen'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
+import { useGigStore } from '../store/useGigStore';
+import { parseIntentAndExecuteTools } from './lib/dodamAgent';
 
 // ─── 공통 서브 컴포넌트 ──────────────────────────────────────────────────────
 
@@ -58,7 +63,7 @@ const GaugeBar = ({ label, value, max, color, suffix = '' }: {
 // ─── TAB 1: AI 매칭 ─────────────────────────────────────────────────────────
 
 function AgentTab() {
-  const [messages, setMessages] = useState<{role: 'assistant'|'user', text: string}[]>([
+  const [messages, setMessages] = useState<{role: 'assistant'|'user', text: string, toolBadge?: string | null}[]>([
     { role: 'assistant', text: '조이수님, 안녕하세요! 땡겨요 웍스 AI 매칭 비서 도담이예요. 원하시는 위치나 업종을 편하게 말씀해 주세요! 🎯 (예: "부평지역 서빙 알바 찾아줘")' }
   ]);
   const [inputText, setInputText] = useState('');
@@ -66,10 +71,58 @@ function AgentTab() {
   const [initialCenter, setInitialCenter] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
+  // AI 대화창 & 전략 안내 바 접기/펼치기 상태 (기본값 false: 지도가 메인으로 전면 표시)
+  const [isChatExpanded, setIsChatExpanded] = useState(false);
+  const [isTrojanFolded, setIsTrojanFolded] = useState(false);
+
+  // 고정 지도 영역 높이 드래그 조절 상태 (기본 260px, 최소 140px ~ 최대 480px)
+  const [mapHeight, setMapHeight] = useState(260);
+  const [isResizingMap, setIsResizingMap] = useState(false);
+  const startYRef = useRef(0);
+  const startHeightRef = useRef(260);
+
+  const handleResizeStart = (clientY: number) => {
+    setIsResizingMap(true);
+    startYRef.current = clientY;
+    startHeightRef.current = mapHeight;
+  };
+
+  useEffect(() => {
+    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
+      if (!isResizingMap) return;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const deltaY = clientY - startYRef.current;
+      const newHeight = Math.max(140, Math.min(480, startHeightRef.current + deltaY));
+      setMapHeight(newHeight);
+    };
+
+    const handlePointerUp = () => {
+      setIsResizingMap(false);
+    };
+
+    if (isResizingMap) {
+      window.addEventListener('mousemove', handlePointerMove);
+      window.addEventListener('mouseup', handlePointerUp);
+      window.addEventListener('touchmove', handlePointerMove, { passive: false });
+      window.addEventListener('touchend', handlePointerUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('mouseup', handlePointerUp);
+      window.removeEventListener('touchmove', handlePointerMove);
+      window.removeEventListener('touchend', handlePointerUp);
+    };
+  }, [isResizingMap]);
+
+  // Chat-Map 양방향 싱크 상태 (useGigStore)
+  const { chatTriggerMessage, setChatTriggerMessage, highlightedGigIds, setHighlightedGigIds } = useGigStore();
+
   // AI 매칭 탭 전용 근무시간/카테고리 범위 필터 및 정렬 상태
   const [selectedHours, setSelectedHours] = useState<'all' | '1h' | '2h' | '4h' | '5h_plus'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
   const [sortMode, setSortMode] = useState<'ai' | 'wage_desc' | 'wage_asc' | 'dist_asc' | 'dist_desc' | 'pay_desc'>('ai');
+  const [selectedDetailGig, setSelectedDetailGig] = useState<any | null>(null);
   const { triggerPush } = useAppPush();
 
   // 실시간 롤링 티커 상태
@@ -88,6 +141,14 @@ function AgentTab() {
     return () => clearInterval(t);
   }, []);
 
+  // 지도 핀 클릭 ➔ 챗봇 선제 대화 연동 (Bi-directional Chat-Map Sync)
+  useEffect(() => {
+    if (chatTriggerMessage) {
+      sendMessageText(chatTriggerMessage);
+      setChatTriggerMessage(null);
+    }
+  }, [chatTriggerMessage]);
+
   const [matchedGigsState, setMatchedGigsState] = useState([
     { id: 'ag1', storeName: 'CU 강남파이낸스점',    category: '편의점', district: '강남구',       distanceM: 150, role: '1시간 물류 하역 초단기 알바',    hours: 1, startTime: '12:00', endTime: '13:00', pay: 16000, hourlyRate: 16000, aiScore: 99, urgency: true,  applied: false },
     { id: 'ag2', storeName: '컴포즈커피 역삼역점',  category: '카페',  district: '강남구',       distanceM: 220, role: '점심 2시간 음료 조리 픽업',        hours: 2, startTime: '11:30', endTime: '13:30', pay: 30000, hourlyRate: 15000, aiScore: 97, urgency: true,  applied: false },
@@ -95,23 +156,59 @@ function AgentTab() {
     { id: 'ag4', storeName: '하남돼지집 부평역점',  category: '서빙',  district: '인천 부평구',  distanceM: 320, role: '야간 메인 서빙',                   hours: 4, startTime: '18:00', endTime: '22:00', pay: 58000, hourlyRate: 14500, aiScore: 95, urgency: true,  applied: false },
     { id: 'ag5', storeName: '세븐일레븐 테헤란점',  category: '편의점', district: '강남구',      distanceM: 380, role: '1시간 매장 세팅 긴급 보조',        hours: 1, startTime: '09:00', endTime: '10:00', pay: 15000, hourlyRate: 15000, aiScore: 89, urgency: false, applied: false },
     { id: 'ag6', storeName: '이마트 역삼점',        category: '마트',  district: '강남구',       distanceM: 900, role: '매장 진열 & 물류 관리',             hours: 5, startTime: '10:00', endTime: '15:00', pay: 65000, hourlyRate: 13000, aiScore: 81, urgency: false, applied: false },
+    { id: 'ag7', storeName: '올리브영 강남대로점', category: '마트',  district: '강남구',       distanceM: 250, role: '올리브영 재고정리 & 상품 진열',     hours: 4, startTime: '15:00', endTime: '19:00', pay: 58000, hourlyRate: 14500, aiScore: 94, urgency: true,  applied: false },
+    { id: 'ag8', storeName: '쉑쉑버거 강남점',     category: '패스트푸드', district: '강남구',   distanceM: 180, role: '피크 타임 홀 서빙 & 퇴식 관리',     hours: 2, startTime: '12:00', endTime: '14:00', pay: 36000, hourlyRate: 18000, aiScore: 96, urgency: true,  applied: false },
+    { id: 'ag9', storeName: '메가커피 역삼포스코점', category: '카페', district: '강남구',       distanceM: 410, role: '오전 피크 테이크아웃 전담',         hours: 4, startTime: '08:00', endTime: '12:00', pay: 50000, hourlyRate: 12500, aiScore: 90, urgency: false, applied: false },
+    { id: 'ag10', storeName: '교보문고 강남점',    category: '마트',  district: '서초구',       distanceM: 520, role: '주말 도서 분류 및 라벨링',          hours: 5, startTime: '13:00', endTime: '18:00', pay: 60000, hourlyRate: 12000, aiScore: 88, urgency: false, applied: false },
+    { id: 'ag11', storeName: 'CGV 강남점',         category: '서빙',  district: '강남구',       distanceM: 350, role: '저녁 영화 피크 매점 포장',          hours: 3, startTime: '18:00', endTime: '21:00', pay: 39000, hourlyRate: 13000, aiScore: 92, urgency: true,  applied: false },
+    { id: 'ag12', storeName: '무신사 스탠다드 강남점', category: '마트', district: '강남구',     distanceM: 290, role: '피팅룸 정리 및 의류 정리',          hours: 2, startTime: '16:00', endTime: '18:00', pay: 28000, hourlyRate: 14000, aiScore: 93, urgency: true,  applied: false },
+    { id: 'ag13', storeName: '얌샘김밥 강남점',     category: '서빙',  district: '강남구',       distanceM: 190, role: '점심 피크 김밥 포장 & 홀 정리',     hours: 2, startTime: '11:30', endTime: '13:30', pay: 33000, hourlyRate: 16500, aiScore: 95, urgency: true,  applied: false },
+    { id: 'ag14', storeName: '투썸플레이스 역삼GFC점', category: '카페', district: '강남구',    distanceM: 310, role: '오후 음료조리 & 케이크 보조',      hours: 4, startTime: '13:00', endTime: '17:00', pay: 55200, hourlyRate: 13800, aiScore: 91, urgency: false, applied: false },
+    { id: 'ag15', storeName: '맘스터치 강남역점',   category: '패스트푸드', district: '강남구',   distanceM: 400, role: '저녁 버거 조리보조 & 튀김기 관리',  hours: 4, startTime: '17:00', endTime: '21:00', pay: 56000, hourlyRate: 14000, aiScore: 89, urgency: false, applied: false },
+    { id: 'ag16', storeName: '서브웨이 테헤란로점', category: '패스트푸드', district: '강남구',   distanceM: 210, role: '피크타임 샌드위치 메이커',          hours: 2, startTime: '11:00', endTime: '13:00', pay: 31000, hourlyRate: 15500, aiScore: 96, urgency: true,  applied: false },
+    { id: 'ag17', storeName: '다이소 강남역점',     category: '마트',  district: '강남구',       distanceM: 450, role: '오전 매장 재고 수량 전수조사',       hours: 3, startTime: '09:00', endTime: '12:00', pay: 39000, hourlyRate: 13000, aiScore: 87, urgency: false, applied: false },
+    { id: 'ag18', storeName: 'GS25 강남역중앙점',   category: '편의점', district: '강남구',      distanceM: 160, role: '1시간 야간 수불물류 1인 피크',       hours: 1, startTime: '22:00', endTime: '23:00', pay: 17000, hourlyRate: 17000, aiScore: 98, urgency: true,  applied: false },
+    { id: 'ag19', storeName: '버거킹 뱅뱅사거리점', category: '패스트푸드', district: '강남구',   distanceM: 620, role: '점심 딜리버리 픽업 보조',          hours: 2, startTime: '12:00', endTime: '14:00', pay: 30000, hourlyRate: 15000, aiScore: 90, urgency: false, applied: false },
+    { id: 'ag20', storeName: '배스킨라빈스 강남대로점', category: '카페', district: '강남구',   distanceM: 340, role: '저녁 디저트 패킹 & 결제 보조',      hours: 3, startTime: '19:00', endTime: '22:00', pay: 40500, hourlyRate: 13500, aiScore: 91, urgency: false, applied: false },
+    { id: 'ag21', storeName: '롭스 역삼역점',       category: '마트',  district: '강남구',       distanceM: 280, role: '오후 매장 디스플레이 및 뷰티 정리', hours: 2, startTime: '14:00', endTime: '16:00', pay: 28000, hourlyRate: 14000, aiScore: 92, urgency: true,  applied: false },
+    { id: 'ag22', storeName: '쉐이크쉑 강남 2호점', category: '패스트푸드', district: '강남구',   distanceM: 230, role: '퇴근길 패스트 포장 팩맨',          hours: 2, startTime: '18:00', endTime: '20:00', pay: 35000, hourlyRate: 17500, aiScore: 97, urgency: true,  applied: false },
+    { id: 'ag23', storeName: '롯데리아 강남역점',   category: '패스트푸드', district: '강남구',   distanceM: 500, role: '모닝 청결 관리자 및 주방 정리',    hours: 2, startTime: '07:00', endTime: '09:00', pay: 29000, hourlyRate: 14500, aiScore: 86, urgency: false, applied: false },
+    { id: 'ag24', storeName: '노브랜드버거 역삼점', category: '패스트푸드', district: '강남구',   distanceM: 370, role: '1시간 점심 피크 홀 청결 관리',      hours: 1, startTime: '12:00', endTime: '13:00', pay: 16000, hourlyRate: 16000, aiScore: 95, urgency: true,  applied: false },
+    { id: 'ag25', storeName: '아리따움 강남역점',   category: '마트',  district: '강남구',       distanceM: 430, role: '화장품 진열 및 재고 세팅',          hours: 3, startTime: '15:00', endTime: '18:00', pay: 40500, hourlyRate: 13500, aiScore: 88, urgency: false, applied: false }
   ]);
 
-
-  // 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 모달 팝업 상태 (기본값 false: 자동으로 뜨지 않음)
+  // 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 모달 팝업 상태
   const [showAlbamonModal, setShowAlbamonModal] = useState(false);
-  // 지도 핀 선택 상태 (선택된 긱 ID → 해당 업체만 목록에 표시, null → 전체)
+  // 지도 핀 선택 상태
   const [mapSelectedGigId, setMapSelectedGigId] = useState<string | null>(null);
-  // 지도 gig ID → storeName 매핑 (지도 핀과 목록 카드 연결)
   const GIG_MAP: Record<string, string> = {
-    'g1': '컴포즈커피 역삼역점',
-    'g2': '스타벅스 강남2호점',
-    'g3': 'CU 강남파이낸스점',
-    'g4': '세븐일레븐 테헤란점',
-    'g5': '이마트 역삼점',
+    'g1': 'CU 강남파이낸스점',
+    'g2': '컴포즈커피 역삼역점',
+    'g3': '스타벅스 강남2호점',
+    'g4': '올리브영 강남대로점',
+    'g5': '하남돼지집 부평역점',
+    'g6': '세븐일레븐 테헤란점',
+    'g7': '이마트 역삼점',
+    'g8': '쉑쉑버거 강남점',
+    'g9': '메가커피 역삼포스코점',
+    'g10': '교보문고 강남점',
+    'g11': 'CGV 강남점',
+    'g12': '무신사 스탠다드 강남점',
+    'g13': '얌샘김밥 강남점',
+    'g14': '투썸플레이스 역삼GFC점',
+    'g15': '맘스터치 강남역점',
+    'g16': '서브웨이 테헤란로점',
+    'g17': '다이소 강남역점',
+    'g18': 'GS25 강남역중앙점',
+    'g19': '버거킹 뱅뱅사거리점',
+    'g20': '배스킨라빈스 강남대로점',
+    'g21': '롭스 역삼역점',
+    'g22': '쉐이크쉑 강남 2호점',
+    'g23': '롯데리아 강남역점',
+    'g24': '노브랜드버거 역삼점',
+    'g25': '아리따움 강남역점'
   };
 
-  // 새 메시지가 추가되면 채팅 내역을 아래로 자동 스크롤
   useEffect(() => {
     if (chatScrollRef.current) {
       chatScrollRef.current.scrollTo({ top: chatScrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -140,16 +237,41 @@ function AgentTab() {
       if (res.ok) {
         const data: any = await res.json();
         if (data.reply) {
-          setMessages(prev => [...prev, { role: 'assistant', text: data.reply }]);
+          const toolBadge = data.toolCallExecuted
+            ? `${data.toolCallExecuted.toolName}(${data.toolCallExecuted.arguments.location || '전체'}, ${data.toolCallExecuted.arguments.jobType || '맞춤'})`
+            : null;
+          setMessages(prev => [...prev, { role: 'assistant', text: data.reply, toolBadge }]);
         }
-        if (data.gig?.coords) {
-          setInitialCenter(data.gig.coords);
+        if (data.gigs && data.gigs.length > 0) {
+          const ids = data.gigs.map((g: any) => g.id);
+          setHighlightedGigIds(ids);
+        }
+        if (data.coords) {
+          setInitialCenter(data.coords);
         }
       } else {
-        setMessages(prev => [...prev, { role: 'assistant', text: 'AI 응답 수신 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.' }]);
+        const fallback = parseIntentAndExecuteTools(userMsg);
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          text: fallback.reply,
+          toolBadge: `searchGigsByLocation(${fallback.toolCallExecuted.arguments.location || '전체'}, ${fallback.toolCallExecuted.arguments.jobType || '맞춤'})`
+        }]);
+        if (fallback.gigs && fallback.gigs.length > 0) {
+          setHighlightedGigIds(fallback.gigs.map((g: any) => g.id));
+        }
+        if (fallback.coords) setInitialCenter(fallback.coords);
       }
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'assistant', text: '네트워크 연결 상태를 확인 후 다시 시도해 주세요.' }]);
+      const fallback = parseIntentAndExecuteTools(userMsg);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        text: fallback.reply,
+        toolBadge: `searchGigsByLocation(${fallback.toolCallExecuted.arguments.location || '전체'}, ${fallback.toolCallExecuted.arguments.jobType || '맞춤'})`
+      }]);
+      if (fallback.gigs && fallback.gigs.length > 0) {
+        setHighlightedGigIds(fallback.gigs.map((g: any) => g.id));
+      }
+      if (fallback.coords) setInitialCenter(fallback.coords);
     } finally {
       setIsTyping(false);
     }
@@ -208,160 +330,212 @@ function AgentTab() {
   const mapSelectedStoreName = mapSelectedGigId ? GIG_MAP[mapSelectedGigId] : null;
 
   return (
-    <div className="space-y-3 pb-6">
-      {/* 💡 땡겨요 웍스 파괴적 덤핑 전략 안내 바 & 팝업 열기 버튼 */}
-      <button
-        onClick={() => setShowAlbamonModal(true)}
-        className="w-full bg-gradient-to-r from-blue-900/90 via-indigo-900/90 to-slate-900 border border-blue-400/40 rounded-2xl p-3 text-white flex items-center justify-between shadow-xl hover:brightness-110 active:scale-95 transition-all text-left group"
-      >
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center font-black text-amber-300 text-sm group-hover:scale-110 transition-transform shrink-0">
-            💡
-          </div>
-          <div>
-            <span className="text-[9.5px] font-black text-emerald-400 uppercase tracking-widest block">Trojan Horse Strategy</span>
-            <h4 className="font-black text-xs text-white">왜 사장님들은 알바몬을 버리고 땡겨요 웍스로 올까?</h4>
-          </div>
-        </div>
-        <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shrink-0 flex items-center gap-1">
-          혁신 비교 보기 <ArrowUpRight className="w-3 h-3" />
-        </span>
-      </button>
-
-      {/* 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 팝업 모달 */}
-      <ShinhanVsAlbamonModal isOpen={showAlbamonModal} onClose={() => setShowAlbamonModal(false)} />
-      {/* 대화형 AI 매칭 비서 */}
-      <div className="bg-[#0F172A] p-3.5 rounded-3xl shadow-xl flex flex-col h-[210px] relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5517] opacity-15 rounded-full blur-2xl pointer-events-none" />
-        
-        {/* 헤더 */}
-        <div className="flex items-center justify-between mb-2 shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-500/20 p-1.5 rounded-lg">
-              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            </div>
-            <span className="text-[11px] font-black text-white tracking-wider">땡겨요 웍스 AI 매칭 비서 도담이</span>
-          </div>
-          <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono">
-            REAL AI LIVE
-          </span>
-        </div>
-
-        {/* 채팅 영역 */}
-        <div ref={chatScrollRef} className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[88%] p-2.5 rounded-xl text-xs leading-relaxed ${
-                msg.role === 'user' 
-                  ? 'bg-blue-600 text-white rounded-tr-xs' 
-                  : 'bg-slate-800 text-slate-200 border border-slate-700/80 rounded-tl-xs'
-              }`}>
-                {msg.text}
+    <div className="flex flex-col h-full overflow-hidden space-y-2">
+      {/* 1. 🤖 대화형 AI 매칭 비서 도담이 (지도 위 상단 최우선 고정!) */}
+      <div className="shrink-0 z-40">
+        {!isChatExpanded ? (
+          <div className="bg-gradient-to-r from-[#0B0F19] via-[#0F172A] to-[#141E38] border border-indigo-500/40 rounded-2xl p-2.5 shadow-lg flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 to-indigo-600 shrink-0 shadow-[0_0_10px_rgba(255,85,23,0.5)]">
+                <Sparkles className="w-3.5 h-3.5 text-white animate-pulse" />
+              </div>
+              <div className="truncate">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-black text-white">AI 도담이</span>
+                  <span className="text-[8px] bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-1.5 py-0.2 rounded-full">Spatial RAG</span>
+                  <span className="text-[8px] text-amber-300 font-mono font-bold">🔥 1km 긴급 7건 가동 중</span>
+                </div>
+                <p className="text-[10px] text-indigo-200 truncate">"조이수님, 부평역 반경 1km 서빙 긱 (시급 ₩14,500) 1위 추천 완료!"</p>
               </div>
             </div>
-          ))}
-          {isTyping && (
-            <div className="flex justify-start">
-              <div className="bg-slate-800 border border-slate-700/80 text-slate-300 p-2.5 rounded-xl rounded-tl-xs text-[11px] flex items-center gap-2">
-                <span className="flex gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce delay-75" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce delay-150" />
-                </span>
-                AI 도담이가 실시간 긱 데이터 분석 중...
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 입력 및 퀵 추천 영역 */}
-        <div className="mt-2 shrink-0 space-y-1.5">
-          <form onSubmit={handleSend} className="relative">
-            <input 
-              type="text" 
-              value={inputText}
-              onChange={e => setInputText(e.target.value)}
-              placeholder="질문이나 원하는 조건을 입력하세요 (예: 강남 카페 알바)..."
-              className="w-full bg-slate-800/90 border border-slate-700/80 text-white text-xs rounded-full py-2 pl-3.5 pr-10 focus:outline-none focus:border-blue-500 transition-colors"
-            />
-            <button 
-              type="submit"
-              disabled={!inputText.trim() || isTyping}
-              className="absolute right-1 top-1 bottom-1 bg-blue-600 text-white w-7 h-7 my-auto rounded-full flex items-center justify-center hover:bg-blue-500 disabled:opacity-50 transition-colors"
+            <button
+              onClick={() => setIsChatExpanded(true)}
+              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-black text-[10.5px] shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 flex items-center gap-1"
             >
-              <ArrowUpRight className="w-4 h-4" />
+              AI 대화창 펼치기 ▲
             </button>
-          </form>
-
-          {/* 퀵 질문 칩 */}
-          <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-0.5">
-            {[
-              '📍 부평역 서빙 알바',
-              '☕ 강남역 카페 긱',
-              '🛵 우천 배달 할증',
-              '💳 0.1초 퇴근 정산',
-            ].map(chip => (
+          </div>
+        ) : (
+          <div className="bg-gradient-to-br from-[#0B0F19] via-[#0F172A] to-[#141E38] p-3.5 rounded-3xl shadow-[0_10px_40px_rgba(99,102,241,0.25)] border border-indigo-500/35 flex flex-col h-[320px] relative overflow-hidden transition-all">
+            <div className="absolute top-0 right-0 w-36 h-36 bg-[#FF5517] opacity-20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-indigo-600 opacity-20 rounded-full blur-3xl pointer-events-none" />
+            
+            {/* 헤더 */}
+            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-indigo-500/20 pb-1.5">
+              <div className="flex items-center gap-2">
+                <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 via-orange-500 to-indigo-600 shadow-[0_0_15px_rgba(255,85,23,0.5)]">
+                  <Sparkles className="w-4 h-4 text-white animate-pulse" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-black text-white tracking-wider">땡겨요 웍스 AI 매칭 비서 도담이</span>
+                    <span className="text-[8px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-black px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
+                      Spatial RAG + Agent Tools
+                    </span>
+                  </div>
+                  <p className="text-[9px] text-slate-400 font-mono">Geo-Spatial SQL 1차 + Vector Semantic 2차 파이프라인</p>
+                </div>
+              </div>
               <button
-                key={chip}
-                onClick={() => sendMessageText(chip)}
-                disabled={isTyping}
-                className="text-[9px] px-2.5 py-0.5 rounded-full bg-slate-800/80 border border-slate-700/60 text-slate-300 hover:text-white hover:bg-blue-600/30 whitespace-nowrap active:scale-95 transition-all disabled:opacity-50"
+                onClick={() => setIsChatExpanded(false)}
+                className="text-[9.5px] px-2.5 py-1 rounded-full bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-200 border border-indigo-500/40 font-bold transition-all flex items-center gap-1 active:scale-95 shrink-0"
               >
-                {chip}
+                지도 메인으로 (접기) ▼
               </button>
-            ))}
+            </div>
+
+            {/* 🔥 [AI 대화창 내부 통합] 실시간 핫스팟 현황판 및 Trojan 전략 바 */}
+            <div className="shrink-0 space-y-1.5 mb-2">
+              {/* 실시간 핫스팟 마키 티커 */}
+              <div className="bg-blue-950/70 border border-blue-500/30 rounded-xl px-2.5 py-1 flex items-center justify-between gap-2 shadow-inner">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+                  </span>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={notificationIdx}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="text-[10px] font-bold text-amber-300 truncate"
+                    >
+                      {LIVE_NOTIFICATIONS[notificationIdx]}
+                    </motion.p>
+                  </AnimatePresence>
+                </div>
+                <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+                  0.1초 정산
+                </span>
+              </div>
+
+              {/* 💡 Trojan Horse Strategy 바 버튼 */}
+              <button
+                onClick={() => setShowAlbamonModal(true)}
+                className="w-full bg-gradient-to-r from-blue-900/80 via-indigo-900/80 to-slate-900 border border-blue-400/30 rounded-xl px-2.5 py-1 text-white flex items-center justify-between hover:brightness-110 active:scale-95 transition-all text-left"
+              >
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className="text-[9px] font-black text-emerald-400 uppercase tracking-wider shrink-0">💡 STRATEGY</span>
+                  <p className="text-[10px] font-bold text-blue-200 truncate">왜 사장님들은 알바몬을 버리고 땡겨요 웍스로 올까?</p>
+                </div>
+                <span className="text-[9px] font-black text-amber-300 underline shrink-0 flex items-center gap-0.5">
+                  혁신 비교 <ArrowUpRight className="w-2.5 h-2.5" />
+                </span>
+              </button>
+            </div>
+
+            {/* 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 팝업 모달 */}
+            <ShinhanVsAlbamonModal isOpen={showAlbamonModal} onClose={() => setShowAlbamonModal(false)} />
+
+            {/* 채팅 영역 */}
+            <div ref={chatScrollRef} className="flex-1 overflow-y-auto space-y-2.5 pr-1 custom-scrollbar">
+              {messages.map((msg, idx) => (
+                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[90%] p-3 rounded-2xl text-xs leading-relaxed ${
+                    msg.role === 'user' 
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-xs shadow-md font-medium' 
+                      : 'bg-slate-800/90 text-slate-100 rounded-tl-xs border border-slate-700/80 shadow-md font-normal'
+                  }`}>
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-slate-800/90 border border-slate-700 text-slate-300 p-2.5 rounded-2xl rounded-tl-xs text-xs flex items-center gap-2">
+                    <span className="animate-spin w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full" />
+                    <span>도담이가 실시간 DB와 지도(LBS)를 분석하고 있습니다...</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 입력 폼 */}
+            <div className="shrink-0 pt-2 border-t border-indigo-500/20 space-y-1.5">
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  sendMessageText(inputText);
+                }}
+                className="flex items-center gap-1.5"
+              >
+                <input
+                  type="text"
+                  value={inputText}
+                  onChange={e => setInputText(e.target.value)}
+                  placeholder="예: 부평역 1시간 서빙 알바 찾아줘"
+                  className="flex-1 bg-slate-900/90 border border-indigo-500/40 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-400 transition-all font-medium"
+                />
+                <button
+                  type="submit"
+                  disabled={!inputText.trim() || isTyping}
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 disabled:opacity-50 text-white p-2 rounded-xl text-xs font-bold active:scale-95 transition-all shrink-0 shadow-md"
+                >
+                  <Sparkles className="w-4 h-4" />
+                </button>
+              </form>
+
+              {/* 퀵 칩 레코멘더 */}
+              <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+                {[
+                  '📍 부평역 야간 서빙 알바',
+                  '⚡ 1시간 초단기 긱 (시급 ₩16,000)',
+                  '☕ 강남역 점심 피크 카페',
+                  '💳 D-GCS 신용한도 증액',
+                ].map(chip => (
+                  <button
+                    key={chip}
+                    onClick={() => sendMessageText(chip)}
+                    disabled={isTyping}
+                    className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-slate-800/90 border border-indigo-500/30 text-indigo-200 hover:text-white hover:bg-indigo-600/40 whitespace-nowrap active:scale-95 transition-all disabled:opacity-50 shadow-xs"
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 2. 📍 카카오 지도 영역 (AI 도담이 바로 아래 고정!) */}
+      <div className="shrink-0 relative mb-1">
+        <div 
+          style={{ height: `${mapHeight}px` }}
+          className="transition-[height] duration-75 rounded-3xl overflow-hidden border border-slate-200 shadow-xl bg-slate-900 relative group shrink-0"
+        >
+          <GigMapView
+            initialCenter={initialCenter}
+            onGigSelect={(id) => {
+              setMapSelectedGigId(id);
+              // 지도 선택 시 카테고리·시간 필터 해제하여 해당 업체 카드가 확실히 노출되도록
+              if (id) {
+                setSelectedCategory('전체');
+                setSelectedHours('all');
+              }
+            }}
+          />
+
+          {/* 하단 위아래 지도 높이 드래그 조절 리사이즈 바 (Resize Handle Bar) */}
+          <div
+            onMouseDown={(e) => handleResizeStart(e.clientY)}
+            onTouchStart={(e) => handleResizeStart(e.touches[0].clientY)}
+            className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-slate-950/90 via-slate-900/80 to-transparent flex items-center justify-center cursor-row-resize select-none z-20 hover:from-indigo-950/90 transition-colors"
+            title="드래그하여 지도 높이 조절"
+          >
+            <div className="w-12 h-1.5 rounded-full bg-slate-400/80 group-hover:bg-amber-400 group-hover:w-16 transition-all flex items-center justify-center shadow-md">
+              <div className="w-3 h-0.5 bg-slate-950 rounded-full" />
+            </div>
+            <span className="absolute right-3 text-[8.5px] font-mono font-bold text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 px-1.5 py-0.5 rounded border border-indigo-500/30">
+              ↕ {mapHeight}px (높이 조절)
+            </span>
           </div>
         </div>
       </div>
 
-      {/* 3. 🔥 실시간 핫스팟 롤링 현황판 (컴팩트 칩) */}
-      <div className="bg-gradient-to-r from-[#090D16] via-[#10182D] to-[#080D1A] border border-blue-500/30 rounded-2xl p-2.5 text-white space-y-2 shadow-md">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
-            </span>
-            <span className="text-xs font-black text-amber-300">
-              🔥 내 주변 1km 실시간 긴급 7건 가동 중 <span className="text-[10px] text-slate-400 font-normal">| 58명 접속</span>
-            </span>
-          </div>
-          <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
-            0.1초 즉시정산
-          </span>
-        </div>
-
-        {/* 실시간 롤링 마키 티커 */}
-        <div className="bg-blue-950/60 border border-blue-500/20 rounded-xl px-2.5 py-1.5 flex items-center gap-2">
-          <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-bounce" />
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={notificationIdx}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              className="text-[10.5px] font-bold text-blue-200 truncate"
-            >
-              {LIVE_NOTIFICATIONS[notificationIdx]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* 4. 카카오 지도 영역 (LBS 기반 위치 시프트) */}
-      <div className="h-[320px] sm:h-[350px] rounded-3xl overflow-hidden border border-slate-100 shadow-sm relative">
-        <GigMapView
-          initialCenter={initialCenter}
-          onGigSelect={(id) => {
-            setMapSelectedGigId(id);
-            // 지도 선택 시 카테고리·시간 필터 해제하여 해당 업체 카드가 확실히 노출되도록
-            if (id) {
-              setSelectedCategory('전체');
-              setSelectedHours('all');
-            }
-          }}
-        />
-      </div>
+      {/* 3. 📜 지도 하단 전용 독립 스크롤 영역 (직종 필터 & 추천 긱 목록 카드) */}
+      <div className="flex-1 overflow-y-auto min-h-0 space-y-3 pb-4 custom-scrollbar pr-0.5">
 
       {/* 지도 핀 선택 활성 배너 (선택 시만 노출) */}
       {mapSelectedGigId && mapSelectedStoreName && (
@@ -382,188 +556,506 @@ function AgentTab() {
         </div>
       )}
 
-      {/* 5. 직종 카테고리 칩 필터 */}
-      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-        {[
-          { id: '전체', label: '전체 시프트' },
-          { id: '서빙', label: '🍽️ 홀/서빙' },
-          { id: '카페', label: '☕ 카페' },
-          { id: '편의점', label: '🏪 편의점' },
-          { id: '패스트푸드', label: '🍔 패스트푸드' },
-          { id: '마트', label: '📦 마트' },
-        ].map(cat => (
-          <button
-            key={cat.id}
-            onClick={() => setSelectedCategory(cat.id)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 active:scale-95 ${
-              selectedCategory === cat.id
-                ? 'bg-blue-600 text-white font-black shadow-md shadow-blue-500/20'
-                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
-            }`}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
-
-      {/* 6. AI 매칭 추천 긱: 근무시간 범위 필터 & 정렬 컨트롤 바 */}
-      <div className="bg-white rounded-3xl border border-slate-100 p-4 space-y-3 shadow-md">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-          <div>
-            <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">AI Smart Matcher</span>
-            <h4 className="font-black text-sm text-slate-900">도담이 추천 긱 목록</h4>
-          </div>
-
-          {/* 정렬 드롭다운 */}
-          <select
-            value={sortMode}
-            onChange={e => setSortMode(e.target.value as any)}
-            className="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10.5px] font-black rounded-xl px-2 py-1 outline-none focus:border-indigo-500 transition-all cursor-pointer"
-          >
-            <option value="ai">✨ AI 추천순</option>
-            <option value="wage_desc">💰 시급 높은순</option>
-            <option value="wage_asc">💵 시급 낮은순</option>
-            <option value="dist_asc">📍 거리 가까운순</option>
-            <option value="dist_desc">🧭 거리 먼순</option>
-            <option value="pay_desc">💵 총급여 높은순</option>
-          </select>
-        </div>
-
-        {/* 근무시간 범위 필터 칩 (1시간, 2시간, 4시간...) */}
+      {/* 5. 직종 카테고리 칩 필터 (지도 핀 미선택 시만 노출) */}
+      {!mapSelectedGigId && (
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-          <span className="text-[10px] font-bold text-slate-400 shrink-0">시간선택:</span>
           {[
-            { id: 'all', label: '전체시간' },
-            { id: '1h', label: '⚡ 1시간 (초단기)' },
-            { id: '2h', label: '⏱️ 2시간' },
-            { id: '4h', label: '4시간' },
-            { id: '5h_plus', label: '5시간 이상' },
-          ].map(hf => (
+            { id: '전체', label: '전체 시프트' },
+            { id: '서빙', label: '🍽️ 홀/서빙' },
+            { id: '카페', label: '☕ 카페' },
+            { id: '편의점', label: '🏪 편의점' },
+            { id: '패스트푸드', label: '🍔 패스트푸드' },
+            { id: '마트', label: '📦 마트' },
+          ].map(cat => (
             <button
-              key={hf.id}
-              onClick={() => setSelectedHours(hf.id as any)}
-              className={`flex-shrink-0 px-2.5 py-1 rounded-xl text-[10.5px] font-bold transition-all active:scale-95 ${
-                selectedHours === hf.id
-                  ? 'bg-indigo-600 text-white font-black shadow-md shadow-indigo-500/20'
-                  : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 active:scale-95 ${
+                selectedCategory === cat.id
+                  ? 'bg-blue-600 text-white font-black shadow-md shadow-blue-500/20'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
-              {hf.label}
+              {cat.label}
             </button>
           ))}
         </div>
+      )}
 
-        {/* 필터링 및 정렬된 긱 카드리스트 (Instawork 수준 고도화 UX) */}
+      {/* 6. AI 매칭 추천 긱 (지도 핀 선택 시 해당 가맹점 정보 카드만 노출) */}
+      <div className="bg-white rounded-3xl border border-slate-100 p-4 space-y-3 shadow-md">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+          {mapSelectedGigId && mapSelectedStoreName ? (
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-2">
+                <span className="text-base">📍</span>
+                <div>
+                  <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">Selected Store</span>
+                  <h4 className="font-black text-sm text-slate-900">{mapSelectedStoreName} 시프트 정보</h4>
+                </div>
+              </div>
+              <button
+                onClick={() => setMapSelectedGigId(null)}
+                className="text-[10.5px] font-black px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 active:scale-95 transition-all border border-indigo-200/60 shrink-0"
+              >
+                ✕ 전체 목록 보기
+              </button>
+            </div>
+          ) : (
+            <>
+              <div>
+                <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">AI Smart Matcher</span>
+                <h4 className="font-black text-sm text-slate-900">도담이 추천 긱 목록</h4>
+              </div>
+
+              {/* 정렬 드롭다운 */}
+              <select
+                value={sortMode}
+                onChange={e => setSortMode(e.target.value as any)}
+                className="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10.5px] font-black rounded-xl px-2 py-1 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+              >
+                <option value="ai">✨ AI 추천순</option>
+                <option value="wage_desc">💰 시급 높은순</option>
+                <option value="wage_asc">💵 시급 낮은순</option>
+                <option value="dist_asc">📍 거리 가까운순</option>
+                <option value="dist_desc">🧭 거리 먼순</option>
+                <option value="pay_desc">💵 총급여 높은순</option>
+              </select>
+            </>
+          )}
+        </div>
+
+        {/* 근무시간 범위 필터 칩 (지도 핀 미선택 시만 노출) */}
+        {!mapSelectedGigId && (
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+            <span className="text-[10px] font-bold text-slate-400 shrink-0">시간선택:</span>
+            {[
+              { id: 'all', label: '전체시간' },
+              { id: '1h', label: '⚡ 1시간 (초단기)' },
+              { id: '2h', label: '⏱️ 2시간' },
+              { id: '4h', label: '4시간' },
+              { id: '5h_plus', label: '5시간 이상' },
+            ].map(hf => (
+              <button
+                key={hf.id}
+                onClick={() => setSelectedHours(hf.id as any)}
+                className={`flex-shrink-0 px-2.5 py-1 rounded-xl text-[10.5px] font-bold transition-all active:scale-95 ${
+                  selectedHours === hf.id
+                    ? 'bg-indigo-600 text-white font-black shadow-md shadow-indigo-500/20'
+                    : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {hf.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* 필터링 및 정렬된 긱 카드리스트 (핀 선택 시 해당 가맹점 카드 1개만 정확히 노출) */}
         <div className="space-y-3 pt-1">
           {filteredAgentGigs.length === 0 ? (
             <div className="text-center py-8 text-slate-400 text-xs bg-slate-50 rounded-2xl border border-slate-200">
-              선택하신 조건에 해당하는 긱 공고가 없습니다.
+              선택하신 조건 및 가맹점에 해당 알바 시프트가 없습니다.
             </div>
           ) : (
-            filteredAgentGigs.map(g => (
-              <div 
-                key={g.id} 
-                className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-slate-800 rounded-3xl p-4 text-white space-y-3 shadow-xl hover:border-indigo-500/50 transition-all text-left relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+            filteredAgentGigs.map(g => {
+              const isRecommended = highlightedGigIds.includes(g.id);
+              return (
+                <div 
+                  key={g.id} 
+                  className={`bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] rounded-2xl p-3 text-white space-y-2 shadow-lg transition-all text-left relative overflow-hidden ${
+                    isRecommended
+                      ? 'border border-indigo-400/80 ring-1 ring-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)]'
+                      : 'border border-slate-800 hover:border-indigo-500/40'
+                  }`}
+                >
+                  {/* 상단 1줄: AI 추천 랭킹 배지 (독자 탑 라인으로 겹침 100% 방지) */}
+                  {isRecommended && (
+                    <div className="flex items-center justify-between gap-1 border-b border-indigo-500/20 pb-1 mb-1">
+                      <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0 animate-pulse">
+                        <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                        도담이 AI 1위 추천 (적합도 {g.aiScore}%)
+                      </span>
+                      <span className="text-[9.5px] font-mono font-bold text-indigo-300">
+                        AI Score {g.aiScore}점
+                      </span>
+                    </div>
+                  )}
 
-                {/* 헤더 & 금액 */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="space-y-1 min-w-0">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <h5 className="font-black text-sm text-white truncate">{g.storeName}</h5>
-                      <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                  {/* 가게명 & 시급/총액 (Instawork 시프트 카드리스트 고도화) */}
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <h5 className="font-black text-sm text-white truncate flex items-center gap-1">
+                        {g.storeName}
+                        <span className="text-[9.5px] font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.2 rounded border border-amber-400/30 flex items-center gap-0.5 shrink-0">
+                          <Star className="w-2.5 h-2.5 fill-amber-400" /> 4.9
+                        </span>
+                      </h5>
+                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 shrink-0">
                         {g.category}
                       </span>
-                      {(g.hours === 1 || g.hours === 2 || g.hours === 4 || g.urgency) && (
-                        <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white animate-pulse">
-                          🔥 긴급 ({g.hours}시간)
+                      {g.urgency ? (
+                        <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-gradient-to-r from-red-600 to-rose-600 text-white border border-red-400/50 shrink-0 animate-pulse shadow-sm">
+                          🚨 1시간 이내 임박
+                        </span>
+                      ) : (
+                        <span className="text-[8.5px] font-bold px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 shrink-0">
+                          🕐 1시간 이후
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 font-medium truncate">{g.role}</p>
-                    {/* 근무 시간대 표시 */}
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <span className="text-[10px] font-black text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-lg tracking-wide">
-                        🕐 {g.startTime} – {g.endTime}
-                      </span>
-                      <span className="text-[9.5px] text-slate-400 font-semibold">({g.hours}시간)</span>
+
+                    <div className="text-right shrink-0">
+                      <div className="text-base font-black text-emerald-400 leading-tight">₩{g.pay.toLocaleString()}</div>
+                      <div className="text-[9px] font-bold text-slate-400">시급 ₩{g.hourlyRate.toLocaleString()}</div>
                     </div>
                   </div>
 
-                  {/* 금액 하이라이트 박스 */}
-                  <div className="text-right shrink-0 bg-emerald-500/15 border border-emerald-500/40 rounded-2xl p-2 shadow-md">
-                    <p className="text-lg font-black text-emerald-400 leading-none">
-                      ₩{g.pay.toLocaleString()}
-                    </p>
-                    <p className="text-[10px] font-bold text-emerald-300 mt-1">
-                      시급 ₩{g.hourlyRate.toLocaleString()}
-                    </p>
+                  {/* 역할 & 근무시간 1줄 */}
+                  <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
+                    <p className="truncate font-semibold text-slate-200">{g.role}</p>
+                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-md shrink-0 ml-2 ${
+                      g.urgency
+                        ? 'text-white bg-gradient-to-r from-red-600 to-rose-600 border border-red-400/60 shadow-sm'
+                        : 'text-zinc-300 bg-zinc-900 border border-zinc-700'
+                    }`}>
+                      {g.urgency ? `🚨 ${g.startTime}–${g.endTime} (${g.hours}h)` : `🕐 ${g.startTime}–${g.endTime} (${g.hours}h)`}
+                    </span>
+                  </div>
+
+                  {/* Instawork 스타일 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ Instapay 인증) */}
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800">
+                    <span className="font-bold text-slate-200 flex items-center gap-1">
+                      <Navigation className="w-3 h-3 text-blue-400" />
+                      {g.distanceM}m <span className="text-slate-400 font-medium">(도보 {Math.ceil(g.distanceM / 80)}분)</span>
+                    </span>
+                    <span className="font-bold text-indigo-300">✨ AI {g.aiScore}점 Match</span>
+                    <span className="text-emerald-400 font-black flex items-center gap-0.5 bg-emerald-500/10 px-1.5 py-0.2 rounded border border-emerald-500/30">
+                      <Zap className="w-2.5 h-2.5 text-amber-300" /> ⚡ 0.1s Instapay
+                    </span>
+                  </div>
+
+                  {/* 지원 & 상세보기 버튼 영역 */}
+                  <div className="flex items-center gap-1.5 pt-0.5">
+                    <button
+                      onClick={() => setSelectedDetailGig(g)}
+                      className="px-3 py-2 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1 shrink-0 transition-all active:scale-95 shadow-sm"
+                      title="근무/모집 조건 상세보기"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>상세보기</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleAgentApply(g.id, g.storeName, g.role)}
+                      disabled={g.applied}
+                      className={`flex-1 py-2 rounded-xl font-black text-xs transition-all shadow-md flex items-center justify-center gap-1 active:scale-95 ${
+                        g.applied
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-default'
+                          : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 text-white hover:brightness-110'
+                      }`}
+                    >
+                      {g.applied ? (
+                        <span>✓ 지원 완료 · 0.1초 에스크로</span>
+                      ) : (
+                        <>
+                          <Zap className="w-3 h-3 text-amber-300" />
+                          <span>⚡ 0.1초 지원 & Pay</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
+              );
+            })
+          )}
+        </div>
+      </div>
 
-                {/* 상세 근무 조건 그리드 */}
-                <div className="grid grid-cols-3 gap-1.5 py-2 border-y border-slate-800 text-center text-[10.5px]">
-                  <div className="bg-slate-900/80 rounded-xl p-1.5 border border-slate-800">
-                    <p className="text-[9.5px] text-slate-400 font-bold">📍 위치</p>
-                    <p className="font-black text-slate-200 mt-0.5">{g.distanceM}m <span className="text-[9px] text-slate-400 font-normal">({g.district})</span></p>
+      {/* 📋 알바 상세 모집/근무 조건 팝업 모달 */}
+      <AnimatePresence>
+        {selectedDetailGig && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedDetailGig(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 20, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 250 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-slate-900 border border-slate-800 rounded-3xl p-5 w-full max-w-[420px] max-h-[85vh] overflow-y-auto shadow-2xl text-left space-y-4 custom-scrollbar text-white relative"
+            >
+              {/* 상단 닫기 & 타이틀 */}
+              <div className="flex items-start justify-between border-b border-slate-800 pb-3">
+                <div className="min-w-0 pr-2">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-[9.5px] font-black px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                      {selectedDetailGig.category}
+                    </span>
+                    {selectedDetailGig.urgency && (
+                      <span className="text-[9px] font-black px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse">
+                        🚨 긴급대타
+                      </span>
+                    )}
+                    <span className="text-[9.5px] font-black px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      AI {selectedDetailGig.aiScore}점 Match
+                    </span>
                   </div>
-                  <div className="bg-slate-900/80 rounded-xl p-1.5 border border-slate-800">
-                    <p className="text-[9.5px] text-slate-400 font-bold">⏱️ 근무 시간대</p>
-                    <p className="font-black text-amber-300 mt-0.5 text-[10px]">{g.startTime} – {g.endTime}</p>
-                    <p className="text-[9px] text-slate-400 font-normal">{g.hours}시간 시프트</p>
-                  </div>
-                  <div className="bg-slate-900/80 rounded-xl p-1.5 border border-slate-800">
-                    <p className="text-[9.5px] text-slate-400 font-bold">✨ AI 추천</p>
-                    <p className="font-black text-indigo-300 mt-0.5">{g.aiScore}점 Match</p>
-                  </div>
+                  <h3 className="text-base font-black text-white leading-snug">{selectedDetailGig.storeName}</h3>
+                  <p className="text-xs text-indigo-300 font-bold mt-0.5">{selectedDetailGig.role}</p>
                 </div>
-
-                {/* AI 맞춤 적합도 프로그레스 바 */}
-                <div className="space-y-1">
-                  <div className="flex justify-between items-center text-[9.5px]">
-                    <span className="text-slate-400 font-bold">AI 맞춤 매칭 적합도</span>
-                    <span className="font-black text-indigo-300">{g.aiScore}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 rounded-full" 
-                      style={{ width: `${g.aiScore}%` }}
-                    />
-                  </div>
-                  <div className="flex justify-between text-[9px] text-slate-400 pt-0.5">
-                    <span>🛡️ 신한EZ 상해보장 100% 무상</span>
-                    <span>🔒 0.1초 에스크로 정산</span>
-                  </div>
-                </div>
-
-                {/* 지원 버튼 */}
                 <button
-                  onClick={() => handleAgentApply(g.id, g.storeName, g.role)}
-                  disabled={g.applied}
-                  className={`w-full py-3 rounded-2xl font-black text-xs transition-all shadow-lg flex items-center justify-center gap-1.5 active:scale-95 ${
-                    g.applied
+                  onClick={() => setSelectedDetailGig(null)}
+                  className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shrink-0"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* 핵심 정보 요약 뱃지 박스 */}
+              <div className="bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-900 p-3.5 rounded-2xl border border-indigo-500/30 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] text-slate-400 font-bold block">약정 시급 / 총급여</span>
+                  <span className="text-lg font-black text-emerald-400">₩{selectedDetailGig.pay.toLocaleString()}원</span>
+                  <span className="text-[10px] font-bold text-slate-400 block">(시급 ₩{selectedDetailGig.hourlyRate.toLocaleString()}원 × {selectedDetailGig.hours}시간)</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] text-slate-400 font-bold block">근무 시간</span>
+                  <span className="text-xs font-black text-amber-300 bg-amber-400/10 px-2 py-1 rounded-lg border border-amber-400/30 inline-block mt-0.5">
+                    {selectedDetailGig.startTime} ~ {selectedDetailGig.endTime}
+                  </span>
+                </div>
+              </div>
+
+              {/* 1. 📋 모집조건 (Recruitment Conditions) */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-black text-indigo-300">
+                  <UserCheck className="w-4 h-4 text-indigo-400" />
+                  <span>1. 모집 조건</span>
+                </div>
+                <div className="bg-slate-950/80 p-3 rounded-2xl border border-slate-800/80 text-xs space-y-2 text-slate-300 font-medium">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">모집인원</span>
+                    <span className="font-bold text-white">1명 (성별무관 / 연령무관)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">지원자격</span>
+                    <span className="font-bold text-white">초보자 가능, 대학생/휴학생 환영</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">우대사항</span>
+                    <span className="font-bold text-emerald-400">동일 업종 경력자, D-GCS 1등급</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">신한 검증</span>
+                    <span className="font-bold text-blue-400">S-Bridge 실명인증 완료자 우대</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">마감일자</span>
+                    <span className="font-bold text-rose-400">오늘 (피크타임 마감 임박)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. 💼 근무조건 (Work Conditions) */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-black text-emerald-300">
+                  <Clock className="w-4 h-4 text-emerald-400" />
+                  <span>2. 근무 조건</span>
+                </div>
+                <div className="bg-slate-950/80 p-3 rounded-2xl border border-slate-800/80 text-xs space-y-2 text-slate-300 font-medium">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">근무기간</span>
+                    <span className="font-bold text-white">초단기 긱워크 (1일 / {selectedDetailGig.hours}시간)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">근무요일</span>
+                    <span className="font-bold text-white">오늘 (피크타임 대타 시프트)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">정산방식</span>
+                    <span className="font-bold text-amber-300">퇴근 직후 0.1초 신한 BaaS 계좌 입금</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">수수료</span>
+                    <span className="font-bold text-emerald-400">근로자 수수료 0원 (100% 입금)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. 🏪 근무지 위치 및 Instawork 필수 체크리스트 (Shift Checklist) */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-black text-amber-300">
+                  <MapPin className="w-4 h-4 text-amber-400" />
+                  <span>3. 근무지 위치 및 시프트 체크리스트</span>
+                </div>
+                <div className="bg-slate-950/80 p-3 rounded-2xl border border-slate-800/80 text-xs space-y-2.5 text-slate-300 font-medium">
+                  <div>
+                    <span className="text-slate-400 block mb-1">근무지 위치</span>
+                    <p className="font-bold text-white leading-relaxed flex items-center justify-between">
+                      <span>서울 {selectedDetailGig.district} 테헤란로 매장 ({selectedDetailGig.distanceM}m)</span>
+                      <span className="text-indigo-400 text-[10.5px] font-bold">도보 약 {Math.ceil(selectedDetailGig.distanceM / 80)}분 소요</span>
+                    </p>
+                  </div>
+                  
+                  {/* Instawork 스타일 필수 준비물 및 복장 안내 */}
+                  <div className="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
+                    <div className="bg-slate-900 p-2 rounded-xl border border-slate-800">
+                      <span className="text-slate-400 text-[10px] block font-bold">👕 복장 규정 (Dress Code)</span>
+                      <span className="font-bold text-slate-200">단정한 자유복 및 운동화</span>
+                    </div>
+                    <div className="bg-slate-900 p-2 rounded-xl border border-slate-800">
+                      <span className="text-slate-400 text-[10px] block font-bold">🎒 지참 필수품 (Gear)</span>
+                      <span className="font-bold text-emerald-400">보건증 (앱 자동 검증)</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-800/80">
+                    <span className="text-slate-400 block mb-1">담당 업무 상세</span>
+                    <ul className="list-disc list-inside space-y-1 text-slate-200 text-[11.5px]">
+                      <li>{selectedDetailGig.role} 작업 전반 진행</li>
+                      <li>매장 내 청결 정돈 및 피크타임 손님 응대</li>
+                      <li>퇴근 바코드 스캔 시 신한 0.1초 에스크로 즉시 정산</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4. 🏛️ 신한금융그룹 7대 계열사가 지원자(알바생)에게 제공하는 전폭 보장 혜택 */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-xs font-black text-blue-300">
+                    <Building2 className="w-4 h-4 text-blue-400" />
+                    <span>4. 지원자(알바생) 전용 7대 금융 혜택</span>
+                  </div>
+                  <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    지원자 부담 0원 (100% 무상제공)
+                  </span>
+                </div>
+
+                <div className="bg-gradient-to-br from-slate-950 via-indigo-950/50 to-slate-950 p-3.5 rounded-2xl border border-blue-500/30 text-xs space-y-2.5">
+                  {/* 총 혜택 지원 요약 카드 */}
+                  <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-indigo-950/80 p-3 rounded-xl border border-emerald-500/30 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-slate-400 font-bold">지원자 총 체감 혜택 금액</span>
+                      <span className="text-sm font-black text-emerald-400">회당 약 28,500원 상당 혜택 지원</span>
+                    </div>
+                    <p className="text-[9.5px] text-slate-300 font-medium">
+                      정산 수수료 0원 + 0.1초 입금 + 무상 상해보험 + 1금융권 대출우대 + ETF 자동투자 + 리워드
+                    </p>
+                  </div>
+
+                  {/* 지원자를 위한 7대 계열사 혜택 상세 리스트 */}
+                  <div className="space-y-1.5 text-[11px]">
+                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-blue-400 font-black">🏦 신한은행 — 0.1초 퇴근 정산 & 우대금리</span>
+                        <span className="font-bold text-emerald-400 text-[10px]">이체수수료 0원</span>
+                      </div>
+                      <p className="text-[10.5px] text-slate-300">
+                        · 퇴근 바코드 찍자마자 0.1초 만에 일당 100% 입금 (중도정산 수수료 0원)<br />
+                        · 근태 데이터(노쇼 0건) 블록체인 SBT 기록 ➔ 1금융권 신용대출 우대금리 혜택
+                      </p>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-emerald-400 font-black">🛡️ 신한EZ손해보험 — 단기 상해보험 무료가입</span>
+                        <span className="font-bold text-emerald-400 text-[10px]">보험료 전액 지원</span>
+                      </div>
+                      <p className="text-[10.5px] text-slate-300">
+                        · 출근 스와이프 즉시 비급여 상해/사고 100% 커버 (병원비/치료비 무상 보장)<br />
+                        · 지원자 본인 부담금 0원 (점주/신한 100% 무상 자동 가입)
+                      </p>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-amber-400 font-black">📈 신한투자증권 — 잔돈 KODEX ETF 자동투자</span>
+                        <span className="font-bold text-amber-300 text-[10px]">매수수수료 100% 면제</span>
+                      </div>
+                      <p className="text-[10.5px] text-slate-300">
+                        · 정산 일당 1천원 미만 잔돈(예: 700원) 우량 ETF/STO 소수점 자동 투자<br />
+                        · 신한투자증권 MTS 자동 연동 및 첫 자산 형성 시드 포인트 제공
+                      </p>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-indigo-400 font-black">🧬 신한라이프 — 헬스케어 & 마이크로 연금</span>
+                        <span className="font-bold text-indigo-300 text-[10px]">포인트 자동적립</span>
+                      </div>
+                      <p className="text-[10.5px] text-slate-300">
+                        · 일당 1% 자동 마이크로 연금적립 + 근무 시 이동 걸음수(GPS) 연동 헬스케어 리워드 지급
+                      </p>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-400 font-black">💳 신한카드 — 땡겨요 가맹점 10% 캐시백</span>
+                        <span className="font-bold text-purple-300 text-[10px]">체크카드 캐시백</span>
+                      </div>
+                      <p className="text-[10.5px] text-slate-300">
+                        · 정산 계좌 신한 체크카드 연동 시 땡겨요 배달/포장 10% 즉시 할인 캐시백
+                      </p>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-rose-400 font-black">🏆 D-GCS 신용평가 — Tier Up 채용우선권</span>
+                        <span className="font-bold text-rose-300 text-[10px]">시급 인상 우대</span>
+                      </div>
+                      <p className="text-[10.5px] text-slate-300">
+                        · 성실 출퇴근 시 Silver ➔ Gold ➔ Platinum 승급 (AI 우선 매칭 1순위 & 시급 우대권)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 하단 지원 / 닫기 액션 버튼 */}
+              <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
+                <button
+                  onClick={() => setSelectedDetailGig(null)}
+                  className="w-1/3 py-3 rounded-2xl font-bold text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
+                >
+                  닫기
+                </button>
+                <button
+                  onClick={() => {
+                    handleAgentApply(selectedDetailGig.id, selectedDetailGig.storeName, selectedDetailGig.role);
+                    setSelectedDetailGig(null);
+                  }}
+                  disabled={selectedDetailGig.applied}
+                  className={`w-2/3 py-3 rounded-2xl font-black text-xs transition-all shadow-lg flex items-center justify-center gap-1 active:scale-95 ${
+                    selectedDetailGig.applied
                       ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-default'
-                      : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 text-white shadow-blue-500/20 hover:brightness-110'
+                      : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 text-white hover:brightness-110'
                   }`}
                 >
-                  {g.applied ? (
-                    <span>✓ 지원 완료 · 0.1초 신한 에스크로 결제 대기</span>
+                  {selectedDetailGig.applied ? (
+                    <span>✓ 지원 완료됨</span>
                   ) : (
                     <>
-                      <Zap className="w-3.5 h-3.5 text-amber-300" />
-                      <span>⚡ 0.1초 시프트 즉시 지원 & Instant Pay 예약</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
+                      <Zap className="w-4 h-4 text-amber-300" />
+                      <span>⚡ 0.1초 즉시 지원하기</span>
                     </>
                   )}
                 </button>
               </div>
-            ))
-          )}
-        </div>
-      </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  );
+  </div>
+);
 }
 
 
@@ -2170,28 +2662,34 @@ function MyPageScreen({
 
 // ─── 메인 ────────────────────────────────────────────────────────────────────
 
-type Tab = 'agent' | 'checkout' | 'dgcs' | 'mypage' | 'employer' | 'employer_finance' | 'employer_applicants' | 'admin';
+type Tab = 'agent' | 'chat' | 'community' | 'checkout' | 'dgcs' | 'mypage' | 'employer' | 'employer_finance' | 'employer_applicants' | 'admin';
 type UserRole = 'worker' | 'employer' | 'admin';
 
 const workerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
-  { id: 'agent',    Icon: Sparkles,    label: 'AI 매칭' },
-  { id: 'checkout', Icon: DollarSign,  label: '정산/지갑' },
-  { id: 'dgcs',     Icon: ShieldCheck, label: '안전/보험' },
-  { id: 'mypage',   Icon: User,        label: '마이페이지' },
+  { id: 'agent',     Icon: Sparkles,      label: 'AI 매칭' },
+  { id: 'chat',      Icon: MessageSquare, label: '알바톡' },
+  { id: 'community', Icon: Users,         label: '알바썰' },
+  { id: 'checkout',  Icon: DollarSign,    label: '정산/지갑' },
+  { id: 'dgcs',      Icon: ShieldCheck,   label: '안전/보험' },
+  { id: 'mypage',    Icon: User,          label: '마이' },
 ];
 
 const employerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
-  { id: 'employer',            Icon: Store,       label: 'AI 구인/지도' },
-  { id: 'employer_finance',    Icon: CreditCard,  label: '인건비/카드' },
-  { id: 'employer_applicants', Icon: FileText,    label: '지원자 관리' },
-  { id: 'admin',               Icon: Activity,    label: '관리자/마이' },
+  { id: 'employer',            Icon: Store,         label: 'AI 구인/지도' },
+  { id: 'chat',                Icon: MessageSquare, label: '점주톡' },
+  { id: 'community',           Icon: Users,         label: '점주 숲' },
+  { id: 'employer_finance',    Icon: CreditCard,    label: '인건비/카드' },
+  { id: 'dgcs',                Icon: ShieldCheck,   label: '안전/보험' },
+  { id: 'admin',               Icon: Activity,      label: '관리자/마이' },
 ];
 
 const adminTabs: Array<{ id: Tab; Icon: any; label: string }> = [
-  { id: 'admin',               Icon: Activity,    label: '그룹 시너지' },
-  { id: 'dgcs',                Icon: ShieldCheck, label: 'D-GCS 평가' },
-  { id: 'checkout',            Icon: DollarSign,  label: 'BaaS 정산' },
-  { id: 'mypage',              Icon: User,        label: '시스템 마이' },
+  { id: 'admin',               Icon: Activity,      label: '그룹 시너지' },
+  { id: 'chat',                Icon: MessageSquare, label: '통합 땡톡' },
+  { id: 'community',           Icon: Users,         label: '커뮤니티' },
+  { id: 'dgcs',                Icon: ShieldCheck,   label: 'D-GCS 평가' },
+  { id: 'checkout',            Icon: DollarSign,    label: 'BaaS 정산' },
+  { id: 'mypage',              Icon: User,          label: '시스템 마이' },
 ];
 
 export default function ShinhanDDangApp() {
@@ -2226,12 +2724,12 @@ export default function ShinhanDDangApp() {
 
   return (
     <AppPushProvider>
-      <div className="min-h-screen bg-[#03030d] font-sans antialiased flex flex-col items-center justify-center sm:py-6 md:py-8 relative overflow-x-hidden">
+      <div className="h-[100dvh] sm:min-h-screen bg-[#03030d] font-sans antialiased flex flex-col items-center justify-center sm:py-6 md:py-8 relative overflow-hidden sm:overflow-x-hidden">
       {/* 데스크톱 관람용 배경 어두운 앰비언트 글로우 */}
       <div className="hidden sm:block absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-950/30 via-[#03030d] to-black pointer-events-none" />
 
       {/* 모바일 디바이스 프레임 (데스크톱: 430px 마이크로 쉘, 모바일: 100% 풀스크린) */}
-      <div className="w-full sm:max-w-[430px] min-h-screen sm:min-h-[850px] sm:max-h-[900px] bg-[#F4F6FA] text-slate-900 sm:rounded-[44px] sm:border-[8px] sm:border-slate-800/80 shadow-[0_0_60px_rgba(255,85,23,0.25)] flex flex-col relative overflow-hidden transition-all duration-300">
+      <div className="w-full sm:max-w-[430px] h-[100dvh] sm:h-[850px] sm:max-h-[900px] bg-[#F4F6FA] text-slate-900 sm:rounded-[44px] sm:border-[8px] sm:border-slate-800/80 shadow-[0_0_60px_rgba(255,85,23,0.25)] flex flex-col relative overflow-hidden transition-all duration-300">
         <style>{`
           @keyframes hologram {
             0% { background-position: 0% 50%; }
@@ -2255,7 +2753,7 @@ export default function ShinhanDDangApp() {
         `}</style>
 
         {/* 상단 헤더 & 역할 모드 스위처 */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
+      <header className="sticky top-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div className="flex items-center justify-between px-2.5 sm:px-3.5 py-1.5 sm:py-2 gap-1 overflow-x-auto scrollbar-none">
           {/* 로고 및 역할 스위처 */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
@@ -2540,11 +3038,11 @@ export default function ShinhanDDangApp() {
         )}
       </AnimatePresence>
 
-      {/* 메인 콘텐츠 영역 (동적 탭 렌더링) */}
-      <main className="flex-1 overflow-y-auto px-3.5 pt-3 pb-2">
+      {/* 메인 콘텐츠 영역 (동적 탭 렌더링 - AI 매칭 탭은 지도 상단 고정 & 하단 독립 스크롤) */}
+      <main className={`flex-1 ${activeTab === 'agent' ? 'overflow-hidden flex flex-col px-3.5 pt-2 pb-1 min-h-0' : 'overflow-y-auto px-3.5 pt-3 pb-2'}`}>
         <AnimatePresence mode="wait">
           {activeTab === 'agent' && (
-            <motion.div key="agent" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}>
+            <motion.div key="agent" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }} className="flex flex-col h-full overflow-hidden min-h-0">
               <AgentTab />
             </motion.div>
           )}
@@ -2586,6 +3084,18 @@ export default function ShinhanDDangApp() {
             </motion.div>
           )}
 
+          {activeTab === 'chat' && (
+            <motion.div key="chat" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }} className="h-full flex flex-col min-h-0">
+              <AlbamonChatScreen />
+            </motion.div>
+          )}
+
+          {activeTab === 'community' && (
+            <motion.div key="community" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }} className="h-full flex flex-col min-h-0">
+              <AlbamonCommunityScreen />
+            </motion.div>
+          )}
+
           {activeTab === 'mypage' && (
             <motion.div key="mypage" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
               className="-mx-4 pb-6">
@@ -2601,27 +3111,27 @@ export default function ShinhanDDangApp() {
         </AnimatePresence>
       </main>
 
-      {/* 역할 기반 슬림 4개 탭 동적 하단 내비게이션 바 */}
-      <nav className="sticky bottom-0 z-50 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-        <div className="flex items-center justify-around px-2 py-2 pb-safe">
+      {/* 역할 기반 슬림 동적 하단 내비게이션 바 */}
+      <nav className="sticky bottom-0 shrink-0 z-50 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-between px-1.5 py-1.5 pb-safe">
           {currentTabs.map(({ id, Icon, label }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-2xl transition-all active:scale-90 ${
+              className={`flex flex-col items-center gap-0.5 py-1 px-1 rounded-2xl transition-all active:scale-90 ${
                 activeTab === id
                   ? 'text-[#FF5517]'
                   : 'text-slate-400'
               }`}
             >
-              <div className={`p-2 rounded-xl transition-all ${
+              <div className={`p-1.5 rounded-xl transition-all ${
                 activeTab === id
                   ? 'bg-orange-50'
                   : ''
               }`}>
-                <Icon className={`w-5 h-5 ${activeTab === id ? 'stroke-[2.5]' : 'stroke-2'}`} />
+                <Icon className={`w-4.5 h-4.5 ${activeTab === id ? 'stroke-[2.5]' : 'stroke-2'}`} />
               </div>
-              <span className={`text-[10px] font-black tracking-tight ${
+              <span className={`text-[9.5px] font-black tracking-tight ${
                 activeTab === id
                   ? 'text-[#FF5517]'
                   : 'text-slate-400'

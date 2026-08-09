@@ -38,7 +38,7 @@ export default function RootLayout({
       lang="ko"
       className={`${notoSansKr.variable} h-full antialiased dark select-none`}
     >
-      <body className="min-h-full flex flex-col bg-[#060713] text-slate-100 overflow-x-hidden touch-manipulation font-sans">
+      <body className="h-full min-h-full flex flex-col bg-[#060713] text-slate-100 overflow-hidden touch-manipulation font-sans">
         {children}
         <Script
           src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=6fdbed77a229d105034026990013707b&libraries=services,clusterer&autoload=false`}
