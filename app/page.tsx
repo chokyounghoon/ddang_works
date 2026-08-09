@@ -344,15 +344,17 @@ function AgentTab() {
               <div className="truncate">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs font-black text-white">AI 도담이</span>
-                  <span className="text-[8px] bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-1.5 py-0.2 rounded-full">Spatial RAG</span>
+                  <span className="text-[8px] bg-gradient-to-r from-[#0046FF] via-blue-600 to-indigo-600 text-white font-bold px-1.5 py-0.2 rounded-full shadow-xs">
+                    Spatial RAG
+                  </span>
                   <span className="text-[8px] text-amber-300 font-mono font-bold">🔥 1km 긴급 7건 가동 중</span>
                 </div>
-                <p className="text-[10px] text-indigo-200 truncate">"조이수님, 부평역 반경 1km 서빙 긱 (시급 ₩14,500) 1위 추천 완료!"</p>
+                <p className="text-[10px] text-blue-200 truncate">"조이수님, 부평역 반경 1km 서빙 긱 (시급 ₩14,500) 1위 추천 완료!"</p>
               </div>
             </div>
             <button
               onClick={() => setIsChatExpanded(true)}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-black text-[10.5px] shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 flex items-center gap-1"
+              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#0046FF] via-indigo-600 to-[#FF5517] text-white font-black text-[10.5px] shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 flex items-center gap-1"
             >
               AI 대화창 펼치기 ▲
             </button>
@@ -646,8 +648,8 @@ function AgentTab() {
               }}
               className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 active:scale-95 text-white text-xs font-black py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all"
             >
-              <MapPin className="w-3.5 h-3.5 text-amber-300" />
-              <span>📍 GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
+              <MapPin className="w-4 h-4 text-amber-300" />
+              <span>GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
             </button>
           ) : (
             <div className="bg-emerald-500/20 border border-emerald-500/40 p-2.5 rounded-xl text-center space-y-0.5">
@@ -2833,23 +2835,31 @@ export default function ShinhanDDangApp() {
         `}</style>
 
         {/* 상단 헤더 & 역할 모드 스위처 */}
-      <header className="sticky top-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
-        <div className="flex items-center justify-between px-2.5 sm:px-3.5 py-1.5 sm:py-2 gap-1 overflow-x-auto scrollbar-none">
+      <header className="sticky top-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 shadow-xs">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 gap-2 overflow-x-auto scrollbar-none">
           {/* 로고 및 역할 스위처 */}
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-            <div className="whitespace-nowrap leading-none">
-              <p className="text-[7px] sm:text-[8px] font-black text-[#FF5517] tracking-widest uppercase leading-none hidden xs:block">Shinhan WORKS</p>
-              <h1 className="font-black text-xs sm:text-sm text-[#0F172A] leading-tight whitespace-nowrap">땡겨요 웍스</h1>
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1.5">
+              <div className="w-6.5 h-6.5 rounded-full bg-gradient-to-br from-[#0046FF] to-[#0022AA] border border-blue-300/50 flex items-center justify-center shadow-xs text-white text-[11px] font-black shrink-0">
+                🏛️
+              </div>
+              <div className="whitespace-nowrap leading-none">
+                <div className="flex items-center gap-1">
+                  <p className="text-[7.5px] sm:text-[8px] font-black text-[#0046FF] tracking-widest uppercase leading-none hidden xs:block">Shinhan WORKS</p>
+                  <span className="text-[7px] font-black bg-blue-50 text-[#0046FF] px-1 py-0.2 rounded border border-blue-200 leading-none">BaaS</span>
+                </div>
+                <h1 className="font-black text-xs sm:text-sm text-[#0F172A] leading-none whitespace-nowrap mt-0.5">땡겨요 웍스</h1>
+              </div>
             </div>
             
             {/* 동적 역할 모드 스위처 캡슐 버튼 (워커 / 점주 / 관리자 3가지 스위칭) */}
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0">
+            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0 gap-0.5">
               <button
                 onClick={() => {
                   setUserRole('worker');
                   setActiveTab('agent');
                 }}
-                className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
+                className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'worker'
                     ? 'bg-[#FF5517] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
@@ -2862,9 +2872,9 @@ export default function ShinhanDDangApp() {
                   setUserRole('employer');
                   setActiveTab('employer');
                 }}
-                className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
+                className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'employer'
-                    ? 'bg-indigo-600 text-white shadow-xs'
+                    ? 'bg-[#0046FF] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -2875,29 +2885,30 @@ export default function ShinhanDDangApp() {
                   setUserRole('admin');
                   setActiveTab('admin');
                 }}
-                className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[8.5px] sm:text-[9px] font-black transition-all whitespace-nowrap ${
+                className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'admin'
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs'
+                    ? 'bg-gradient-to-r from-[#0046FF] to-indigo-600 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                🏢 관리자
+                💻 관리자
               </button>
             </div>
           </div>
 
           {/* 우측 지갑 & D-GCS 정보 영역 */}
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0">
             {wallet.isConnecting ? (
-              <button disabled className="bg-orange-50 text-[#FF5517] text-[8.5px] sm:text-[9.5px] font-black px-2 py-1 rounded-full border border-orange-200 flex items-center gap-1 whitespace-nowrap">
-                <span className="animate-spin w-2.5 h-2.5 border-2 border-[#FF5517]/30 border-t-[#FF5517] rounded-full" />
+              <button disabled className="bg-blue-50 text-[#0046FF] text-[9px] font-black px-2.5 py-1 rounded-full border border-blue-200 flex items-center gap-1 whitespace-nowrap">
+                <span className="animate-spin w-2.5 h-2.5 border-2 border-[#0046FF]/30 border-t-[#0046FF] rounded-full" />
                 연결 중...
               </button>
             ) : !walletConnected ? (
               <button 
                 onClick={triggerWalletConnect}
-                className="bg-[#FF5517] hover:bg-[#E04106] active:scale-95 text-white text-[8.5px] sm:text-[9.5px] font-black px-2 sm:px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap"
+                className="bg-gradient-to-r from-[#0046FF] via-[#0242CF] to-[#FF5517] hover:brightness-110 active:scale-95 text-white text-[9.5px] sm:text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-1 shadow-md shadow-blue-500/20 whitespace-nowrap border border-blue-300/30"
               >
+                <Sparkles className="w-3 h-3 text-amber-300" />
                 신한 슈퍼SOL
               </button>
             ) : (
@@ -2906,12 +2917,12 @@ export default function ShinhanDDangApp() {
                   setShowWalletDropdown(!showWalletDropdown);
                   setShowCreditDropdown(false);
                 }}
-                className="flex items-center gap-0.5 sm:gap-1 active:scale-95 transition-transform text-right shrink-0"
+                className="flex items-center gap-1 active:scale-95 transition-transform text-right shrink-0"
               >
-                <span className="relative overflow-hidden inline-flex items-center text-[8.5px] sm:text-[9px] font-black px-1.5 py-0.5 rounded-full animate-hologram bg-[linear-gradient(120deg,#6366f1,#a855f7,#ec4899,#3b82f6,#6366f1)] text-white shadow-sm whitespace-nowrap">
+                <span className="relative overflow-hidden inline-flex items-center text-[9px] font-black px-2 py-0.5 rounded-full animate-hologram bg-[linear-gradient(120deg,#0046ff,#6366f1,#a855f7,#ec4899,#0046ff)] text-white shadow-sm whitespace-nowrap">
                   D-GCS 990점
                 </span>
-                <span className="text-[8.5px] sm:text-[9.5px] font-black text-indigo-600 flex items-center gap-0.5 whitespace-nowrap bg-indigo-50 border border-indigo-100 px-1 sm:px-1.5 py-0.5 rounded-md">
+                <span className="text-[9.5px] font-black text-[#0046FF] flex items-center gap-0.5 whitespace-nowrap bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded-md">
                   🪙 {solcBalance.toFixed(1)}
                 </span>
               </button>
@@ -3192,26 +3203,26 @@ export default function ShinhanDDangApp() {
       </main>
 
       {/* 역할 기반 슬림 동적 하단 내비게이션 바 */}
-      <nav className="sticky bottom-0 shrink-0 z-50 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-        <div className="flex items-center justify-between px-1.5 py-1.5 pb-safe">
+      <nav className="sticky bottom-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-[0_-4px_25px_rgba(0,0,0,0.06)]">
+        <div className="grid grid-cols-6 items-center px-1 py-1.5 pb-safe">
           {currentTabs.map(({ id, Icon, label }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex flex-col items-center gap-0.5 py-1 px-1 rounded-2xl transition-all active:scale-90 ${
+              className={`flex flex-col items-center justify-center gap-0.5 py-1 px-0.5 rounded-2xl transition-all active:scale-90 ${
                 activeTab === id
                   ? 'text-[#FF5517]'
-                  : 'text-slate-400'
+                  : 'text-slate-400 hover:text-slate-600'
               }`}
             >
-              <div className={`p-1.5 rounded-xl transition-all ${
+              <div className={`p-1 rounded-xl transition-all ${
                 activeTab === id
-                  ? 'bg-orange-50'
+                  ? 'bg-orange-50/80 shadow-xs'
                   : ''
               }`}>
                 <Icon className={`w-4.5 h-4.5 ${activeTab === id ? 'stroke-[2.5]' : 'stroke-2'}`} />
               </div>
-              <span className={`text-[9.5px] font-black tracking-tight ${
+              <span className={`text-[9.5px] font-black tracking-tight leading-none text-center ${
                 activeTab === id
                   ? 'text-[#FF5517]'
                   : 'text-slate-400'
