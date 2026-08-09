@@ -2067,7 +2067,8 @@ function MyPageScreen({
   const [role, setRole] = useState<'worker' | 'employer'>('worker');
   const [profileImg, setProfileImg] = useState<string>('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80');
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
-  const [selectedPortfolio, setSelectedPortfolio] = useState('KODEX 미국S&P500');
+  const [selectedPortfolio, setSelectedPortfolio] = useState('SOL 미국배당다우존스');
+  const [portfolioTab, setPortfolioTab] = useState<'ALL' | 'POPULAR' | 'DIVIDEND' | 'AI' | 'STO' | 'BOND'>('ALL');
   const [certStatus, setCertStatus] = useState<'VERIFIED' | 'EXPIRED' | 'UNREGISTERED'>('VERIFIED');
   const [isOcrScanning, setIsOcrScanning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -2938,19 +2939,16 @@ export default function ShinhanDDangApp() {
 
         {/* 상단 헤더 & 역할 모드 스위처 */}
       <header className="sticky top-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 shadow-xs">
-        <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 gap-2 overflow-x-auto scrollbar-none">
+        <div className="flex items-center justify-between px-2 sm:px-3 py-1.5 gap-1 w-full overflow-hidden">
           {/* 로고 및 역할 스위처 */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="flex items-center gap-1.5">
-              <div className="w-6.5 h-6.5 rounded-full bg-gradient-to-br from-[#0046FF] to-[#0022AA] border border-blue-300/50 flex items-center justify-center shadow-xs text-white text-[11px] font-black shrink-0">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 min-w-0">
+            <div className="flex items-center gap-1 shrink-0">
+              <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-br from-[#0046FF] to-[#0022AA] border border-blue-300/50 flex items-center justify-center shadow-xs text-white text-[9.5px] font-black shrink-0">
                 🏛️
               </div>
-              <div className="whitespace-nowrap leading-none">
-                <div className="flex items-center gap-1">
-                  <p className="text-[7.5px] sm:text-[8px] font-black text-[#0046FF] tracking-widest uppercase leading-none hidden xs:block">Shinhan WORKS</p>
-                  <span className="text-[7px] font-black bg-blue-50 text-[#0046FF] px-1 py-0.2 rounded border border-blue-200 leading-none">BaaS</span>
-                </div>
-                <h1 className="font-black text-xs sm:text-sm text-[#0F172A] leading-none whitespace-nowrap mt-0.5">땡겨요 웍스</h1>
+              <div className="whitespace-nowrap leading-none shrink-0">
+                <p className="text-[7px] font-black text-[#0046FF] tracking-widest uppercase leading-none hidden xs:block">Shinhan BaaS</p>
+                <h1 className="font-black text-[11px] sm:text-xs text-[#0F172A] leading-none whitespace-nowrap mt-0.5">땡겨요 웍스</h1>
               </div>
             </div>
             
@@ -2961,7 +2959,7 @@ export default function ShinhanDDangApp() {
                   setUserRole('worker');
                   setActiveTab('agent');
                 }}
-                className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-black transition-all whitespace-nowrap ${
+                className={`px-1.5 py-0.5 rounded-full text-[8px] sm:text-[8.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'worker'
                     ? 'bg-[#FF5517] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
@@ -2974,7 +2972,7 @@ export default function ShinhanDDangApp() {
                   setUserRole('employer');
                   setActiveTab('employer');
                 }}
-                className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-black transition-all whitespace-nowrap ${
+                className={`px-1.5 py-0.5 rounded-full text-[8px] sm:text-[8.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'employer'
                     ? 'bg-[#0046FF] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
@@ -2987,7 +2985,7 @@ export default function ShinhanDDangApp() {
                   setUserRole('admin');
                   setActiveTab('admin');
                 }}
-                className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[9.5px] font-black transition-all whitespace-nowrap ${
+                className={`px-1.5 py-0.5 rounded-full text-[8px] sm:text-[8.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'admin'
                     ? 'bg-gradient-to-r from-[#0046FF] to-indigo-600 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
@@ -2999,18 +2997,18 @@ export default function ShinhanDDangApp() {
           </div>
 
           {/* 우측 지갑 & D-GCS 정보 영역 */}
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             {wallet.isConnecting ? (
-              <button disabled className="bg-blue-50 text-[#0046FF] text-[9px] font-black px-2.5 py-1 rounded-full border border-blue-200 flex items-center gap-1 whitespace-nowrap">
-                <span className="animate-spin w-2.5 h-2.5 border-2 border-[#0046FF]/30 border-t-[#0046FF] rounded-full" />
-                연결 중...
+              <button disabled className="bg-blue-50 text-[#0046FF] text-[8.5px] font-black px-2 py-0.5 rounded-full border border-blue-200 flex items-center gap-0.5 whitespace-nowrap">
+                <span className="animate-spin w-2 h-2 border-2 border-[#0046FF]/30 border-t-[#0046FF] rounded-full" />
+                연결 중
               </button>
             ) : !walletConnected ? (
               <button 
                 onClick={triggerWalletConnect}
-                className="bg-gradient-to-r from-[#0046FF] via-[#0242CF] to-[#FF5517] hover:brightness-110 active:scale-95 text-white text-[9.5px] sm:text-[10px] font-black px-3 py-1 rounded-full flex items-center gap-1 shadow-md shadow-blue-500/20 whitespace-nowrap border border-blue-300/30"
+                className="bg-gradient-to-r from-[#0046FF] via-[#0242CF] to-[#FF5517] hover:brightness-110 active:scale-95 text-white text-[8.5px] sm:text-[9px] font-black px-2.5 py-1 rounded-full flex items-center gap-0.5 shadow-xs whitespace-nowrap border border-blue-300/30"
               >
-                <Sparkles className="w-3 h-3 text-amber-300" />
+                <Sparkles className="w-2.5 h-2.5 text-amber-300" />
                 신한 슈퍼SOL
               </button>
             ) : (
@@ -3019,12 +3017,12 @@ export default function ShinhanDDangApp() {
                   setShowWalletDropdown(!showWalletDropdown);
                   setShowCreditDropdown(false);
                 }}
-                className="flex items-center gap-1 active:scale-95 transition-transform text-right shrink-0"
+                className="flex items-center gap-0.5 active:scale-95 transition-transform text-right shrink-0"
               >
-                <span className="relative overflow-hidden inline-flex items-center text-[9px] font-black px-2 py-0.5 rounded-full animate-hologram bg-[linear-gradient(120deg,#0046ff,#6366f1,#a855f7,#ec4899,#0046ff)] text-white shadow-sm whitespace-nowrap">
+                <span className="relative overflow-hidden inline-flex items-center text-[8px] font-black px-1.5 py-0.5 rounded-full animate-hologram bg-[linear-gradient(120deg,#0046ff,#6366f1,#a855f7,#ec4899,#0046ff)] text-white shadow-xs whitespace-nowrap">
                   D-GCS 990점
                 </span>
-                <span className="text-[9.5px] font-black text-[#0046FF] flex items-center gap-0.5 whitespace-nowrap bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded-md">
+                <span className="text-[8.5px] font-black text-[#0046FF] flex items-center gap-0.5 whitespace-nowrap bg-blue-50 border border-blue-100 px-1 py-0.5 rounded-md">
                   🪙 {solcBalance.toFixed(1)}
                 </span>
               </button>
