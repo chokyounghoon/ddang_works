@@ -1,14 +1,15 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Map, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import { Map, CustomOverlayMap, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { MapPin, DollarSign, CheckCircle2, ChevronRight, Landmark, CreditCard, ShieldCheck, TrendingUp, Cpu, LocateFixed } from 'lucide-react';
+import { MapPin, DollarSign, CheckCircle2, ChevronRight, Landmark, CreditCard, ShieldCheck, TrendingUp, Cpu, LocateFixed, Layers, Maximize2, Minimize2, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 type Gig = {
   id: string;
   title: string;
+  storeName: string;
   hourly_wage: number;
   is_surge: boolean;
   lat: number;
@@ -17,53 +18,158 @@ type Gig = {
   hours?: number;
   startTime?: string;
   endTime?: string;
+  category?: string;
+  district?: string;
 };
 
 interface GigMapViewProps {
   initialCenter?: { lat: number; lng: number };
-  onGigSelect?: (gigId: string | null) => void;
+  onGigSelect?: (gigId: string | null, gigInfo?: Gig | null) => void;
+  selectedGigId?: string | null;
+  onAreaGigsLoaded?: (areaName: string, gigs: Gig[]) => void;
 }
 
 // 점주 모드 및 WORKER_OFFSETS 제거됨
 
 import { useGigStore } from '../../store/useGigStore';
 
-export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewProps) {
+export function resolveAreaNameSync(lat: number, lng: number): string {
+  if (lat < 37.51 && lng < 126.85) return '부평';
+  if (lat > 37.53 && lat < 37.57 && lng > 126.90 && lng < 126.96) return '홍대';
+  if (lat > 37.36 && lat < 37.42 && lng > 127.08 && lng < 127.15) return '판교';
+  if (lat > 37.24 && lat < 37.33 && lng > 126.98 && lng < 127.06) return '수원';
+  if (lat > 37.51 && lat < 37.54 && lng > 126.90 && lng < 126.95) return '여의도';
+  if (lat > 37.55 && lat < 37.59 && lng > 126.96 && lng < 127.02) return '종로';
+  if (lat > 37.48 && lat < 37.52 && lng > 127.01 && lng < 127.07) return '강남';
+  return '역세권';
+}
+
+export function generateLocalStoreName(rawTitle: string, areaName: string): string {
+  let brand = '스토어';
+  if (rawTitle.includes('CU')) brand = 'CU';
+  else if (rawTitle.includes('컴포즈')) brand = '컴포즈커피';
+  else if (rawTitle.includes('스타벅스')) brand = '스타벅스';
+  else if (rawTitle.includes('올리브영')) brand = '올리브영';
+  else if (rawTitle.includes('하남돼지')) brand = '하남돼지집';
+  else if (rawTitle.includes('세븐일레븐')) brand = '세븐일레븐';
+  else if (rawTitle.includes('이마트24')) brand = '이마트24';
+  else if (rawTitle.includes('이마트')) brand = '이마트';
+  else if (rawTitle.includes('쉑쉑')) brand = '쉑쉑버거';
+  else if (rawTitle.includes('메가커피')) brand = '메가커피';
+  else if (rawTitle.includes('교보문고')) brand = '교보문고';
+  else if (rawTitle.includes('CGV')) brand = 'CGV';
+  else if (rawTitle.includes('무신사')) brand = '무신사 스탠다드';
+  else if (rawTitle.includes('얌샘김밥')) brand = '얌샘김밥';
+  else if (rawTitle.includes('투썸')) brand = '투썸플레이스';
+  else if (rawTitle.includes('맘스터치')) brand = '맘스터치';
+  else if (rawTitle.includes('서브웨이')) brand = '서브웨이';
+  else if (rawTitle.includes('다이소')) brand = '다이소';
+  else if (rawTitle.includes('GS25')) brand = 'GS25';
+  else if (rawTitle.includes('버거킹')) brand = '버거킹';
+  else if (rawTitle.includes('배스킨')) brand = '배스킨라빈스';
+  else if (rawTitle.includes('롭스')) brand = '롭스';
+  else if (rawTitle.includes('쉐이크쉑')) brand = '쉐이크쉑';
+  else if (rawTitle.includes('롯데리아')) brand = '롯데리아';
+  else if (rawTitle.includes('노브랜드')) brand = '노브랜드버거';
+  else if (rawTitle.includes('아리따움')) brand = '아리따움';
+  else if (rawTitle.includes('이디야')) brand = '이디야커피';
+  else if (rawTitle.includes('롤링파스타')) brand = '롤링파스타';
+  else if (rawTitle.includes('맥도날드')) brand = '맥도날드';
+  else if (rawTitle.includes('블루보틀')) brand = '블루보틀';
+  else if (rawTitle.includes('시코르')) brand = '시코르';
+  else if (rawTitle.includes('ZARA')) brand = 'ZARA';
+  else if (rawTitle.includes('빽다방')) brand = '빽다방';
+  else if (rawTitle.includes('하이오')) brand = '하이오커피';
+  else if (rawTitle.includes('감성커피')) brand = '감성커피';
+
+  if (areaName === '강남') {
+    if (brand === 'CU') return 'CU 강남파이낸스점';
+    if (brand === '컴포즈커피') return '컴포즈커피 역삼역점';
+    if (brand === '스타벅스') return '스타벅스 강남2호점';
+    if (brand === '올리브영') return '올리브영 강남대로점';
+    if (brand === '하남돼지집') return '하남돼지집 부평역점';
+  }
+
+  return `${brand} ${areaName}점`;
+}
+
+export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, onAreaGigsLoaded }: GigMapViewProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [gigs, setGigs] = useState<Gig[]>([]);
   const [selectedGig, setSelectedGig] = useState<Gig | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutResult, setCheckoutResult] = useState<any>(null);
 
-  const { appliedGig, setAppliedGig, setSelectedMapGig, setChatTriggerMessage, highlightedGigIds } = useGigStore();
+  const { appliedGig, setAppliedGig, setSelectedMapGig, highlightedGigIds } = useGigStore();
 
   const mapRef = useRef<any>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.4979, lng: 127.0276 }); // 기본 강남역
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [isClustered, setIsClustered] = useState(true);
+  const [pinMode, setPinMode] = useState<'compact' | 'detailed'>('compact');
+  const [zoomLevel, setZoomLevel] = useState(4);
+
+  useEffect(() => {
+    if (!selectedGigId) {
+      setSelectedGig(null);
+      return;
+    }
+    const targetId = selectedGigId.replace('ag', 'g');
+    const found = gigs.find(g => g.id === selectedGigId || g.id === targetId);
+    if (found) {
+      setSelectedGig(found);
+    }
+  }, [selectedGigId, gigs]);
+
+  const formatWageCompact = (wage: number) => {
+    if (wage >= 10000) {
+      const man = wage / 10000;
+      return `${man % 1 === 0 ? man : man.toFixed(2).replace(/\.?0+$/, '')}만`;
+    }
+    return `${wage.toLocaleString()}원`;
+  };
 
   const fetchGigs = async (lat: number, lng: number) => {
     try {
       const res = await fetch('/api/gigs.json');
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const data = (await res.json()) as { gigs: Gig[] };
-      // 상대 오프셋 데이터를 기반으로 사용자의 현재 지도 중심 좌표에 합산하여 실시간 동적 핀 완성
-      const mappedGigs = (data.gigs || []).map(g => ({
-        ...g,
-        lat: lat + g.lat,
-        lng: lng + g.lng
-      }));
-      setGigs(mappedGigs);
+      let area = resolveAreaNameSync(lat, lng);
+
+      const processArea = (areaName: string) => {
+        const mappedGigs: Gig[] = (data.gigs || []).map((g) => {
+          const storeName = generateLocalStoreName(g.title, areaName);
+          const title = `${storeName} ${g.hours || 1}시간 알바`;
+          return {
+            ...g,
+            storeName,
+            title,
+            lat: lat + g.lat,
+            lng: lng + g.lng,
+            district: areaName,
+          };
+        });
+        setGigs(mappedGigs);
+        onAreaGigsLoaded?.(areaName, mappedGigs);
+      };
+
+      processArea(area);
+
+      if (typeof window !== 'undefined' && (window as any).kakao?.maps?.services?.Geocoder) {
+        const geocoder = new (window as any).kakao.maps.services.Geocoder();
+        geocoder.coord2RegionCode(lng, lat, (result: any, status: any) => {
+          if (status === (window as any).kakao.maps.services.Status.OK && result && result.length > 0) {
+            const r = result[0];
+            const dist = r.region_2depth_name || r.region_3depth_name || '';
+            if (dist) {
+              const exactArea = dist.replace(/(구|동|시)$/, '');
+              processArea(exactArea);
+            }
+          }
+        });
+      }
     } catch (err) {
-      console.warn('Failed to fetch gigs from server, using local dynamic generation:', err);
-      // 혹시 모를 네트워크 유실 대안
-      const localGigs: Gig[] = [
-        { id: 'g1', title: 'CU 강남파이낸스점 1시간 물류알바', lat: lat + 0.0012, lng: lng + 0.0015, hourly_wage: 16000, is_surge: true, status: 'OPEN', hours: 1, startTime: '12:00', endTime: '13:00' },
-        { id: 'g2', title: '컴포즈커피 역삼역점 2시간 음료조리', lat: lat - 0.0021, lng: lng - 0.0018, hourly_wage: 15000, is_surge: false, status: 'OPEN', hours: 2, startTime: '11:30', endTime: '13:30' },
-        { id: 'g3', title: '인근 빽다방 오후알바', lat: lat + 0.0035, lng: lng - 0.0025, hourly_wage: 14000, is_surge: true, status: 'OPEN', hours: 1, startTime: '14:00', endTime: '15:00' },
-        { id: 'g4', title: '올리브영 재고정리', lat: lat + 0.0020, lng: lng + 0.0040, hourly_wage: 14500, is_surge: true, status: 'OPEN', hours: 4, startTime: '15:00', endTime: '19:00' },
-        { id: 'g5', title: '스타벅스 리저브 마감', lat: lat - 0.0030, lng: lng + 0.0022, hourly_wage: 12500, is_surge: false, status: 'OPEN', hours: 3, startTime: '19:00', endTime: '22:00' }
-      ];
-      setGigs(localGigs);
+      console.warn('Failed to fetch gigs:', err);
     }
   };
 
@@ -201,6 +307,42 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
           )}
         </AnimatePresence>
 
+        {/* 상단 스마트 지도 컨트롤 바 (클러스터링 & 핀 모드 전환) */}
+        {isLoaded && (
+          <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
+            <div className="flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-2xl p-1 shadow-xl pointer-events-auto text-xs">
+              <button
+                onClick={() => setPinMode(pinMode === 'compact' ? 'detailed' : 'compact')}
+                className={`px-2.5 py-1.5 rounded-xl font-extrabold flex items-center gap-1.5 transition-all text-[11px] ${
+                  pinMode === 'compact'
+                    ? 'bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/30'
+                    : 'bg-slate-800 text-slate-300 hover:text-white'
+                }`}
+              >
+                {pinMode === 'compact' ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+                <span>{pinMode === 'compact' ? '📍 콤팩트 핀' : '📋 상세 핀'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsClustered(!isClustered)}
+                className={`px-2.5 py-1.5 rounded-xl font-extrabold flex items-center gap-1.5 transition-all text-[11px] ${
+                  isClustered
+                    ? 'bg-slate-800 text-amber-400 border border-amber-500/40 shadow-sm'
+                    : 'bg-slate-900/60 text-slate-400 border border-slate-700/50'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5 text-amber-400" />
+                <span>{isClustered ? '🧩 그룹화 ON' : '🧩 그룹화 OFF'}</span>
+              </button>
+            </div>
+
+            <div className="bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-2xl px-3 py-1.5 text-[10.5px] font-black text-slate-300 shadow-xl pointer-events-auto flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>주변 긱 <strong className="text-orange-400">{gigs.length}개</strong> 가동 중</span>
+            </div>
+          </div>
+        )}
+
         {/* 지도 영역 */}
         {isLoaded ? (
           <Map
@@ -208,6 +350,15 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
             center={mapCenter}
             style={{ width: '100%', height: '100%' }}
             level={4}
+            onZoomChanged={(map) => setZoomLevel(map.getLevel())}
+            onDragEnd={(map) => {
+              const c = map.getCenter();
+              fetchGigs(c.getLat(), c.getLng());
+            }}
+            onClick={() => {
+              setSelectedGig(null);
+              onGigSelect?.(null);
+            }}
           >
             {/* 현재 내 위치 마커 */}
             {userLocation && (
@@ -222,59 +373,102 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
               </CustomOverlayMap>
             )}
 
-            {/* 워커 모드: 긱 공고 렌더링 */}
-            {gigs.map(gig => (
-              <CustomOverlayMap
-                key={gig.id}
-                position={{ lat: gig.lat, lng: gig.lng }}
-                clickable={true}
-              >
-                <motion.div 
-                  onClick={() => {
-                    const isAlreadySelected = selectedGig?.id === gig.id;
-                    const next = isAlreadySelected ? null : gig;
-                    setSelectedGig(next);
-                    onGigSelect?.(next ? next.id : null);
-                    if (next) {
-                      setSelectedMapGig(next);
-                      setChatTriggerMessage(`'${next.title}' 시프트에 대해 바로 지원할 수 있게 조건 안내해줘!`);
+            {/* 긱 마커 클러스터링 및 오버레이 렌더링 */}
+            {(() => {
+              const markerElements = gigs.map(gig => {
+                const isSelected = selectedGig?.id === gig.id || (selectedGigId && (gig.id === selectedGigId || gig.id === selectedGigId.replace('ag', 'g')));
+                const isHighlighted = highlightedGigIds.includes(gig.id);
+                // 콤팩트 모드: 선택되지 않았고 지정된 핀이 아닌 경우 간소화된 슬림 뱃지 적용
+                const showCompact = (pinMode === 'compact' || zoomLevel >= 5) && !isSelected && !isHighlighted;
+
+                return (
+                  <CustomOverlayMap
+                    key={gig.id}
+                    position={{ lat: gig.lat, lng: gig.lng }}
+                    clickable={true}
+                  >
+                    <motion.div 
+                      onClick={() => {
+                        const next = isSelected ? null : gig;
+                        setSelectedGig(next);
+                        onGigSelect?.(next ? next.id : null, next);
+                        if (next) {
+                          setSelectedMapGig(next);
+                        }
+                      }}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.95 }}
+                      animate={gig.is_surge ? { y: [0, -4, 0] } : {}}
+                      transition={{ repeat: gig.is_surge ? Infinity : 0, duration: 1.5, ease: "easeInOut" }}
+                      className={`relative flex flex-col items-center justify-center cursor-pointer transition-all ${
+                        showCompact ? 'px-2.5 py-1 rounded-full' : 'px-3 py-1.5 rounded-2xl'
+                      } ${
+                        isSelected
+                          ? 'ring-4 ring-amber-400 ring-offset-2 ring-offset-slate-900 scale-125 z-40 shadow-[0_0_30px_rgba(251,191,36,0.9)] animate-pulse'
+                          : ''
+                      } ${
+                        isHighlighted ? 'ring-4 ring-emerald-400 ring-offset-1 scale-110 shadow-[0_0_25px_rgba(16,185,129,0.8)] z-30 animate-pulse' : ''
+                      } ${
+                        gig.is_surge
+                          ? 'bg-gradient-to-r from-red-600 via-red-500 to-rose-600 text-white border border-red-400/80 shadow-[0_4px_16px_rgba(220,38,38,0.65)] z-20'
+                          : 'bg-[#09090B] text-white border border-zinc-700/90 shadow-md'
+                      }`}
+                    >
+                      {/* 금액 및 타이틀 */}
+                      <div className="font-black text-xs leading-tight tracking-tight flex items-center gap-1">
+                        {showCompact ? (
+                          gig.is_surge ? `🔥 ${formatWageCompact(gig.hourly_wage)}` : `₩${formatWageCompact(gig.hourly_wage)}`
+                        ) : (
+                          gig.is_surge ? `🔥 ₩${gig.hourly_wage.toLocaleString()}` : `₩${gig.hourly_wage.toLocaleString()}`
+                        )}
+                      </div>
+
+                      {/* 상세 모드에서만 시간대 텍스트 표시 */}
+                      {!showCompact && (
+                        <div className={`text-[9px] font-bold mt-0.5 px-1.5 py-0.2 rounded whitespace-nowrap tracking-tighter ${
+                          gig.is_surge ? 'bg-black/50 text-yellow-300' : 'bg-zinc-800 text-zinc-300'
+                        }`}>
+                          {gig.is_surge ? `🚨 임박 (${gig.startTime}-${gig.endTime})` : `🕐 ${gig.startTime}-${gig.endTime}`}
+                        </div>
+                      )}
+
+                      {/* 말풍선 꼬리 */}
+                      <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 ${
+                        gig.is_surge ? 'bg-rose-600 border-r border-b border-red-400' : 'bg-[#09090B] border-r border-b border-zinc-700'
+                      }`} />
+                    </motion.div>
+                  </CustomOverlayMap>
+                );
+              });
+
+              return isClustered ? (
+                <MarkerClusterer
+                  averageCenter={true}
+                  minLevel={3}
+                  minClusterSize={2}
+                  gridSize={60}
+                  styles={[
+                    {
+                      width: '46px',
+                      height: '46px',
+                      background: 'linear-gradient(135deg, #FF5517 0%, #E04106 100%)',
+                      borderRadius: '23px',
+                      color: '#ffffff',
+                      textAlign: 'center',
+                      fontWeight: '900',
+                      lineHeight: '46px',
+                      fontSize: '13px',
+                      boxShadow: '0 8px 24px rgba(255,85,23,0.65), 0 0 0 3px rgba(255,255,255,0.9)',
+                      cursor: 'pointer',
                     }
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  animate={gig.is_surge ? { y: [0, -6, 0] } : {}}
-                  transition={{ repeat: gig.is_surge ? Infinity : 0, duration: 1.5, ease: "easeInOut" }}
-                  className={`relative flex flex-col items-center justify-center px-3 py-1.5 rounded-2xl shadow-xl cursor-pointer transition-all ${
-                    selectedGig?.id === gig.id
-                      ? 'ring-2 ring-white ring-offset-1 ring-offset-transparent scale-110'
-                      : ''
-                  } ${
-                    highlightedGigIds.includes(gig.id) ? 'ring-4 ring-emerald-400 ring-offset-1 scale-110 shadow-[0_0_25px_rgba(16,185,129,0.8)] z-30 animate-pulse' : ''
-                  } ${
-                    gig.is_surge
-                      ? 'bg-gradient-to-r from-red-600 via-red-500 to-rose-600 text-white border border-red-400/80 shadow-[0_4px_16px_rgba(220,38,38,0.65)] z-20'
-                      : 'bg-[#09090B] text-white border border-zinc-700/90 shadow-md'
-                  }`}
+                  ]}
                 >
-                  {/* 상단: 금액 */}
-                  <div className="font-black text-xs leading-tight tracking-tight flex items-center gap-1">
-                    {gig.is_surge ? `🔥 ₩${gig.hourly_wage.toLocaleString()}` : `₩${gig.hourly_wage.toLocaleString()}`}
-                  </div>
-
-                  {/* 하단: 근무 시간대 (1시간 이내 임박: 붉은색, 1시간 이후: 검은색) */}
-                  <div className={`text-[9px] font-bold mt-0.5 px-1.5 py-0.2 rounded whitespace-nowrap tracking-tighter ${
-                    gig.is_surge ? 'bg-black/50 text-yellow-300' : 'bg-zinc-800 text-zinc-300'
-                  }`}>
-                    {gig.is_surge ? `🚨 임박 (${gig.startTime}-${gig.endTime})` : `🕐 ${gig.startTime}-${gig.endTime}`}
-                  </div>
-
-                  {/* 말풍선 꼬리 */}
-                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 ${
-                    gig.is_surge ? 'bg-rose-600 border-r border-b border-red-400' : 'bg-[#09090B] border-r border-b border-zinc-700'
-                  }`} />
-                </motion.div>
-              </CustomOverlayMap>
-            ))}
+                  {markerElements}
+                </MarkerClusterer>
+              ) : (
+                markerElements
+              );
+            })()}
           </Map>
         ) : (
           <div className="flex items-center justify-center w-full h-full bg-[#0F172A]">
@@ -282,104 +476,7 @@ export default function GigMapView({ initialCenter, onGigSelect }: GigMapViewPro
           </div>
         )}
 
-        {/* 바텀 시트 (Framer Motion) */}
-        <AnimatePresence>
-          {selectedGig && (
-            <>
-              {/* Dimmed Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => { if (!checkoutResult) { setSelectedGig(null); onGigSelect?.(null); } }}
-                className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-sm z-20"
-              />
-
-              {/* Sheet */}
-              <motion.div
-                initial={{ y: '100%' }}
-                animate={{ y: 0 }}
-                exit={{ y: '100%' }}
-                transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-                drag={!checkoutResult ? "y" : false}
-                dragConstraints={{ top: 0 }}
-                dragElastic={0.2}
-                onDragEnd={handleDragEnd}
-                className="absolute bottom-0 left-0 w-full max-h-[92%] overflow-y-auto bg-white rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.25)] z-30 pb-safe custom-scrollbar"
-              >
-                {!checkoutResult ? (
-                  <div className="p-4 pt-2.5 space-y-3">
-                    {/* 드래그 핸들 */}
-                    <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto cursor-grab active:cursor-grabbing" />
-                    
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="min-w-0">
-                        <div className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full text-[10px] font-black mb-1">
-                          <CheckCircle2 className="w-3 h-3" /> AI 매칭 98%
-                        </div>
-                        <h3 className="text-base font-black text-[#0F172A] leading-snug truncate">{selectedGig.title}</h3>
-                        <p className="text-slate-500 text-xs mt-0.5 font-medium truncate">강남역 2번 출구 · 14:00 - 18:00 (4h)</p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <p className={`text-lg font-black ${selectedGig.is_surge ? 'text-[#FF5A5F]' : 'text-[#FF5517]'}`}>
-                          ₩{selectedGig.hourly_wage.toLocaleString()}
-                        </p>
-                        <p className="text-[10px] font-bold text-slate-400">수수료 0원</p>
-                      </div>
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.96 }}
-                      onClick={handleApply}
-                      disabled={isProcessing}
-                      className="relative w-full bg-[#FF5517] hover:bg-[#E04106] disabled:bg-[#FF5517]/70 text-white font-black py-3 rounded-2xl text-sm flex justify-center items-center gap-2 shadow-[0_4px_20px_rgba(255,85,23,0.3)] transition-all overflow-hidden"
-                    >
-                      {/* 버튼 빛나는 효과 */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] animate-[shimmer_2s_infinite]" />
-                      
-                      {isProcessing ? (
-                        <>
-                          <span className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full" />
-                          <span className="text-xs">사장님께 지원 알림 전송 중...</span>
-                        </>
-                      ) : (
-                        '해당 긱에 지원하기'
-                      )}
-                    </motion.button>
-                  </div>
-                ) : (
-                  /* 지원 완료 후 UI */
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 pt-4 bg-slate-50 rounded-t-[32px] h-[40vh] flex flex-col items-center justify-center relative">
-                     <div className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-200 rounded-full" />
-                     <div className="text-center mb-8 mt-4">
-                       <motion.div 
-                         initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", bounce: 0.5 }}
-                         className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                       >
-                         <CheckCircle2 className="w-8 h-8 text-emerald-600" />
-                       </motion.div>
-                       <h3 className="text-2xl font-black text-[#0F172A]">지원 알림 전송 완료!</h3>
-                       <p className="text-sm font-medium text-slate-500 mt-2">
-                         사장님께 푸시 알림이 전송되었습니다.<br />사장님이 수락하면 알바 매칭이 확정됩니다.
-                       </p>
-                     </div>
-
-                     <motion.button
-                       whileTap={{ scale: 0.96 }}
-                       onClick={resetCheckout}
-                       className="w-full bg-[#0F172A] text-white font-black py-4.5 rounded-2xl shadow-lg"
-                     >
-                       지도 화면으로 돌아가기
-                     </motion.button>
-                  </motion.div>
-                )}
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* 점주 모드: 지원자 확인 바텀 시트 제거됨 */}
+        {/* 핀 선택 팝업 제거됨 (지도 하단 하단 목록에 해당 업체 카드로 매핑되어 노출) */}
       </div>
 
       <style jsx global>{`

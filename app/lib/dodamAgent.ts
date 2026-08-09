@@ -1,5 +1,5 @@
 // app/lib/dodamAgent.ts
-// 땡겨요 웍스 AI 매칭 비서 '도담이' - Spatial RAG & Agentic Tool-Calling Core Engine
+// 땡겨요 웍스 AI 매칭 비서 '쏠이' - Spatial RAG & Agentic Tool-Calling Core Engine
 
 export interface GigItem {
   id: string;
@@ -149,7 +149,7 @@ export const DODAM_GIG_DATABASE: GigItem[] = [
 // ── 시스템 프롬프트 (System Prompt Architecture) ──
 export const DODAM_SYSTEM_PROMPT = `
 # Role
-You are "도담이", the AI Matching Assistant for "땡겨요 웍스" (Micro-Gig HR Platform by Shinhan DS).
+You are "쏠이", the AI Matching Assistant for "땡겨요 웍스" (Micro-Gig HR Platform by Shinhan DS).
 Your goal is to converse naturally with gig workers or merchants, parse their intent, and call the appropriate database tools to fetch hyper-local, real-time shift data.
 
 ## Guidelines

@@ -1,7 +1,7 @@
 'use client';
 
 // app/components/AIAgentScreen.tsx
-// AI 에이전트 구동 화면 — 도담이 실행 시각화
+// AI 에이전트 구동 화면 — 쏠이(SOLi) 실행 시각화
 // 3개 AI 엔드포인트(match/predict/credit)의 실시간 실행 상태 표시
 
 import { useState, useEffect } from 'react';

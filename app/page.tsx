@@ -9,7 +9,7 @@ import {
   Banknote, Trophy, Flame, BarChart3, Lock, Unlock,
   AlertCircle, ChevronDown, Copy, LogOut, ExternalLink,
   Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2, Camera, X, Check, RefreshCw,
-  MessageSquare, Users, UserCheck, Star, Navigation, Award,
+  MessageSquare, Users, UserCheck, Star, Navigation, Award, Search, SlidersHorizontal, Info, PieChart,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useWallet } from './hooks/useWallet';
@@ -32,6 +32,221 @@ const AlbamonCommunityScreen = dynamic(() => import('./components/AlbamonCommuni
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
+
+// ─── 신한투자증권 연계 포트폴리오 데이터 ───────────────────────────────────
+
+export interface PortfolioProduct {
+  id: string;
+  name: string;
+  badge: string;
+  yield: string;
+  yieldNum: number;
+  category: ('ALL' | 'POPULAR' | 'US' | 'DIVIDEND' | 'STO' | 'KR' | 'BOND')[];
+  desc: string;
+  icon: string;
+  color: string;
+  borderColor: string;
+  investors: string;
+  investorCount: number;
+  risk: string;
+  dividendPeriod?: string;
+  provider: string;
+  tags: string[];
+}
+
+export const PORTFOLIO_PRODUCTS: PortfolioProduct[] = [
+  {
+    id: 'sol-us-div',
+    name: 'SOL 미국배당다우존스',
+    badge: '🔥 인기 1위 · 월배당',
+    yield: '+4.8%',
+    yieldNum: 4.8,
+    category: ['ALL', 'POPULAR', 'US', 'DIVIDEND'],
+    desc: '매달 주휴수당처럼 통장에 현금 자동 적립되는 대표 월배당 미국 ETF (SCHD 동일 추종)',
+    icon: '🇺🇸',
+    color: 'from-emerald-600/20 to-teal-600/20',
+    borderColor: 'border-emerald-500/40',
+    investors: '24,510명 선택',
+    investorCount: 24510,
+    risk: '보통위험 (3등급)',
+    dividendPeriod: '매월 말일 배당입금',
+    provider: '신한자산운용 · 신한투자증권 연계',
+    tags: ['월배당', '미국주식', 'SCHD', '인기1위', '안정복리']
+  },
+  {
+    id: 'tiger-nasdaq100',
+    name: 'TIGER 미국나스닥100',
+    badge: '🚀 수익률 상위 · 빅테크',
+    yield: '+12.4%',
+    yieldNum: 12.4,
+    category: ['ALL', 'POPULAR', 'US'],
+    desc: '엔비디아·애플·마이크로소프트 등 초고성장 IT 핵심 100개 기업 집중 소수점 매수',
+    icon: '💻',
+    color: 'from-purple-600/20 to-pink-600/20',
+    borderColor: 'border-purple-500/40',
+    investors: '19,820명 선택',
+    investorCount: 19820,
+    risk: '다소높은위험 (2등급)',
+    provider: '미래에셋자산운용 · 신한투자증권 연계',
+    tags: ['나스닥', '엔비디아', '빅테크', '고성장', '미국IT']
+  },
+  {
+    id: 'kodex-sp500',
+    name: 'KODEX 미국S&P500',
+    badge: '⭐ 국민 ETF · 베스트셀러',
+    yield: '+7.2%',
+    yieldNum: 7.2,
+    category: ['ALL', 'POPULAR', 'US'],
+    desc: '미국 500개 우량 기업에 자동 분산 투자! 알바생 적립식 선호도 1위 포트폴리오',
+    icon: '🗽',
+    color: 'from-blue-600/20 to-indigo-600/20',
+    borderColor: 'border-blue-500/40',
+    investors: '31,200명 선택',
+    investorCount: 31200,
+    risk: '보통위험 (3등급)',
+    provider: '삼성자산운용 · 신한투자증권 연계',
+    tags: ['S&P500', '미국우량주', '국민ETF', '분산투자']
+  },
+  {
+    id: 'shinhan-sto-gangnam',
+    name: '신한 STO 강남 타워 조각투자',
+    badge: '🏢 1등 토큰증권 · 빌딩지분',
+    yield: '+6.5%',
+    yieldNum: 6.5,
+    category: ['ALL', 'POPULAR', 'STO', 'DIVIDEND'],
+    desc: '신한투자증권 STO 메인넷 검증 강남 GBD 랜드마크 빌딩 월세 수익 분배 조각투자',
+    icon: '🏢',
+    color: 'from-amber-600/20 to-yellow-600/20',
+    borderColor: 'border-amber-500/40',
+    investors: '15,400명 선택',
+    investorCount: 15400,
+    risk: '중위험 (3등급)',
+    dividendPeriod: '매월 15일 임대 배당',
+    provider: '신한투자증권 STO 메인넷',
+    tags: ['부동산', 'GBD빌딩', '토큰증권', '임대수익', 'STO']
+  },
+  {
+    id: 'kodex-ai-power',
+    name: 'KODEX AI전력핵심설비',
+    badge: '⚡ AI 슈퍼사이클 · 최다인기',
+    yield: '+16.2%',
+    yieldNum: 16.2,
+    category: ['ALL', 'POPULAR', 'KR'],
+    desc: 'AI 데이터센터 전력 소비 폭발! 글로벌 변압기·전력망 핵심 대장주 집중 포트폴리오',
+    icon: '🔌',
+    color: 'from-cyan-600/20 to-blue-600/20',
+    borderColor: 'border-cyan-500/40',
+    investors: '16,700명 선택',
+    investorCount: 16700,
+    risk: '높은위험 (2등급)',
+    provider: '삼성자산운용 · 신한투자증권 연계',
+    tags: ['AI전력', '데이터센터', '변압기', '수익률1위']
+  },
+  {
+    id: 'ace-bigtech10',
+    name: 'ACE 미국빅테크TOP10 INDXX',
+    badge: '🤖 빅테크 10 · 독점성장',
+    yield: '+14.1%',
+    yieldNum: 14.1,
+    category: ['ALL', 'US'],
+    desc: '테슬라·알파벳·애플 등 미국 빅테크 Top 10 시가총액 거물 기업만 쏙쏙 골라 담은 ETF',
+    icon: '🤖',
+    color: 'from-indigo-600/20 to-purple-600/20',
+    borderColor: 'border-indigo-500/40',
+    investors: '11,300명 선택',
+    investorCount: 11300,
+    risk: '높은위험 (2등급)',
+    provider: '한국투자신탁운용 · 신한투자증권 연계',
+    tags: ['빅테크', 'TOP10', '테슬라', '알파벳', '미국IT']
+  },
+  {
+    id: 'sol-us-bond-30y',
+    name: 'SOL 미국30년국채혼합',
+    badge: '🛡️ 안정지향 · 월배당 이중보장',
+    yield: '+3.8%',
+    yieldNum: 3.8,
+    category: ['ALL', 'BOND', 'DIVIDEND'],
+    desc: '미국 초장기 국채 이자 수익과 금리 인하에 따른 채권 가격 상승 2중 혜택 안전 자산',
+    icon: '🏛️',
+    color: 'from-slate-700/20 to-slate-800/20',
+    borderColor: 'border-slate-500/40',
+    investors: '8,900명 선택',
+    investorCount: 8900,
+    risk: '저위험 (4등급)',
+    dividendPeriod: '매월 초 배당입금',
+    provider: '신한자산운용 · 신한투자증권 연계',
+    tags: ['미국국채', '안전자산', '월배당', '금리인하']
+  },
+  {
+    id: 'kodex-semicon',
+    name: 'KODEX 반도체',
+    badge: '🇰🇷 K-반도체 대장주',
+    yield: '+9.8%',
+    yieldNum: 9.8,
+    category: ['ALL', 'KR'],
+    desc: '삼성전자, SK하이닉스 및 K-반도체 파운드리·메모리 글로벌 생태계 대표 투자',
+    icon: '📟',
+    color: 'from-orange-600/20 to-amber-600/20',
+    borderColor: 'border-orange-500/40',
+    investors: '14,100명 선택',
+    investorCount: 14100,
+    risk: '다소높은위험 (2등급)',
+    provider: '삼성자산운용 · 신한투자증권 연계',
+    tags: ['삼성전자', 'SK하이닉스', '반도체', 'K-테크']
+  },
+  {
+    id: 'shinhan-kpop-music',
+    name: '신한 K-컬처 음원 저작권 STO',
+    badge: '🎧 문화 토큰증권 · 음원배당',
+    yield: '+8.2%',
+    yieldNum: 8.2,
+    category: ['ALL', 'STO', 'DIVIDEND'],
+    desc: '글로벌 K-POP 히트 음원 스트리밍 저작권료 분기별 자동 배당 토큰증권 포트폴리오',
+    icon: '🎧',
+    color: 'from-rose-600/20 to-pink-600/20',
+    borderColor: 'border-rose-500/40',
+    investors: '9,800명 선택',
+    investorCount: 9800,
+    risk: '중위험 (3등급)',
+    dividendPeriod: '분기별 저작권료 분배',
+    provider: '신한투자증권 STO 메인넷',
+    tags: ['음원저작권', 'K-POP', '토큰증권', '문화펀드']
+  },
+  {
+    id: 'shinhan-gold-sto',
+    name: '신한 금(Gold) 현물 토큰증권',
+    badge: '🥇 인플레 방어 · 실물1:1',
+    yield: '+5.1%',
+    yieldNum: 5.1,
+    category: ['ALL', 'STO', 'BOND'],
+    desc: '신한투자증권 금고 보관 실물 금 현물과 1:1 보증 토큰으로 안전하게 지키는 자산',
+    icon: '🪙',
+    color: 'from-yellow-600/20 to-amber-600/20',
+    borderColor: 'border-yellow-500/40',
+    investors: '10,400명 선택',
+    investorCount: 10400,
+    risk: '저위험 (4등급)',
+    provider: '신한투자증권 STO 메인넷',
+    tags: ['실물금', '인플레이션방어', '안전자산', 'STO']
+  },
+  {
+    id: 'kodex-200',
+    name: 'KODEX 200',
+    badge: '📊 코스피 대형주 · 안정성',
+    yield: '+3.2%',
+    yieldNum: 3.2,
+    category: ['ALL', 'KR', 'BOND'],
+    desc: '국내 코스피 200 지수를 추종하는 대표적이고 가장 완만하고 안전한 국내 ETF',
+    icon: '📊',
+    color: 'from-blue-700/20 to-slate-800/20',
+    borderColor: 'border-blue-600/40',
+    investors: '12,100명 선택',
+    investorCount: 12100,
+    risk: '보통위험 (3등급)',
+    provider: '삼성자산운용 · 신한투자증권 연계',
+    tags: ['코스피200', '국내대형주', '안정투자']
+  }
+];
 
 // ─── 공통 서브 컴포넌트 ──────────────────────────────────────────────────────
 
@@ -64,7 +279,7 @@ const GaugeBar = ({ label, value, max, color, suffix = '' }: {
 
 function AgentTab() {
   const [messages, setMessages] = useState<{role: 'assistant'|'user', text: string, toolBadge?: string | null}[]>([
-    { role: 'assistant', text: '조이수님, 안녕하세요! 땡겨요 웍스 AI 매칭 비서 도담이예요. 원하시는 위치나 업종을 편하게 말씀해 주세요! 🎯 (예: "부평지역 서빙 알바 찾아줘")' }
+    { role: 'assistant', text: '조이수님, 안녕하세요! 땡겨요 웍스 AI 매칭 비서 쏠이예요. 원하시는 위치나 업종을 편하게 말씀해 주세요! 🎯 (예: "부평지역 서빙 알바 찾아줘")' }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -176,7 +391,32 @@ function AgentTab() {
     { id: 'ag22', storeName: '쉐이크쉑 강남 2호점', category: '패스트푸드', district: '강남구',   distanceM: 230, role: '퇴근길 패스트 포장 팩맨',          hours: 2, startTime: '18:00', endTime: '20:00', pay: 35000, hourlyRate: 17500, aiScore: 97, urgency: true,  applied: false },
     { id: 'ag23', storeName: '롯데리아 강남역점',   category: '패스트푸드', district: '강남구',   distanceM: 500, role: '모닝 청결 관리자 및 주방 정리',    hours: 2, startTime: '07:00', endTime: '09:00', pay: 29000, hourlyRate: 14500, aiScore: 86, urgency: false, applied: false },
     { id: 'ag24', storeName: '노브랜드버거 역삼점', category: '패스트푸드', district: '강남구',   distanceM: 370, role: '1시간 점심 피크 홀 청결 관리',      hours: 1, startTime: '12:00', endTime: '13:00', pay: 16000, hourlyRate: 16000, aiScore: 95, urgency: true,  applied: false },
-    { id: 'ag25', storeName: '아리따움 강남역점',   category: '마트',  district: '강남구',       distanceM: 430, role: '화장품 진열 및 재고 세팅',          hours: 3, startTime: '15:00', endTime: '18:00', pay: 40500, hourlyRate: 13500, aiScore: 88, urgency: false, applied: false }
+    { id: 'ag25', storeName: '아리따움 강남역점',   category: '마트',  district: '강남구',       distanceM: 430, role: '화장품 진열 및 재고 세팅',          hours: 3, startTime: '15:00', endTime: '18:00', pay: 40500, hourlyRate: 13500, aiScore: 88, urgency: false, applied: false },
+    { id: 'ag26', storeName: '이디야커피 아침 피크 바리스타', category: '카페', district: '강남구', distanceM: 210, role: '아침 출근 피크 음료 조리', hours: 2, startTime: '08:00', endTime: '10:00', pay: 29000, hourlyRate: 14500, aiScore: 93, urgency: true, applied: false },
+    { id: 'ag27', storeName: 'CU 초단기 물류 하역 및 진열', category: '편의점', district: '강남구', distanceM: 330, role: '1시간 긴급 입고 물류 보조', hours: 1, startTime: '13:00', endTime: '14:00', pay: 16000, hourlyRate: 16000, aiScore: 98, urgency: true, applied: false },
+    { id: 'ag28', storeName: '올리브영 신상품 디스플레이 세팅', category: '마트', district: '강남구', distanceM: 390, role: '뷰티 앤 메이크업 진열 세팅', hours: 3, startTime: '14:00', endTime: '17:00', pay: 42000, hourlyRate: 14000, aiScore: 90, urgency: false, applied: false },
+    { id: 'ag29', storeName: '롤링파스타 주말 홀서빙 긱', category: '서빙', district: '강남구', distanceM: 410, role: '피크 파스타 패밀리 테이블 서빙', hours: 4, startTime: '18:00', endTime: '22:00', pay: 62000, hourlyRate: 15500, aiScore: 95, urgency: true, applied: false },
+    { id: 'ag30', storeName: '맥도날드 야간 픽업 포장 메이커', category: '패스트푸드', district: '강남구', distanceM: 260, role: '야간 긴급 픽업 포장 드라이브', hours: 2, startTime: '21:00', endTime: '23:00', pay: 35000, hourlyRate: 17500, aiScore: 97, urgency: true, applied: false },
+    { id: 'ag31', storeName: '다이소 저녁 매장 진열 마감', category: '마트', district: '강남구', distanceM: 110, role: '마감 세팅 및 진열 정리', hours: 3, startTime: '19:00', endTime: '22:00', pay: 40500, hourlyRate: 13500, aiScore: 89, urgency: false, applied: false },
+    { id: 'ag32', storeName: 'GS25 야간 끝전 1인 수불 긱', category: '편의점', district: '강남구', distanceM: 440, role: '1시간 정산 수불 피크 1인 알바', hours: 1, startTime: '23:00', endTime: '24:00', pay: 16500, hourlyRate: 16500, aiScore: 96, urgency: true, applied: false },
+    { id: 'ag33', storeName: '블루보틀 드리퍼 조리 보조', category: '카페', district: '강남구', distanceM: 350, role: '오후 드립 커피 보조 & 포장', hours: 3, startTime: '13:00', endTime: '16:00', pay: 48000, hourlyRate: 16000, aiScore: 94, urgency: true, applied: false },
+    { id: 'ag34', storeName: '하남돼지집 주말 피크 홀 전담', category: '서빙', district: '강남구', distanceM: 170, role: '주말 저녁 고기 테이블 케어', hours: 4, startTime: '17:00', endTime: '21:00', pay: 60000, hourlyRate: 15000, aiScore: 92, urgency: false, applied: false },
+    { id: 'ag35', storeName: 'ZARA 피팅룸 카운팅 & 패킹', category: '마트', district: '강남구', distanceM: 290, role: '의류 피팅룸 개수 확인 및 포장', hours: 4, startTime: '15:00', endTime: '19:00', pay: 58000, hourlyRate: 14500, aiScore: 91, urgency: false, applied: false },
+    { id: 'ag36', storeName: '투썸플레이스 케이크 데코 보조', category: '카페', district: '강남구', distanceM: 330, role: '오전 케이크 세팅 & 음료 조리', hours: 3, startTime: '10:00', endTime: '13:00', pay: 42000, hourlyRate: 14000, aiScore: 93, urgency: true, applied: false },
+    { id: 'ag37', storeName: '세븐일레븐 모닝 출근길 세팅', category: '편의점', district: '강남구', distanceM: 140, role: '오전 출근길 직장인 시리얼 진열 1시간', hours: 1, startTime: '08:30', endTime: '09:30', pay: 15000, hourlyRate: 15000, aiScore: 95, urgency: true, applied: false },
+    { id: 'ag38', storeName: '시코르 뷰티 아이템 카운팅', category: '마트', district: '강남구', distanceM: 480, role: '뷰티 품목 수량 픽업 체크 2시간', hours: 2, startTime: '16:00', endTime: '18:00', pay: 27600, hourlyRate: 13800, aiScore: 88, urgency: false, applied: false },
+    { id: 'ag39', storeName: '맘스터치 버거 조리보조 긱', category: '패스트푸드', district: '강남구', distanceM: 430, role: '점심 2시간 팩맨 버거 튀김 보조', hours: 2, startTime: '11:30', endTime: '13:30', pay: 31000, hourlyRate: 15500, aiScore: 94, urgency: true, applied: false },
+    { id: 'ag40', storeName: '컴포즈커피 드링크 포장 헬퍼', category: '카페', district: '강남구', distanceM: 210, role: '피크 테이크아웃 홀 포장 헬퍼', hours: 3, startTime: '12:00', endTime: '15:00', pay: 40500, hourlyRate: 13500, aiScore: 90, urgency: false, applied: false },
+    { id: 'ag41', storeName: '교보문고 베스트셀러 진열 보조', category: '마트', district: '강남구', distanceM: 370, role: '신간 도서 박스 언패킹 & 진열', hours: 4, startTime: '09:00', endTime: '13:00', pay: 50000, hourlyRate: 12500, aiScore: 87, urgency: false, applied: false },
+    { id: 'ag42', storeName: '아웃백 스테이크하우스 디너 서빙', category: '서빙', district: '강남구', distanceM: 140, role: '디너 4시간 전용 스테이크 테이블 세팅', hours: 4, startTime: '17:30', endTime: '21:30', pay: 66000, hourlyRate: 16500, aiScore: 96, urgency: true, applied: false },
+    { id: 'ag43', storeName: '이마트24 스윕 1시간 물류 알바', category: '편의점', district: '강남구', distanceM: 230, role: '1시간 스윕 물류 박스 하역 정리', hours: 1, startTime: '14:00', endTime: '15:00', pay: 16000, hourlyRate: 16000, aiScore: 97, urgency: true, applied: false },
+    { id: 'ag44', storeName: 'CGV 영화 피크 미소지기 지원', category: '서빙', district: '강남구', distanceM: 410, role: '주말 팝콘 & 오더 팩맨 헬퍼', hours: 3, startTime: '15:00', endTime: '18:00', pay: 40500, hourlyRate: 13500, aiScore: 89, urgency: false, applied: false },
+    { id: 'ag45', storeName: '빽다방 점심 아이스 음료 픽업', category: '카페', district: '강남구', distanceM: 180, role: '점심 직장인 대용량 커피 조리 보조', hours: 2, startTime: '12:00', endTime: '14:00', pay: 26000, hourlyRate: 13000, aiScore: 88, urgency: false, applied: false },
+    { id: 'ag46', storeName: '서브웨이 디너 샌드위치 메이커', category: '패스트푸드', district: '강남구', distanceM: 360, role: '저녁 퇴근길 샌드위치 보조', hours: 2, startTime: '18:00', endTime: '20:00', pay: 30000, hourlyRate: 15000, aiScore: 93, urgency: true, applied: false },
+    { id: 'ag47', storeName: '하이오커피 샷 서포터 알바', category: '카페', district: '강남구', distanceM: 460, role: '아침 모닝 커피 샷 조리 팩맨 헬퍼', hours: 3, startTime: '08:00', endTime: '11:00', pay: 43500, hourlyRate: 14500, aiScore: 94, urgency: true, applied: false },
+    { id: 'ag48', storeName: '감성커피 오더 팩맨 헬퍼', category: '카페', district: '강남구', distanceM: 290, role: '디저트 패킹 및 음료 라벨링 2시간', hours: 2, startTime: '13:00', endTime: '15:00', pay: 27000, hourlyRate: 13500, aiScore: 89, urgency: false, applied: false },
+    { id: 'ag49', storeName: '무신사 재고 라벨링 야간 알바', category: '마트', district: '강남구', distanceM: 310, role: '야간 3시간 재고 바코드 라벨링 스캔', hours: 3, startTime: '20:00', endTime: '23:00', pay: 45000, hourlyRate: 15000, aiScore: 95, urgency: true, applied: false },
+    { id: 'ag50', storeName: 'CU 야간 1인 물류 1시간 피크', category: '편의점', district: '강남구', distanceM: 110, role: '심야 물류 1시간 하역 세팅 1인 피크', hours: 1, startTime: '23:00', endTime: '24:00', pay: 17000, hourlyRate: 17000, aiScore: 98, urgency: true, applied: false }
   ]);
 
   // 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 모달 팝업 상태
@@ -208,7 +448,32 @@ function AgentTab() {
     'g22': '쉐이크쉑 강남 2호점',
     'g23': '롯데리아 강남역점',
     'g24': '노브랜드버거 역삼점',
-    'g25': '아리따움 강남역점'
+    'g25': '아리따움 강남역점',
+    'g26': '이디야커피 아침 피크 바리스타',
+    'g27': 'CU 초단기 물류 하역 및 진열',
+    'g28': '올리브영 신상품 디스플레이 세팅',
+    'g29': '롤링파스타 주말 홀서빙 긱',
+    'g30': '맥도날드 야간 픽업 포장 메이커',
+    'g31': '다이소 저녁 매장 진열 마감',
+    'g32': 'GS25 야간 끝전 1인 수불 긱',
+    'g33': '블루보틀 드리퍼 조리 보조',
+    'g34': '하남돼지집 주말 피크 홀 전담',
+    'g35': 'ZARA 피팅룸 카운팅 & 패킹',
+    'g36': '투썸플레이스 케이크 데코 보조',
+    'g37': '세븐일레븐 모닝 출근길 세팅',
+    'g38': '시코르 뷰티 아이템 카운팅',
+    'g39': '맘스터치 버거 조리보조 긱',
+    'g40': '컴포즈커피 드링크 포장 헬퍼',
+    'g41': '교보문고 베스트셀러 진열 보조',
+    'g42': '아웃백 스테이크하우스 디너 서빙',
+    'g43': '이마트24 스윕 1시간 물류 알바',
+    'g44': 'CGV 영화 피크 미소지기 지원',
+    'g45': '빽다방 점심 아이스 음료 픽업',
+    'g46': '서브웨이 디너 샌드위치 메이커',
+    'g47': '하이오커피 샷 서포터 알바',
+    'g48': '감성커피 오더 팩맨 헬퍼',
+    'g49': '무신사 재고 라벨링 야간 알바',
+    'g50': 'CU 야간 1인 물류 1시간 피크'
   };
 
   useEffect(() => {
@@ -303,14 +568,9 @@ function AgentTab() {
     }, 2000);
   };
 
-  // 근무시간 & 카테고리 필터 및 정렬 처리 + 지도 핀 선택 필터
+  // 근무시간 & 카테고리 필터 및 정렬 처리 (선택 시에도 전체 목록 유지)
   const filteredAgentGigs = matchedGigsState
     .filter(g => {
-      // 지도 핀 선택 시: 해당 업체 이름 매핑으로 단일 필터
-      if (mapSelectedGigId) {
-        const targetStore = GIG_MAP[mapSelectedGigId];
-        return targetStore ? g.storeName === targetStore : true;
-      }
       const matchCat = selectedCategory === '전체' || g.category === selectedCategory;
       let matchHour = true;
       if (selectedHours === '1h') matchHour = g.hours === 1;
@@ -333,7 +593,7 @@ function AgentTab() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden space-y-2">
-      {/* 1. 🤖 대화형 AI 매칭 비서 도담이 (지도 위 상단 최우선 고정!) */}
+      {/* 1. 🤖 대화형 AI 매칭 비서 쏠이 (지도 위 상단 최우선 고정!) */}
       <div className="shrink-0 z-40">
         {!isChatExpanded ? (
           <div className="bg-gradient-to-r from-[#0B0F19] via-[#0F172A] to-[#141E38] border border-indigo-500/40 rounded-2xl p-2.5 shadow-lg flex items-center justify-between gap-2">
@@ -343,7 +603,7 @@ function AgentTab() {
               </div>
               <div className="truncate">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black text-white">AI 도담이</span>
+                  <span className="text-xs font-black text-white">AI 쏠이</span>
                   <span className="text-[8px] bg-gradient-to-r from-[#0046FF] via-blue-600 to-indigo-600 text-white font-bold px-1.5 py-0.2 rounded-full shadow-xs">
                     Spatial RAG
                   </span>
@@ -372,7 +632,7 @@ function AgentTab() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-black text-white tracking-wider">땡겨요 웍스 AI 매칭 비서 도담이</span>
+                    <span className="text-xs font-black text-white tracking-wider">땡겨요 웍스 AI 매칭 비서 쏠이</span>
                     <span className="text-[8px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-black px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
                       Spatial RAG + Agent Tools
                     </span>
@@ -449,7 +709,7 @@ function AgentTab() {
                 <div className="flex justify-start">
                   <div className="bg-slate-800/90 border border-slate-700 text-slate-300 p-2.5 rounded-2xl rounded-tl-xs text-xs flex items-center gap-2">
                     <span className="animate-spin w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full" />
-                    <span>도담이가 실시간 DB와 지도(LBS)를 분석하고 있습니다...</span>
+                    <span>쏠이가 실시간 DB와 지도(LBS)를 분석하고 있습니다...</span>
                   </div>
                 </div>
               )}
@@ -503,7 +763,7 @@ function AgentTab() {
         )}
       </div>
 
-      {/* 2. 📍 카카오 지도 영역 (AI 도담이 바로 아래 고정!) */}
+      {/* 2. 📍 카카오 지도 영역 (AI 쏠이 바로 아래 고정!) */}
       <div className="shrink-0 relative mb-1">
         <div 
           style={{ height: `${mapHeight}px` }}
@@ -511,12 +771,44 @@ function AgentTab() {
         >
           <GigMapView
             initialCenter={initialCenter}
-            onGigSelect={(id) => {
+            selectedGigId={mapSelectedGigId}
+            onAreaGigsLoaded={(areaName, loadedGigs) => {
+              if (!loadedGigs || loadedGigs.length === 0) return;
+              setMatchedGigsState(prev => {
+                return prev.map((item, idx) => {
+                  const matchingGig = loadedGigs[idx] || loadedGigs.find(lg => lg.id === item.id.replace('ag', 'g'));
+                  if (matchingGig) {
+                    GIG_MAP[matchingGig.id] = matchingGig.storeName;
+                    GIG_MAP[item.id] = matchingGig.storeName;
+                    return {
+                      ...item,
+                      storeName: matchingGig.storeName,
+                      district: areaName,
+                      role: matchingGig.title,
+                      pay: matchingGig.hourly_wage * (matchingGig.hours || 1),
+                      hourlyRate: matchingGig.hourly_wage,
+                    };
+                  }
+                  return item;
+                });
+              });
+            }}
+            onGigSelect={(id, gigInfo) => {
               setMapSelectedGigId(id);
-              // 지도 선택 시 카테고리·시간 필터 해제하여 해당 업체 카드가 확실히 노출되도록
-              if (id) {
-                setSelectedCategory('전체');
-                setSelectedHours('all');
+              if (id && gigInfo) {
+                GIG_MAP[id] = gigInfo.storeName;
+                GIG_MAP[`ag${id.replace('g', '')}`] = gigInfo.storeName;
+                setMatchedGigsState(prev => prev.map(g => {
+                  if (g.id === id || g.id === `ag${id.replace('g', '')}`) {
+                    return {
+                      ...g,
+                      storeName: gigInfo.storeName,
+                      role: gigInfo.title,
+                      district: gigInfo.district || g.district,
+                    };
+                  }
+                  return g;
+                }));
               }
             }}
           />
@@ -541,27 +833,27 @@ function AgentTab() {
       {/* 3. 📜 지도 하단 전용 독립 스크롤 영역 (직종 필터 & 추천 긱 목록 카드) */}
       <div className="flex-1 overflow-y-auto min-h-0 space-y-3 pb-4 custom-scrollbar pr-0.5">
 
-      {/* 지도 핀 선택 활성 배너 (선택 시만 노출) */}
+      {/* 지도 핀/목록 선택 안내 배너 (선택 시만 노출, 목록은 전체 유지) */}
       {mapSelectedGigId && mapSelectedStoreName && (
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-md">
+        <div className="bg-gradient-to-r from-amber-500/20 via-indigo-500/20 to-blue-500/20 border border-amber-400/50 text-white rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-md">
           <div className="flex items-center gap-2">
             <span className="text-lg">📍</span>
             <div>
-              <p className="text-[9.5px] font-bold text-indigo-200 uppercase tracking-widest">지도 핀 선택 중</p>
-              <p className="text-xs font-black">{mapSelectedStoreName} 상세 정보</p>
+              <p className="text-[9.5px] font-bold text-amber-300 uppercase tracking-widest">선택 상태 (목록 유지)</p>
+              <p className="text-xs font-black">{mapSelectedStoreName} 선택됨</p>
             </div>
           </div>
           <button
             onClick={() => setMapSelectedGigId(null)}
-            className="text-[10px] font-black px-2.5 py-1 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 transition-all border border-white/30 shrink-0 flex items-center gap-1"
+            className="text-[10px] font-black px-2.5 py-1 rounded-full bg-amber-400/20 hover:bg-amber-400/30 active:scale-95 transition-all border border-amber-400/40 text-amber-200 shrink-0 flex items-center gap-1"
           >
-            ✕ 전체 목록 보기
+            ✕ 선택 해제
           </button>
         </div>
       )}
 
-      {/* 5. 직종 카테고리 칩 필터 (지도 핀 미선택 시만 노출) */}
-      {!mapSelectedGigId && (
+      {/* 5. 직종 카테고리 칩 필터 */}
+      <div>
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
           {[
             { id: '전체', label: '전체 시프트' },
@@ -584,127 +876,38 @@ function AgentTab() {
             </button>
           ))}
         </div>
-      )}
-
-      {/* ── SOL Top Pro & Active Shift Command Center ── */}
-      <div className="bg-gradient-to-br from-[#0B0F19] via-[#111827] to-[#0B0F19] border border-indigo-500/30 rounded-3xl p-3.5 space-y-3 shadow-xl relative overflow-hidden">
-        {/* SOL Pro Level Status Header */}
-        <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2.5">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-[#FF5517] flex items-center justify-center font-black text-slate-950 text-sm shadow-md">
-              🏆
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <h4 className="text-xs font-black text-white">SOL Top Pro (Gold Level)</h4>
-                <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
-                  980 PTS
-                </span>
-              </div>
-              <p className="text-[9.5px] text-slate-400 font-medium">
-                💯 출근 이행률 100% · 노쇼 0건 · 가맹점 평점 ⭐ 4.9
-              </p>
-            </div>
-          </div>
-          <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
-            S-Bridge 인증
-          </span>
-        </div>
-
-        {/* SOL Active Confirmed Shift Card */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="font-black text-white">오늘 출근 예정 시프트</span>
-            </div>
-            <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
-              ⏱️ 01시간 15분 후 시작
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
-            <div>
-              <h5 className="text-xs font-black text-white">CU 강남파이낸스점</h5>
-              <p className="text-[10px] text-indigo-300 font-bold mt-0.5">12:00 ~ 13:00 (1시간 물류 알바)</p>
-            </div>
-            <div className="text-right">
-              <span className="text-sm font-black text-emerald-400">₩16,000</span>
-              <span className="text-[9px] text-slate-400 block font-bold">⚡ 0.1s Instant Pay</span>
-            </div>
-          </div>
-
-          {/* GPS 출근 바코드 스캔 / 스와이프 버튼 */}
-          {!isCheckedIn ? (
-            <button
-              onClick={() => {
-                setIsCheckedIn(true);
-                confetti({
-                  particleCount: 120,
-                  spread: 70,
-                  origin: { y: 0.6 },
-                  colors: ['#10B981', '#FF5517', '#3B82F6'],
-                });
-              }}
-              className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 active:scale-95 text-white text-xs font-black py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all"
-            >
-              <MapPin className="w-4 h-4 text-amber-300" />
-              <span>GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
-            </button>
-          ) : (
-            <div className="bg-emerald-500/20 border border-emerald-500/40 p-2.5 rounded-xl text-center space-y-0.5">
-              <p className="text-xs font-black text-emerald-300 flex items-center justify-center gap-1">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 출근 인증 완료!
-              </p>
-              <p className="text-[9.5px] text-slate-300 font-medium">
-                🛡️ 신한EZ 0.1초 단기 상해보험 자동 개시 · 퇴근 시 ₩16,000 0.1초 자동 입금
-              </p>
-            </div>
-          )}
-        </div>
       </div>
 
-      {/* 6. AI 매칭 추천 긱 (지도 핀 선택 시 해당 가맹점 정보 카드만 노출) */}
+
+
+      {/* 6. AI 매칭 추천 긱 (목록 전체 유지) */}
       <div className="bg-white rounded-3xl border border-slate-100 p-4 space-y-3 shadow-md">
         <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-          {mapSelectedGigId && mapSelectedStoreName ? (
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-2">
-                <span className="text-base">📍</span>
-                <div>
-                  <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">Selected Store</span>
-                  <h4 className="font-black text-sm text-slate-900">{mapSelectedStoreName} 시프트 정보</h4>
-                </div>
-              </div>
-              <button
-                onClick={() => setMapSelectedGigId(null)}
-                className="text-[10.5px] font-black px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 active:scale-95 transition-all border border-indigo-200/60 shrink-0"
-              >
-                ✕ 전체 목록 보기
-              </button>
-            </div>
-          ) : (
-            <>
-              <div>
-                <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">AI Smart Matcher</span>
-                <h4 className="font-black text-sm text-slate-900">도담이 추천 긱 목록</h4>
-              </div>
+          <div>
+            <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">AI Smart Matcher</span>
+            <h4 className="font-black text-sm text-slate-900">
+              쏠이 추천 긱 목록
+              {mapSelectedStoreName && (
+                <span className="ml-2 text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                  📍 {mapSelectedStoreName} 선택됨
+                </span>
+              )}
+            </h4>
+          </div>
 
-              {/* 정렬 드롭다운 */}
-              <select
-                value={sortMode}
-                onChange={e => setSortMode(e.target.value as any)}
-                className="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10.5px] font-black rounded-xl px-2 py-1 outline-none focus:border-indigo-500 transition-all cursor-pointer"
-              >
-                <option value="ai">✨ AI 추천순</option>
-                <option value="wage_desc">💰 시급 높은순</option>
-                <option value="wage_asc">💵 시급 낮은순</option>
-                <option value="dist_asc">📍 거리 가까운순</option>
-                <option value="dist_desc">🧭 거리 먼순</option>
-                <option value="pay_desc">💵 총급여 높은순</option>
-              </select>
-            </>
-          )}
+          {/* 정렬 드롭다운 */}
+          <select
+            value={sortMode}
+            onChange={e => setSortMode(e.target.value as any)}
+            className="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10.5px] font-black rounded-xl px-2 py-1 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+          >
+            <option value="ai">✨ AI 추천순</option>
+            <option value="wage_desc">💰 시급 높은순</option>
+            <option value="wage_asc">💵 시급 낮은순</option>
+            <option value="dist_asc">📍 거리 가까운순</option>
+            <option value="dist_desc">🧭 거리 먼순</option>
+            <option value="pay_desc">💵 총급여 높은순</option>
+          </select>
         </div>
 
         {/* 근무시간 범위 필터 칩 (지도 핀 미선택 시만 노출) */}
@@ -742,21 +945,44 @@ function AgentTab() {
           ) : (
             filteredAgentGigs.map(g => {
               const isRecommended = highlightedGigIds.includes(g.id);
+              const pinId = g.id.startsWith('ag') ? g.id.replace('ag', 'g') : g.id;
+              const isCardSelected = Boolean(
+                mapSelectedGigId && (
+                  mapSelectedGigId === g.id || 
+                  mapSelectedGigId === pinId || 
+                  `ag${mapSelectedGigId.replace('g', '')}` === g.id ||
+                  GIG_MAP[mapSelectedGigId] === g.storeName
+                )
+              );
+
               return (
                 <div 
                   key={g.id} 
-                  className={`bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] rounded-2xl p-3 text-white space-y-2 shadow-lg transition-all text-left relative overflow-hidden ${
-                    isRecommended
-                      ? 'border border-indigo-400/80 ring-1 ring-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)]'
-                      : 'border border-slate-800 hover:border-indigo-500/40'
+                  onClick={() => {
+                    setMapSelectedGigId(isCardSelected ? null : pinId);
+                  }}
+                  className={`rounded-2xl p-3.5 text-white space-y-2 transition-all text-left relative overflow-hidden cursor-pointer ${
+                    isCardSelected
+                      ? 'bg-gradient-to-br from-[#1E1B4B] via-[#0F172A] to-[#1E293B] border-2 border-amber-400 ring-4 ring-amber-400/40 shadow-[0_0_35px_rgba(251,191,36,0.5)] scale-[1.015] z-10'
+                      : isRecommended
+                      ? 'bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-indigo-400/80 ring-1 ring-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:border-amber-400/70'
+                      : 'bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-slate-800 hover:border-amber-400/70 hover:scale-[1.005]'
                   }`}
                 >
+                  {/* 지도 핀 선택 안내 뱃지 */}
+                  {isCardSelected && (
+                    <div className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-lg inline-flex items-center gap-1.5 shadow-md border border-amber-300 mb-1 animate-pulse">
+                      <MapPin className="w-3 h-3 fill-slate-950" />
+                      <span>📍 선택된 시프트 (지도 핀 ↔ 목록 테두리 양방향 연결됨)</span>
+                    </div>
+                  )}
+
                   {/* 상단 1줄: AI 추천 랭킹 배지 (독자 탑 라인으로 겹침 100% 방지) */}
-                  {isRecommended && (
+                  {isRecommended && !isCardSelected && (
                     <div className="flex items-center justify-between gap-1 border-b border-indigo-500/20 pb-1 mb-1">
                       <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0 animate-pulse">
                         <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-                        도담이 AI 1위 추천 (적합도 {g.aiScore}%)
+                        쏠이 AI 1위 추천 (적합도 {g.aiScore}%)
                       </span>
                       <span className="text-[9.5px] font-mono font-bold text-indigo-300">
                         AI Score {g.aiScore}점
@@ -1022,82 +1248,205 @@ function AgentTab() {
                 </div>
 
                 <div className="bg-gradient-to-br from-slate-950 via-indigo-950/50 to-slate-950 p-3.5 rounded-2xl border border-blue-500/30 text-xs space-y-2.5">
-                  {/* 총 혜택 지원 요약 카드 */}
-                  <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-indigo-950/80 p-3 rounded-xl border border-emerald-500/30 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] text-slate-400 font-bold">지원자 총 체감 혜택 금액</span>
-                      <span className="text-sm font-black text-emerald-400">회당 약 28,500원 상당 혜택 지원</span>
-                    </div>
-                    <p className="text-[9.5px] text-slate-300 font-medium">
-                      정산 수수료 0원 + 0.1초 입금 + 무상 상해보험 + 1금융권 대출우대 + ETF 자동투자 + 리워드
-                    </p>
-                  </div>
+                  {/* ─── 현실적 5% 수수료 흐름 분배 계산 ─── */}
+                  {(() => {
+                    const pay = selectedDetailGig.pay || (selectedDetailGig.hourlyRate * (selectedDetailGig.hours || 1));
 
-                  {/* 지원자를 위한 7대 계열사 혜택 상세 리스트 */}
-                  <div className="space-y-1.5 text-[11px]">
-                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-blue-400 font-black">🏦 신한은행 — 0.1초 퇴근 정산 & 우대금리</span>
-                        <span className="font-bold text-emerald-400 text-[10px]">이체수수료 0원</span>
-                      </div>
-                      <p className="text-[10.5px] text-slate-300">
-                        · 퇴근 바코드 찍자마자 0.1초 만에 일당 100% 입금 (중도정산 수수료 0원)<br />
-                        · 근태 데이터(노쇼 0건) 블록체인 SBT 기록 ➔ 1금융권 신용대출 우대금리 혜택
-                      </p>
-                    </div>
+                    // ① 점주가 내는 5% 수수료 = 혜택 재원 총액
+                    const feePool = Math.round(pay * 0.05);
 
-                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-emerald-400 font-black">🛡️ 신한EZ손해보험 — 단기 상해보험 무료가입</span>
-                        <span className="font-bold text-emerald-400 text-[10px]">보험료 전액 지원</span>
-                      </div>
-                      <p className="text-[10.5px] text-slate-300">
-                        · 출근 스와이프 즉시 비급여 상해/사고 100% 커버 (병원비/치료비 무상 보장)<br />
-                        · 지원자 본인 부담금 0원 (점주/신한 100% 무상 자동 가입)
-                      </p>
-                    </div>
+                    // ② 플랫폼 운영비 (AI 서버·블록체인·매칭 인프라): 전체 수수료의 28%
+                    const platformCost = Math.round(feePool * 0.28);
 
-                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-amber-400 font-black">📈 신한투자증권 — 잔돈 KODEX ETF 자동투자</span>
-                        <span className="font-bold text-amber-300 text-[10px]">매수수수료 100% 면제</span>
-                      </div>
-                      <p className="text-[10.5px] text-slate-300">
-                        · 정산 일당 1천원 미만 잔돈(예: 700원) 우량 ETF/STO 소수점 자동 투자<br />
-                        · 신한투자증권 MTS 자동 연동 및 첫 자산 형성 시드 포인트 제공
-                      </p>
-                    </div>
+                    // ③ 신한은행 BaaS 에스크로 이체 수수료: 전체의 10%
+                    const bankBaasFee = Math.round(feePool * 0.10);
 
-                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-indigo-400 font-black">🧬 신한라이프 — 헬스케어 & 마이크로 연금</span>
-                        <span className="font-bold text-indigo-300 text-[10px]">포인트 자동적립</span>
-                      </div>
-                      <p className="text-[10.5px] text-slate-300">
-                        · 일당 1% 자동 마이크로 연금적립 + 근무 시 이동 걸음수(GPS) 연동 헬스케어 리워드 지급
-                      </p>
-                    </div>
+                    // ④ 신한금융지주 내부 마진 (플랫폼 수익): 전체의 18%
+                    const shinhanMargin = Math.round(feePool * 0.18);
 
-                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-purple-400 font-black">💳 신한카드 — 땡겨요 가맹점 10% 캐시백</span>
-                        <span className="font-bold text-purple-300 text-[10px]">체크카드 캐시백</span>
-                      </div>
-                      <p className="text-[10.5px] text-slate-300">
-                        · 정산 계좌 신한 체크카드 연동 시 땡겨요 배달/포장 10% 즉시 할인 캐시백
-                      </p>
-                    </div>
+                    // ─── 나머지 44%가 금융사별 혜택 재원 ───
+                    const benefitPool = feePool - platformCost - bankBaasFee - shinhanMargin;
 
-                    <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-rose-400 font-black">🏆 D-GCS 신용평가 — Tier Up 채용우선권</span>
-                        <span className="font-bold text-rose-300 text-[10px]">시급 인상 우대</span>
-                      </div>
-                      <p className="text-[10.5px] text-slate-300">
-                        · 성실 출퇴근 시 Silver ➔ Gold ➔ Platinum 승급 (AI 우선 매칭 1순위 & 시급 우대권)
-                      </p>
-                    </div>
-                  </div>
+                    // ⑤ 신한EZ 보험 순보험료 (혜택재원의 43.6%): 실제 보험사에 납입되는 원가
+                    const insurancePremium = Math.round(benefitPool * 0.436);
+
+                    // ⑥ 신한투자증권 ETF 소수점매수 수수료 보조 (혜택재원의 18.2%)
+                    const etfSubsidy = Math.round(benefitPool * 0.182);
+
+                    // ⑦ 신한라이프 마이크로 연금 적립 지원 (혜택재원의 18.2%)
+                    const pensionSubsidy = Math.round(benefitPool * 0.182);
+
+                    // ⑧ 신한카드 캐시백 재원 적립 (혜택재원의 20%)
+                    const cashbackPool = feePool - platformCost - bankBaasFee - shinhanMargin - insurancePremium - etfSubsidy - pensionSubsidy;
+
+                    // 알바비 잔돈 ETF (알바비에서 별도, 수수료와 무관)
+                    const etfChange = pay % 1000 === 0 ? 0 : pay % 1000;
+                    // 연금 적립 (알바비 1%, 수수료와 별도)
+                    const pensionDeposit = Math.round(pay * 0.01);
+                    // 캐시백 발동 시 (신한카드로 땡겨요 배달 이용 시 10%, 수수료 재원에서 발동)
+                    const cashbackMax = Math.round(pay * 0.10);
+
+                    return (
+                      <>
+                        {/* ─── 상단: 수수료 재원 흐름 ─── */}
+                        <div className="rounded-xl border border-amber-500/30 bg-amber-950/20 p-3 space-y-2">
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <span className="text-[10px] font-black text-amber-300 uppercase tracking-widest">🏪 점주 납부 5% 수수료 — 실제 배분 구조</span>
+                          </div>
+
+                          {/* 수수료 총액 */}
+                          <div className="flex items-center justify-between bg-amber-900/30 border border-amber-500/30 rounded-lg px-2.5 py-2">
+                            <div>
+                              <span className="text-amber-200 font-black text-[11.5px]">알바비 {pay.toLocaleString()}원 × 5% 수수료</span>
+                              <p className="text-amber-400/70 text-[9.5px] font-mono mt-0.5">점주 부담 · 지원자 부담금 0원</p>
+                            </div>
+                            <span className="text-amber-300 font-black text-[15px] tabular-nums">{feePool.toLocaleString()}원</span>
+                          </div>
+
+                          {/* 지출 항목들 */}
+                          <div className="space-y-1 pl-2 border-l-2 border-dashed border-amber-500/30">
+                            {/* 플랫폼 운영비 */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5">
+                                <span className="w-4 h-4 flex items-center justify-center bg-slate-700 rounded text-[9px]">⚙️</span>
+                                <span className="text-slate-400 text-[10px]">플랫폼 AI·서버·블록체인 운영비 <span className="text-slate-600">(28%)</span></span>
+                              </div>
+                              <span className="text-slate-400 font-bold text-[10px] tabular-nums">−{platformCost.toLocaleString()}원</span>
+                            </div>
+                            {/* 신한은행 BaaS */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5">
+                                <span className="w-4 h-4 flex items-center justify-center bg-blue-900/60 rounded text-[9px]">🏦</span>
+                                <span className="text-slate-400 text-[10px]">신한은행 BaaS 에스크로·이체 수수료 <span className="text-slate-600">(10%)</span></span>
+                              </div>
+                              <span className="text-slate-400 font-bold text-[10px] tabular-nums">−{bankBaasFee.toLocaleString()}원</span>
+                            </div>
+                            {/* 신한지주 마진 */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5">
+                                <span className="w-4 h-4 flex items-center justify-center bg-slate-700 rounded text-[9px]">🏛️</span>
+                                <span className="text-slate-400 text-[10px]">신한금융지주 플랫폼 수익 <span className="text-slate-600">(18%)</span></span>
+                              </div>
+                              <span className="text-slate-400 font-bold text-[10px] tabular-nums">−{shinhanMargin.toLocaleString()}원</span>
+                            </div>
+                          </div>
+
+                          {/* 혜택 재원 잔액 */}
+                          <div className="flex items-center justify-between bg-emerald-950/60 border border-emerald-500/40 rounded-lg px-2.5 py-1.5">
+                            <div>
+                              <span className="text-emerald-300 font-black text-[11px]">▶ 금융사별 혜택 재원 (잔여 44%)</span>
+                              <p className="text-emerald-500/70 text-[9px] font-mono">이 금액이 지원자 혜택으로 100% 환원</p>
+                            </div>
+                            <span className="text-emerald-300 font-black text-[14px] tabular-nums">{benefitPool.toLocaleString()}원</span>
+                          </div>
+                        </div>
+
+                        {/* ─── 하단: 금융사별 혜택 배분 상세 ─── */}
+                        <div className="rounded-xl border border-blue-500/30 bg-gradient-to-br from-slate-900 to-indigo-950/40 p-3 space-y-2">
+                          <span className="text-[10px] font-black text-blue-300 uppercase tracking-widest">💎 혜택 재원 {benefitPool.toLocaleString()}원 — 금융사별 배분</span>
+
+                          <div className="space-y-1.5">
+                            {/* 신한은행 */}
+                            <div className="flex items-start gap-2 bg-blue-950/40 border border-blue-500/20 rounded-lg px-2.5 py-2">
+                              <span className="text-[13px] mt-0.5">🏦</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-blue-300 font-black text-[10.5px]">신한은행 — 0.1초 즉시 정산 인프라</span>
+                                  <span className="text-blue-200 font-black text-[10.5px] tabular-nums shrink-0 ml-1">{bankBaasFee.toLocaleString()}원 투입</span>
+                                </div>
+                                <p className="text-slate-400 text-[9.5px] mt-0.5">에스크로 원장 예치 → 퇴근 스와이프 즉시 {pay.toLocaleString()}원 입금 (수수료 0원)</p>
+                                <span className="inline-block mt-0.5 text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-500/30">지원자 수혜: 이체수수료 0원 절약</span>
+                              </div>
+                            </div>
+
+                            {/* 신한EZ 보험 */}
+                            <div className="flex items-start gap-2 bg-emerald-950/40 border border-emerald-500/20 rounded-lg px-2.5 py-2">
+                              <span className="text-[13px] mt-0.5">🛡️</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-emerald-300 font-black text-[10.5px]">신한EZ손해보험 — 단기상해보험 원가</span>
+                                  <span className="text-emerald-200 font-black text-[10.5px] tabular-nums shrink-0 ml-1">{insurancePremium.toLocaleString()}원 납입</span>
+                                </div>
+                                <p className="text-slate-400 text-[9.5px] mt-0.5">보험사에 실제 납입되는 순보험료 → 출근 중 사고 시 최대 5만원 보장</p>
+                                <span className="inline-block mt-0.5 text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-500/30">지원자 수혜: 본인부담 0원 · 사고 시 최대 50,000원</span>
+                              </div>
+                            </div>
+
+                            {/* 신한투자증권 */}
+                            <div className="flex items-start gap-2 bg-amber-950/40 border border-amber-500/20 rounded-lg px-2.5 py-2">
+                              <span className="text-[13px] mt-0.5">📈</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-amber-300 font-black text-[10.5px]">신한투자증권 — ETF 매수수수료 보조</span>
+                                  <span className="text-amber-200 font-black text-[10.5px] tabular-nums shrink-0 ml-1">{etfSubsidy.toLocaleString()}원 보조</span>
+                                </div>
+                                <p className="text-slate-400 text-[9.5px] mt-0.5">소수점 ETF 매수수수료 면제 재원 → 알바비 잔돈 {etfChange > 0 ? `${etfChange.toLocaleString()}원` : '(1천원 미만 시)'} 자동 매수</p>
+                                <span className="inline-block mt-0.5 text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/30">지원자 수혜: ETF 매수수수료 100% 면제</span>
+                              </div>
+                            </div>
+
+                            {/* 신한라이프 */}
+                            <div className="flex items-start gap-2 bg-indigo-950/40 border border-indigo-500/20 rounded-lg px-2.5 py-2">
+                              <span className="text-[13px] mt-0.5">🧬</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-indigo-300 font-black text-[10.5px]">신한라이프 — 마이크로 연금 적립 지원</span>
+                                  <span className="text-indigo-200 font-black text-[10.5px] tabular-nums shrink-0 ml-1">{pensionSubsidy.toLocaleString()}원 보조</span>
+                                </div>
+                                <p className="text-slate-400 text-[9.5px] mt-0.5">연금 적립 인프라 운영비 → 알바비 1% = {pensionDeposit.toLocaleString()}원 자동 연금 적립</p>
+                                <span className="inline-block mt-0.5 text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.2 rounded border border-indigo-500/30">지원자 수혜: +{pensionDeposit.toLocaleString()}원 마이크로 연금 적립</span>
+                              </div>
+                            </div>
+
+                            {/* 신한카드 */}
+                            <div className="flex items-start gap-2 bg-purple-950/40 border border-purple-500/20 rounded-lg px-2.5 py-2">
+                              <span className="text-[13px] mt-0.5">💳</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-purple-300 font-black text-[10.5px]">신한카드 — 캐시백 재원 적립</span>
+                                  <span className="text-purple-200 font-black text-[10.5px] tabular-nums shrink-0 ml-1">{cashbackPool.toLocaleString()}원 적립</span>
+                                </div>
+                                <p className="text-slate-400 text-[9.5px] mt-0.5">캐시백 재원 풀 적립 → 신한카드로 땡겨요 배달 이용 시 최대 10% 캐시백 발동</p>
+                                <span className="inline-block mt-0.5 text-[9px] bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded border border-purple-500/30">지원자 수혜: 배달 주문 시 최대 {cashbackMax.toLocaleString()}원 캐시백</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* 총계 요약 */}
+                          <div className="bg-gradient-to-r from-emerald-950/80 to-blue-950/80 border border-emerald-500/40 rounded-lg px-3 py-2.5 space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-black text-slate-300">수수료 재원 합계</span>
+                              <span className="text-[10px] font-black text-amber-300 tabular-nums">{feePool.toLocaleString()}원 (100%)</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] text-slate-400">플랫폼 운영 + 은행수수료 + 지주 수익</span>
+                              <span className="text-[10px] text-slate-400 tabular-nums">−{(platformCost + bankBaasFee + shinhanMargin).toLocaleString()}원 (56%)</span>
+                            </div>
+                            <div className="h-px bg-emerald-500/30 my-0.5" />
+                            <div className="flex items-center justify-between">
+                              <span className="text-[11px] font-black text-emerald-300">✅ 실제 지원자 혜택으로 환원된 금액</span>
+                              <span className="text-[13px] font-black text-emerald-300 tabular-nums">{benefitPool.toLocaleString()}원 (44%)</span>
+                            </div>
+                            <p className="text-[9px] text-slate-500 font-mono">※ 보험·ETF·연금·캐시백 혜택의 실제 원가 합산 기준</p>
+                          </div>
+                        </div>
+
+                        {/* 지원자를 위한 7대 계열사 혜택 상세 리스트 */}
+                        {/* D-GCS 신용평가 */}
+                        <div className="p-2.5 rounded-xl bg-rose-950/30 border border-rose-500/20 space-y-0.5 text-[11px]">
+                          <div className="flex items-center justify-between">
+                            <span className="text-rose-400 font-black">🏆 D-GCS 신용평가 — Tier Up & 채용우선권</span>
+                            <span className="font-bold text-rose-300 text-[10px]">시급 인상 우대</span>
+                          </div>
+                          <p className="text-[10.5px] text-slate-300">
+                            · 이번 근무 성실 출퇴근 데이터가 블록체인 SBT로 기록되어 Silver ➔ Gold ➔ Platinum 승급<br />
+                            · Platinum 달성 시 신한은행 1금융권 대출 우대금리 최대 −1.5%p 감면 혜택
+                          </p>
+                          <span className="inline-block text-[9px] bg-rose-500/20 text-rose-300 px-1.5 py-0.2 rounded border border-rose-500/30">지원자 수혜: AI 매칭 1순위 & 시급 우대</span>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
 
@@ -2068,11 +2417,15 @@ function MyPageScreen({
   const [profileImg, setProfileImg] = useState<string>('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80');
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [selectedPortfolio, setSelectedPortfolio] = useState('SOL 미국배당다우존스');
-  const [portfolioTab, setPortfolioTab] = useState<'ALL' | 'POPULAR' | 'DIVIDEND' | 'AI' | 'STO' | 'BOND'>('ALL');
+  const [portfolioCategory, setPortfolioCategory] = useState<'ALL' | 'POPULAR' | 'US' | 'DIVIDEND' | 'STO' | 'KR' | 'BOND'>('ALL');
+  const [portfolioSearchQuery, setPortfolioSearchQuery] = useState('');
+  const [portfolioSortBy, setPortfolioSortBy] = useState<'POPULAR' | 'YIELD' | 'INVESTORS'>('POPULAR');
+  const activeProduct = PORTFOLIO_PRODUCTS.find(p => p.name === selectedPortfolio) || PORTFOLIO_PRODUCTS[0];
   const [certStatus, setCertStatus] = useState<'VERIFIED' | 'EXPIRED' | 'UNREGISTERED'>('VERIFIED');
   const [isOcrScanning, setIsOcrScanning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const certInputRef = useRef<HTMLInputElement>(null);
+  const [isCheckedInMyPage, setIsCheckedInMyPage] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -2190,6 +2543,84 @@ function MyPageScreen({
                   <CheckCircle2 className="w-3 h-3 text-emerald-400" /> 검증완료
                 </p>
               </div>
+            </div>
+          </div>
+
+          {/* 🏆 SOL Top Pro & 오늘 출근 예정 시프트 Command Center 카드 */}
+          <div className="bg-gradient-to-br from-[#0B0F19] via-[#111827] to-[#0B0F19] border border-indigo-500/30 rounded-3xl p-4 space-y-3 shadow-xl relative overflow-hidden">
+            {/* SOL Pro Level Status Header */}
+            <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2.5">
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-400 to-[#FF5517] flex items-center justify-center font-black text-slate-950 text-base shadow-md">
+                  🏆
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="text-xs font-black text-white">SOL Top Pro (Gold Level)</h4>
+                    <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                      980 PTS
+                    </span>
+                  </div>
+                  <p className="text-[9.5px] text-slate-400 font-medium">
+                    💯 출근 이행률 100% · 노쇼 0건 · 가맹점 평점 ⭐ 4.9
+                  </p>
+                </div>
+              </div>
+              <span className="text-[9.5px] font-black px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+                S-Bridge 인증
+              </span>
+            </div>
+
+            {/* SOL Active Confirmed Shift Card */}
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="font-black text-white">오늘 출근 예정 시프트</span>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded border border-amber-400/30">
+                  ⏱️ 01시간 15분 후 시작
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+                <div>
+                  <h5 className="text-xs font-black text-white">CU 강남파이낸스점</h5>
+                  <p className="text-[10.5px] text-indigo-300 font-bold mt-0.5">12:00 ~ 13:00 (1시간 물류 알바)</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-sm font-black text-emerald-400">₩16,000</span>
+                  <span className="text-[9px] text-slate-400 block font-bold">⚡ 0.1s Instant Pay</span>
+                </div>
+              </div>
+
+              {/* GPS 출근 바코드 스캔 / 스와이프 버튼 */}
+              {!isCheckedInMyPage ? (
+                <button
+                  onClick={() => {
+                    setIsCheckedInMyPage(true);
+                    confetti({
+                      particleCount: 120,
+                      spread: 70,
+                      origin: { y: 0.6 },
+                      colors: ['#10B981', '#FF5517', '#3B82F6'],
+                    });
+                  }}
+                  className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 active:scale-95 text-white text-xs font-black py-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <MapPin className="w-4 h-4 text-amber-300" />
+                  <span>GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
+                </button>
+              ) : (
+                <div className="bg-emerald-500/20 border border-emerald-500/40 p-3 rounded-xl text-center space-y-1">
+                  <p className="text-xs font-black text-emerald-300 flex items-center justify-center gap-1">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 출근 인증 완료!
+                  </p>
+                  <p className="text-[9.5px] text-slate-300 font-medium">
+                    🛡️ 신한EZ 0.1초 단기 상해보험 자동 개시 · 퇴근 시 ₩16,000 0.1초 자동 입금
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -2367,17 +2798,22 @@ function MyPageScreen({
 
             {/* 투자 종목 세부 리스트 */}
             <div className="space-y-2 text-xs">
-              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="text-base">🇺🇸</span>
-                  <div>
-                    <p className="font-bold text-slate-800">{selectedPortfolio} (소수점)</p>
-                    <p className="text-[9px] text-slate-400">끝전 400원 매일 자동 매수 (신한투자증권)</p>
+              <div className="bg-purple-50/70 p-2.5 rounded-xl border border-purple-200 flex justify-between items-center shadow-sm">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-lg shrink-0">{activeProduct.icon}</span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-black text-slate-900 truncate">{activeProduct.name}</p>
+                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-purple-600 text-white shrink-0">
+                        선택됨
+                      </span>
+                    </div>
+                    <p className="text-[9.5px] text-purple-700 font-medium truncate mt-0.5">{activeProduct.desc}</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0 pl-2">
                   <p className="font-black text-slate-900">₩32,100</p>
-                  <p className="text-[9px] text-emerald-600 font-bold">+5.2%</p>
+                  <p className="text-[9.5px] text-emerald-600 font-black">{activeProduct.yield}</p>
                 </div>
               </div>
 
@@ -2648,112 +3084,223 @@ function MyPageScreen({
                   animate={{ y: 0 }}
                   exit={{ y: '100%' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  className="relative z-10 w-full bg-[#0F172A] border-t border-slate-700/80 rounded-t-[28px] p-5 text-white shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto"
+                  className="relative z-10 w-full bg-[#0F172A] border-t border-slate-700/80 rounded-t-[28px] p-5 text-white shadow-2xl space-y-4 max-h-[88vh] overflow-y-auto"
                 >
-                  <div className="w-10 h-1 bg-slate-700 rounded-full mx-auto" />
+                  <div className="w-12 h-1.5 bg-slate-700 rounded-full mx-auto" />
 
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-purple-400" />
+                  {/* 모달 타이틀 헤더 */}
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                        <TrendingUp className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-black text-base text-white">신한투자증권 ETF 포트폴리오 변경</h3>
-                        <p className="text-[10px] text-slate-400">알바비 끝전 + 점주 수수료 지원금 0.1초 자동소수점 매수</p>
+                        <div className="flex items-center gap-1.5">
+                          <h3 className="font-black text-base text-white">신한투자증권 연계 상품 선택</h3>
+                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                            소수점 자동 투자
+                          </span>
+                        </div>
+                        <p className="text-[10.5px] text-slate-400 mt-0.5">알바비 끝전 + 점주 수수료 지원금 0.1초 자동 매수 혜택</p>
                       </div>
                     </div>
                     <button 
                       onClick={() => setShowPortfolioModal(false)}
-                      className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white"
+                      className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   </div>
 
-                  {/* 전략 리스트 */}
+                  {/* 검색창 및 정렬 바 */}
                   <div className="space-y-2.5">
-                    {[
-                      {
-                        name: 'KODEX 미국S&P500',
-                        badge: '미국 우량주',
-                        yield: '+5.2%',
-                        desc: '미국 대표 500개 기업 분산 소수점 매수 (기본 픽)',
-                        color: 'from-blue-600/20 to-indigo-600/20',
-                        borderColor: 'border-blue-500/40',
-                      },
-                      {
-                        name: 'TIGER 미국나스닥100',
-                        badge: '빅테크 성장주',
-                        yield: '+8.4%',
-                        desc: '애플·엔비디아·마이크로소프트 등 초고성장 IT 집중',
-                        color: 'from-purple-600/20 to-pink-600/20',
-                        borderColor: 'border-purple-500/40',
-                      },
-                      {
-                        name: 'SOL 미국배당다우존스',
-                        badge: '월배당 복리',
-                        yield: '+4.1%',
-                        desc: '매달 주휴수당처럼 들어오는 짭짤한 월배당 혜택',
-                        color: 'from-emerald-600/20 to-teal-600/20',
-                        borderColor: 'border-emerald-500/40',
-                      },
-                      {
-                        name: 'KODEX 반도체',
-                        badge: 'K-반도체 대장주',
-                        yield: '+6.7%',
-                        desc: '삼성전자·SK하이닉스 대표 반도체 섹터 집중',
-                        color: 'from-amber-600/20 to-orange-600/20',
-                        borderColor: 'border-amber-500/40',
-                      },
-                      {
-                        name: 'KODEX 200',
-                        badge: '코스피 대형주',
-                        yield: '+3.2%',
-                        desc: '국내 코스피 200 지수 추종 대표 안정형 ETF',
-                        color: 'from-slate-700/20 to-slate-800/20',
-                        borderColor: 'border-slate-600/40',
-                      },
-                    ].map((item) => {
+                    <div className="relative">
+                      <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        value={portfolioSearchQuery}
+                        onChange={(e) => setPortfolioSearchQuery(e.target.value)}
+                        placeholder="상품명, 테마(배당, 나스닥, STO, 금) 검색..."
+                        className="w-full bg-slate-900 border border-slate-700/80 rounded-2xl pl-10 pr-9 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+                      />
+                      {portfolioSearchQuery && (
+                        <button
+                          onClick={() => setPortfolioSearchQuery('')}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* 카테고리 필터 태그 (가로 스크롤) */}
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px]">
+                      {[
+                        { id: 'ALL', label: '전체 (11)' },
+                        { id: 'POPULAR', label: '🔥 인기 Top' },
+                        { id: 'US', label: '🇺🇸 미국/글로벌' },
+                        { id: 'DIVIDEND', label: '💰 월배당' },
+                        { id: 'STO', label: '🏢 STO 토큰증권' },
+                        { id: 'KR', label: '🇰🇷 K-테크/반도체' },
+                        { id: 'BOND', label: '🛡️ 채권/안정형' },
+                      ].map((tab) => {
+                        const isActive = portfolioCategory === tab.id;
+                        return (
+                          <button
+                            key={tab.id}
+                            onClick={() => setPortfolioCategory(tab.id as any)}
+                            className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all border ${
+                              isActive
+                                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-purple-400 shadow-md shadow-purple-600/30'
+                                : 'bg-slate-900/80 text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200'
+                            }`}
+                          >
+                            {tab.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* 정렬 방식 서브 선택기 */}
+                    <div className="flex items-center justify-between text-[10.5px] text-slate-400 px-1 pt-1">
+                      <span>검색된 연계 상품 <strong className="text-purple-400 font-bold">{
+                        PORTFOLIO_PRODUCTS.filter(p => {
+                          const matchesTab = portfolioCategory === 'ALL' || p.category.includes(portfolioCategory);
+                          const matchesSearch = portfolioSearchQuery.trim() === '' ||
+                            p.name.toLowerCase().includes(portfolioSearchQuery.toLowerCase()) ||
+                            p.desc.toLowerCase().includes(portfolioSearchQuery.toLowerCase()) ||
+                            p.tags.some(t => t.toLowerCase().includes(portfolioSearchQuery.toLowerCase()));
+                          return matchesTab && matchesSearch;
+                        }).length
+                      }개</strong></span>
+
+                      <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-1 rounded-xl">
+                        {[
+                          { id: 'POPULAR', label: '인기순' },
+                          { id: 'YIELD', label: '수익률순' },
+                          { id: 'INVESTORS', label: '선택자순' },
+                        ].map(sort => (
+                          <button
+                            key={sort.id}
+                            onClick={() => setPortfolioSortBy(sort.id as any)}
+                            className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all ${
+                              portfolioSortBy === sort.id
+                                ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                                : 'text-slate-500 hover:text-slate-300'
+                            }`}
+                          >
+                            {sort.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 연계 상품 리스트 */}
+                  <div className="space-y-2.5">
+                    {PORTFOLIO_PRODUCTS.filter(p => {
+                      const matchesTab = portfolioCategory === 'ALL' || p.category.includes(portfolioCategory);
+                      const matchesSearch = portfolioSearchQuery.trim() === '' ||
+                        p.name.toLowerCase().includes(portfolioSearchQuery.toLowerCase()) ||
+                        p.desc.toLowerCase().includes(portfolioSearchQuery.toLowerCase()) ||
+                        p.tags.some(t => t.toLowerCase().includes(portfolioSearchQuery.toLowerCase()));
+                      return matchesTab && matchesSearch;
+                    }).sort((a, b) => {
+                      if (portfolioSortBy === 'YIELD') return b.yieldNum - a.yieldNum;
+                      if (portfolioSortBy === 'INVESTORS') return b.investorCount - a.investorCount;
+                      return b.investorCount - a.investorCount;
+                    }).map((item) => {
                       const isSelected = selectedPortfolio === item.name;
                       return (
                         <div
-                          key={item.name}
+                          key={item.id}
                           onClick={() => setSelectedPortfolio(item.name)}
-                          className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                            isSelected 
-                              ? `bg-gradient-to-r ${item.color} ${item.borderColor} ring-2 ring-purple-500` 
-                              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                          className={`p-4 rounded-2xl border cursor-pointer transition-all ${
+                            isSelected
+                              ? `bg-gradient-to-r ${item.color} ${item.borderColor} ring-2 ring-purple-500 shadow-lg shadow-purple-900/30`
+                              : 'bg-slate-900/70 border-slate-800 hover:border-slate-700'
                           }`}
                         >
-                          <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-start justify-between gap-2 mb-1.5">
                             <div className="flex items-center gap-2">
-                              <span className="font-black text-sm text-white">{item.name}</span>
-                              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                                {item.badge}
-                              </span>
+                              <span className="text-xl">{item.icon}</span>
+                              <div>
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span className="font-black text-sm text-white">{item.name}</span>
+                                  <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                    {item.badge}
+                                  </span>
+                                </div>
+                                <p className="text-[9.5px] text-slate-400 mt-0.5">{item.provider}</p>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs font-black text-emerald-400">{item.yield}</span>
-                              {isSelected && <Check className="w-4 h-4 text-purple-400" />}
+                            <div className="text-right shrink-0">
+                              <span className="text-sm font-black text-emerald-400 block">{item.yield}</span>
+                              <span className="text-[9px] text-slate-400">{item.investors}</span>
                             </div>
                           </div>
-                          <p className="text-[11px] text-slate-300">{item.desc}</p>
+
+                          <p className="text-[11px] text-slate-300 leading-relaxed mb-2">{item.desc}</p>
+
+                          {/* 뱃지 및 메타 정보 */}
+                          <div className="flex items-center justify-between text-[10px] border-t border-slate-800/80 pt-2 text-slate-400">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-slate-800/80 text-slate-300 px-2 py-0.5 rounded-md font-mono">
+                                {item.risk}
+                              </span>
+                              {item.dividendPeriod && (
+                                <span className="text-emerald-400 font-bold flex items-center gap-1">
+                                  📅 {item.dividendPeriod}
+                                </span>
+                              )}
+                            </div>
+                            {isSelected ? (
+                              <span className="flex items-center gap-1 text-purple-300 font-black text-[11px]">
+                                <Check className="w-3.5 h-3.5 text-purple-400" /> 선택됨
+                              </span>
+                            ) : (
+                              <span className="text-slate-500 text-[10px]">클릭하여 선택</span>
+                            )}
+                          </div>
+
+                          {/* 선택된 상태시 가상 시뮬레이션 게이지 */}
+                          {isSelected && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              className="mt-3 bg-purple-950/40 border border-purple-500/30 rounded-xl p-2.5 text-[10.5px] space-y-1.5"
+                            >
+                              <div className="flex justify-between items-center font-bold text-purple-200">
+                                <span>🔮 1년 후 예상 자산 시뮬레이션</span>
+                                <span className="text-emerald-400 font-mono">약 ₩328,000</span>
+                              </div>
+                              <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                                <div className="bg-gradient-to-r from-purple-500 via-indigo-500 to-emerald-400 h-full rounded-full w-[78%]" />
+                              </div>
+                              <p className="text-[9.5px] text-slate-400">
+                                매일 자투리 400원 + 점주 지원금 425원 지속 적립 시 (연 복리 수익률 반영)
+                              </p>
+                            </motion.div>
+                          )}
                         </div>
                       );
                     })}
                   </div>
 
-                  {/* 하단 확인 버튼 */}
-                  <button
-                    onClick={() => {
-                      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                      alert(`[신한투자증권] 자동 투자 포트폴리오가 '${selectedPortfolio}'(으)로 변경되었습니다.`);
-                      setShowPortfolioModal(false);
-                    }}
-                    className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white font-black text-sm shadow-xl active:scale-[0.98] transition-all"
-                  >
-                    신한투자증권 포트폴리오 변경 적용하기
-                  </button>
+                  {/* 하단 고정 적용하기 버튼 */}
+                  <div className="pt-2 sticky bottom-0 bg-[#0F172A] pb-1">
+                    <button
+                      onClick={() => {
+                        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                        alert(`[신한투자증권] 자동 투자 연계 포트폴리오가 '${selectedPortfolio}'(으)로 최종 설정되었습니다.`);
+                        setShowPortfolioModal(false);
+                      }}
+                      className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:brightness-110 text-white font-black text-sm shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    >
+                      <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+                      <span>[ {selectedPortfolio} ] 포트폴리오 변경 적용하기</span>
+                    </button>
+                  </div>
                 </motion.div>
               </div>
             )}
@@ -2852,8 +3399,8 @@ type UserRole = 'worker' | 'employer' | 'admin';
 
 const workerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
   { id: 'agent',     Icon: Sparkles,      label: 'AI 매칭' },
-  { id: 'chat',      Icon: MessageSquare, label: '알바톡' },
-  { id: 'community', Icon: Users,         label: '알바썰' },
+  { id: 'chat',      Icon: MessageSquare, label: '땡톡' },
+  { id: 'community', Icon: Users,         label: '땡썰' },
   { id: 'checkout',  Icon: DollarSign,    label: '정산/지갑' },
   { id: 'dgcs',      Icon: ShieldCheck,   label: '안전/보험' },
   { id: 'mypage',    Icon: User,          label: '마이' },
