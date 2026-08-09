@@ -123,6 +123,8 @@ function AgentTab() {
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
   const [sortMode, setSortMode] = useState<'ai' | 'wage_desc' | 'wage_asc' | 'dist_asc' | 'dist_desc' | 'pay_desc'>('ai');
   const [selectedDetailGig, setSelectedDetailGig] = useState<any | null>(null);
+  const [quickFilter, setQuickFilter] = useState<'all' | 'instapay' | 'high_wage' | 'urgent'>('all');
+  const [isCheckedIn, setIsCheckedIn] = useState(false);
   const { triggerPush } = useAppPush();
 
   // 실시간 롤링 티커 상태
@@ -582,6 +584,84 @@ function AgentTab() {
         </div>
       )}
 
+      {/* ── SOL Top Pro & Active Shift Command Center ── */}
+      <div className="bg-gradient-to-br from-[#0B0F19] via-[#111827] to-[#0B0F19] border border-indigo-500/30 rounded-3xl p-3.5 space-y-3 shadow-xl relative overflow-hidden">
+        {/* SOL Pro Level Status Header */}
+        <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2.5">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-[#FF5517] flex items-center justify-center font-black text-slate-950 text-sm shadow-md">
+              🏆
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <h4 className="text-xs font-black text-white">SOL Top Pro (Gold Level)</h4>
+                <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                  980 PTS
+                </span>
+              </div>
+              <p className="text-[9.5px] text-slate-400 font-medium">
+                💯 출근 이행률 100% · 노쇼 0건 · 가맹점 평점 ⭐ 4.9
+              </p>
+            </div>
+          </div>
+          <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+            S-Bridge 인증
+          </span>
+        </div>
+
+        {/* SOL Active Confirmed Shift Card */}
+        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="font-black text-white">오늘 출근 예정 시프트</span>
+            </div>
+            <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
+              ⏱️ 01시간 15분 후 시작
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
+            <div>
+              <h5 className="text-xs font-black text-white">CU 강남파이낸스점</h5>
+              <p className="text-[10px] text-indigo-300 font-bold mt-0.5">12:00 ~ 13:00 (1시간 물류 알바)</p>
+            </div>
+            <div className="text-right">
+              <span className="text-sm font-black text-emerald-400">₩16,000</span>
+              <span className="text-[9px] text-slate-400 block font-bold">⚡ 0.1s Instant Pay</span>
+            </div>
+          </div>
+
+          {/* GPS 출근 바코드 스캔 / 스와이프 버튼 */}
+          {!isCheckedIn ? (
+            <button
+              onClick={() => {
+                setIsCheckedIn(true);
+                confetti({
+                  particleCount: 120,
+                  spread: 70,
+                  origin: { y: 0.6 },
+                  colors: ['#10B981', '#FF5517', '#3B82F6'],
+                });
+              }}
+              className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 active:scale-95 text-white text-xs font-black py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all"
+            >
+              <MapPin className="w-3.5 h-3.5 text-amber-300" />
+              <span>📍 GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
+            </button>
+          ) : (
+            <div className="bg-emerald-500/20 border border-emerald-500/40 p-2.5 rounded-xl text-center space-y-0.5">
+              <p className="text-xs font-black text-emerald-300 flex items-center justify-center gap-1">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 출근 인증 완료!
+              </p>
+              <p className="text-[9.5px] text-slate-300 font-medium">
+                🛡️ 신한EZ 0.1초 단기 상해보험 자동 개시 · 퇴근 시 ₩16,000 0.1초 자동 입금
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* 6. AI 매칭 추천 긱 (지도 핀 선택 시 해당 가맹점 정보 카드만 노출) */}
       <div className="bg-white rounded-3xl border border-slate-100 p-4 space-y-3 shadow-md">
         <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
@@ -682,7 +762,7 @@ function AgentTab() {
                     </div>
                   )}
 
-                  {/* 가게명 & 시급/총액 (Instawork 시프트 카드리스트 고도화) */}
+                  {/* 가게명 & 시급/총액 (SOL 시프트 카드리스트 고도화) */}
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 min-w-0">
                       <h5 className="font-black text-sm text-white truncate flex items-center gap-1">
@@ -723,7 +803,7 @@ function AgentTab() {
                     </span>
                   </div>
 
-                  {/* Instawork 스타일 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ Instapay 인증) */}
+                  {/* SOL 스타일 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ Instapay 인증) */}
                   <div className="flex items-center justify-between text-[10px] text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800">
                     <span className="font-bold text-slate-200 flex items-center gap-1">
                       <Navigation className="w-3 h-3 text-blue-400" />
@@ -889,7 +969,7 @@ function AgentTab() {
                 </div>
               </div>
 
-              {/* 3. 🏪 근무지 위치 및 Instawork 필수 체크리스트 (Shift Checklist) */}
+              {/* 3. 🏪 근무지 위치 및 SOL 필수 체크리스트 (Shift Checklist) */}
               <div className="space-y-2">
                 <div className="flex items-center gap-1.5 text-xs font-black text-amber-300">
                   <MapPin className="w-4 h-4 text-amber-400" />
@@ -904,7 +984,7 @@ function AgentTab() {
                     </p>
                   </div>
                   
-                  {/* Instawork 스타일 필수 준비물 및 복장 안내 */}
+                  {/* SOL 스타일 필수 준비물 및 복장 안내 */}
                   <div className="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
                     <div className="bg-slate-900 p-2 rounded-xl border border-slate-800">
                       <span className="text-slate-400 text-[10px] block font-bold">👕 복장 규정 (Dress Code)</span>

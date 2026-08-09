@@ -1,7 +1,7 @@
 'use client';
 
 // app/components/LiveMatchingBoard.tsx
-// Instawork-Level Global #1 Gig Work Marketplace UI — 0.1s Instant Pay & Escrow
+// SOL-Level Global #1 Gig Work Marketplace UI — 0.1s Instant Pay & Escrow
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -149,8 +149,8 @@ const SORT_OPTIONS: { id: SortOption; label: string }[] = [
   { id: 'pay_desc', label: '💵 총수령액 높은순' },
 ];
 
-// ── Instawork 퀄리티 시프트 카드 컴포넌트 ──
-function InstaworkShiftCard({ gig, index, onApply }: { gig: LiveGig; index: number; onApply: (id: string) => void }) {
+// ── SOL 퀄리티 시프트 카드 컴포넌트 ──
+function SolShiftCard({ gig, index, onApply }: { gig: LiveGig; index: number; onApply: (id: string) => void }) {
   const [isApplying, setIsApplying] = useState(false);
   const [applied, setApplied] = useState(false);
   const { triggerPush } = useAppPush();
@@ -220,14 +220,14 @@ function InstaworkShiftCard({ gig, index, onApply }: { gig: LiveGig; index: numb
           </span>
         </div>
 
-        {/* Instawork AI 추천 점수 */}
+        {/* SOL AI 추천 점수 */}
         <div className="flex items-center gap-1 bg-indigo-500/20 border border-indigo-500/40 rounded-full px-2.5 py-0.5 shrink-0">
           <Sparkles className="w-3 h-3 text-indigo-400" />
           <span className="text-xs font-black text-indigo-300">{gig.aiScore}점 Match</span>
         </div>
       </div>
 
-      {/* 2. 매장 정보 & 총 급여 뷰 (Instawork 헤더 카드) */}
+      {/* 2. 매장 정보 & 총 급여 뷰 (SOL 헤더 카드) */}
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ function InstaworkShiftCard({ gig, index, onApply }: { gig: LiveGig; index: numb
           </p>
         </div>
 
-        {/* 금액 하이라이트 박스 (Instawork Style Earnings Box) */}
+        {/* 금액 하이라이트 박스 (SOL Style Earnings Box) */}
         <div className="text-right flex-shrink-0 bg-gradient-to-br from-emerald-500/15 to-teal-500/10 border border-emerald-500/40 rounded-2xl p-2.5 shadow-md">
           <p className="text-xl font-black text-emerald-400 leading-none">
             ₩{gig.pay.toLocaleString()}
@@ -262,7 +262,7 @@ function InstaworkShiftCard({ gig, index, onApply }: { gig: LiveGig; index: numb
         </div>
       </div>
 
-      {/* 3. 근무 핵심 그리드 (Instawork Shift Details) */}
+      {/* 3. 근무 핵심 그리드 (SOL Shift Details) */}
       <div className="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-800/80 mb-3.5 text-center text-xs">
         <div className="bg-slate-900/60 rounded-xl p-2 border border-slate-800">
           <p className="text-[10px] text-slate-400 flex items-center justify-center gap-1 font-bold">
@@ -412,7 +412,7 @@ export default function LiveMatchingBoard() {
 
   return (
     <div className="space-y-4 pb-8">
-      {/* 1. Instawork 스타일 프리미엄 대시보드 헤더 */}
+      {/* 1. SOL 스타일 프리미엄 대시보드 헤더 */}
       <div className="bg-gradient-to-br from-[#090D16] via-[#10182D] to-[#080D1A] rounded-3xl p-5 border border-blue-500/30 shadow-2xl relative overflow-hidden text-white">
         <div className="absolute top-0 right-0 w-48 h-48 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -572,7 +572,7 @@ export default function LiveMatchingBoard() {
             </div>
           ) : (
             filtered.map((gig, i) => (
-              <InstaworkShiftCard key={gig.id} gig={gig} index={i} onApply={handleApply} />
+              <SolShiftCard key={gig.id} gig={gig} index={i} onApply={handleApply} />
             ))
           )}
         </AnimatePresence>
