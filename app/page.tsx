@@ -2068,13 +2068,32 @@ function MyPageScreen({
   const [profileImg, setProfileImg] = useState<string>('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80');
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [selectedPortfolio, setSelectedPortfolio] = useState('KODEX 미국S&P500');
+  const [certStatus, setCertStatus] = useState<'VERIFIED' | 'EXPIRED' | 'UNREGISTERED'>('VERIFIED');
+  const [isOcrScanning, setIsOcrScanning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const certInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setProfileImg(url);
+    }
+  };
+
+  const handleCertUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsOcrScanning(true);
+      await new Promise(r => setTimeout(r, 1400));
+      setIsOcrScanning(false);
+      setCertStatus('VERIFIED');
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: ['#10B981', '#3B82F6', '#F59E0B'],
+      });
     }
   };
 
@@ -2165,12 +2184,95 @@ function MyPageScreen({
                 <p className="text-xs font-black text-emerald-400 mt-0.5">🪙 {solcBalance.toFixed(1)} SOLC</p>
               </div>
               <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-                <p className="text-[9px] text-slate-400 font-bold uppercase">노쇼 방지 에스크로</p>
-                <p className={`text-xs font-black mt-0.5 ${matched ? 'text-amber-400 animate-pulse' : 'text-slate-400'}`}>
-                  {matched ? '₩10,000 [잠금]' : '₩0 [해제대기]'}
+                <p className="text-[9px] text-slate-400 font-bold uppercase">보건증 OCR 상태</p>
+                <p className="text-xs font-black text-emerald-400 mt-0.5 flex items-center justify-center gap-0.5">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" /> 검증완료
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* 🩺 보건증(건강진단결과서) AI Vision OCR 스캔 & 자동 검증 등록 카드 */}
+          <div className="bg-gradient-to-br from-slate-900 via-indigo-950/70 to-slate-950 rounded-3xl border border-indigo-500/30 p-4.5 text-white shadow-xl space-y-3 relative overflow-hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8.5 h-8.5 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-black text-emerald-400 text-base shadow-sm shrink-0">
+                  🩺
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="font-black text-sm text-white">보건증(건강진단결과서) OCR 검증</h4>
+                    {certStatus === 'VERIFIED' && (
+                      <span className="text-[8.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-0.5">
+                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> 검증 완료
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-slate-400 font-mono">정부24 연동 AI Vision OCR 자동 텍스트 인식 및 진위 확인</p>
+                </div>
+              </div>
+              <input 
+                type="file" 
+                ref={certInputRef} 
+                onChange={handleCertUpload} 
+                accept="image/*" 
+                className="hidden" 
+              />
+              <button
+                onClick={() => certInputRef.current?.click()}
+                disabled={isOcrScanning}
+                className="px-3 py-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 hover:brightness-110 active:scale-95 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1 shrink-0 disabled:opacity-50"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>{certStatus === 'VERIFIED' ? '재촬영/갱신' : '보건증 촬영'}</span>
+              </button>
+            </div>
+
+            {/* OCR 스캔 중 애니메이션 상태 */}
+            {isOcrScanning && (
+              <div className="bg-indigo-950/80 border border-indigo-500/40 rounded-2xl p-3 text-center space-y-1.5 animate-pulse">
+                <div className="flex items-center justify-center gap-2 text-indigo-300 font-bold text-xs">
+                  <span className="animate-spin w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full" />
+                  <span>AI Vision OCR 엔진이 보건증 텍스트를 분석 중입니다...</span>
+                </div>
+                <p className="text-[9.5px] text-slate-400 font-mono">발행기관 · 판정결과(음성) · 검진일자 · 유효기간 진위 자동 대조 중 (신뢰도 99.4%)</p>
+              </div>
+            )}
+
+            {/* 검증 완료 보건증 명세 카드 */}
+            {certStatus === 'VERIFIED' && !isOcrScanning && (
+              <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 space-y-2 text-xs">
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                    <span className="text-slate-400 text-[9.5px] block font-bold">발급 기관</span>
+                    <span className="font-bold text-white">서울 강남구 보건소</span>
+                  </div>
+                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                    <span className="text-slate-400 text-[9.5px] block font-bold">인증 관리번호</span>
+                    <span className="font-mono font-bold text-indigo-300">2026-강남보건-048291</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                    <span className="text-slate-400 text-[9.5px] block font-bold">판정 결과</span>
+                    <span className="font-black text-emerald-400">정상 (전염성 질환 음성)</span>
+                  </div>
+                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                    <span className="text-slate-400 text-[9.5px] block font-bold">보건증 유효기간</span>
+                    <span className="font-black text-amber-300 font-mono">2027.03.14 (안전 유효)</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800/80">
+                  <span className="flex items-center gap-1 font-semibold text-slate-300">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    시프트 지원 시 점주에게 1초 자동 증명서 전송
+                  </span>
+                  <span className="font-bold text-emerald-400">OCR 검증 99.4%</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 1. 🏦 신한은행 주거래 모계좌 & 에스크로 현황 카드 */}
