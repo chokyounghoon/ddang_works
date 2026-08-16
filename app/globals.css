@@ -1,29 +1,54 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
-  --background: #060713;
-  --foreground: #f8fafc;
-  --brand-orange: #FF5517;
-  --brand-orange-hover: #E04106;
-  --brand-orange-light: rgba(255, 85, 23, 0.15);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  --color-ddangyo: #FF5517;
-  --color-ddangyo-hover: #E04106;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #FB521C;
+  --primary-hover: #E04514;
+  --primary-light: #FFF2EE;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   overscroll-behavior-y: none;
+}
+
+/* 텍스트 위계 질서 (Typography Hierarchy) 표준화 */
+.text-title-lg {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #0F172A;
+}
+
+.text-title-md {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+.text-body-base {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  color: #334155;
+}
+
+.text-caption-sm {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: #64748B;
 }
 
 /* ── 모바일 전용 유틸리티 ── */
@@ -35,7 +60,7 @@ body {
   padding-top: max(0.5rem, env(safe-area-inset-top));
 }
 
-/* 스크롤바 숨기기 */
+/* 모바일 앱 스크롤바 깔끔하게 숨기기 */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -593,51 +593,52 @@ function AgentTab() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden space-y-2">
-      {/* 1. 🤖 대화형 AI 매칭 비서 쏠이 (지도 위 상단 최우선 고정!) */}
+      {/* 1. 🤖 대화형 AI 매칭 비서 도담이 (땡겨요 라이프스타일 UX 스마트 챗 바) */}
       <div className="shrink-0 z-40">
         {!isChatExpanded ? (
-          <div className="bg-gradient-to-r from-[#0B0F19] via-[#0F172A] to-[#141E38] border border-indigo-500/40 rounded-2xl p-2.5 shadow-lg flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 to-indigo-600 shrink-0 shadow-[0_0_10px_rgba(255,85,23,0.5)]">
-                <Sparkles className="w-3.5 h-3.5 text-white animate-pulse" />
+          <div className="bg-white border border-orange-100 rounded-2xl p-2.5 shadow-xs hover:shadow-sm transition-all flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => setIsChatExpanded(true)}>
+              <div className="relative flex items-center justify-center w-7.5 h-7.5 rounded-full bg-gradient-to-tr from-[#FB521C] to-amber-500 shrink-0 shadow-xs text-white text-xs">
+                <span>🥕</span>
               </div>
-              <div className="truncate">
+              <div className="truncate flex-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black text-white">AI 쏠이</span>
-                  <span className="text-[8px] bg-gradient-to-r from-[#0046FF] via-blue-600 to-indigo-600 text-white font-bold px-1.5 py-0.2 rounded-full shadow-xs">
-                    Spatial RAG
+                  <span className="text-xs font-black text-slate-900">도담이 AI</span>
+                  <span className="text-[8.5px] bg-orange-50 text-[#FB521C] font-black px-1.5 py-0.2 rounded-full border border-orange-200">
+                    스마트 매칭
                   </span>
-                  <span className="text-[8px] text-amber-300 font-mono font-bold">🔥 1km 긴급 7건 가동 중</span>
+                  <span className="text-[8.5px] text-amber-700 font-bold">🔥 1km 긴급 7건</span>
                 </div>
-                <p className="text-[10px] text-blue-200 truncate">"조이수님, 부평역 반경 1km 서빙 긱 (시급 ₩14,500) 1위 추천 완료!"</p>
+                <p className="text-[10.5px] text-slate-500 truncate mt-0.5">"도담이에게 물어보기: '부평역 근처 1시간 서빙 찾아줘'"</p>
               </div>
             </div>
             <button
               onClick={() => setIsChatExpanded(true)}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#0046FF] via-indigo-600 to-[#FF5517] text-white font-black text-[10.5px] shadow-md hover:brightness-110 active:scale-95 transition-all shrink-0 flex items-center gap-1"
+              className="px-3 py-1.5 rounded-xl bg-[#FB521C] hover:bg-[#E4410E] text-white font-black text-[10.5px] shadow-xs active:scale-95 transition-all shrink-0 flex items-center gap-1"
             >
-              AI 대화창 펼치기 ▲
+              <Sparkles className="w-3 h-3 text-amber-200" />
+              <span>AI 대화</span>
             </button>
           </div>
         ) : (
-          <div className="bg-gradient-to-br from-[#0B0F19] via-[#0F172A] to-[#141E38] p-3.5 rounded-3xl shadow-[0_10px_40px_rgba(99,102,241,0.25)] border border-indigo-500/35 flex flex-col h-[320px] relative overflow-hidden transition-all">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-[#FF5517] opacity-20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-indigo-600 opacity-20 rounded-full blur-3xl pointer-events-none" />
+          <div className="bg-white p-3.5 rounded-3xl shadow-lg border border-slate-200 flex flex-col h-[320px] relative overflow-hidden transition-all">
+            <div className="absolute top-0 right-0 w-36 h-36 bg-orange-100/40 opacity-60 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-amber-100/30 opacity-60 rounded-full blur-3xl pointer-events-none" />
             
             {/* 헤더 */}
-            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-indigo-500/20 pb-1.5">
+            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-slate-100 pb-1.5">
               <div className="flex items-center gap-2">
-                <div className="relative flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 via-orange-500 to-indigo-600 shadow-[0_0_15px_rgba(255,85,23,0.5)]">
-                  <Sparkles className="w-4 h-4 text-white animate-pulse" />
+                <div className="relative flex items-center justify-center w-7.5 h-7.5 rounded-full bg-gradient-to-tr from-[#FB521C] to-amber-500 shadow-xs text-white text-xs">
+                  <span>🥕</span>
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-black text-white tracking-wider">땡겨요 웍스 AI 매칭 비서 쏠이</span>
-                    <span className="text-[8px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-black px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">
-                      Spatial RAG + Agent Tools
+                    <span className="text-xs font-black text-slate-900 tracking-wider">땡겨요 웍스 AI 비서 도담이</span>
+                    <span className="text-[8px] bg-orange-50 text-[#FB521C] font-black px-2 py-0.5 rounded-full border border-orange-200 whitespace-nowrap">
+                      0.1초 LBS 스마트 매칭
                     </span>
                   </div>
-                  <p className="text-[9px] text-slate-400 font-mono">Geo-Spatial SQL 1차 + Vector Semantic 2차 파이프라인</p>
+                  <p className="text-[9px] text-slate-500">실시간 위치 기반 최적 알바 & 0.1초 즉시정산 안내</p>
                 </div>
               </div>
               <button
@@ -833,42 +834,33 @@ function AgentTab() {
       {/* 3. 📜 지도 하단 전용 독립 스크롤 영역 (직종 필터 & 추천 긱 목록 카드) */}
       <div className="flex-1 overflow-y-auto min-h-0 space-y-3 pb-4 custom-scrollbar pr-0.5">
 
-      {/* 지도 핀/목록 선택 안내 배너 (선택 시만 노출, 목록은 전체 유지) */}
-      {mapSelectedGigId && mapSelectedStoreName && (
-        <div className="bg-gradient-to-r from-amber-500/20 via-indigo-500/20 to-blue-500/20 border border-amber-400/50 text-white rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-md">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">📍</span>
-            <div>
-              <p className="text-[9.5px] font-bold text-amber-300 uppercase tracking-widest">선택 상태 (목록 유지)</p>
-              <p className="text-xs font-black">{mapSelectedStoreName} 선택됨</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setMapSelectedGigId(null)}
-            className="text-[10px] font-black px-2.5 py-1 rounded-full bg-amber-400/20 hover:bg-amber-400/30 active:scale-95 transition-all border border-amber-400/40 text-amber-200 shrink-0 flex items-center gap-1"
-          >
-            ✕ 선택 해제
-          </button>
-        </div>
-      )}
-
-      {/* 5. 직종 카테고리 칩 필터 */}
+      {/* 5. 땡겨요 스타일 직종 카테고리 칩 필터 */}
       <div>
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
           {[
             { id: '전체', label: '전체 시프트' },
+            { id: '1시간', label: '⚡ 1시간 초단기' },
             { id: '서빙', label: '🍽️ 홀/서빙' },
             { id: '카페', label: '☕ 카페' },
             { id: '편의점', label: '🏪 편의점' },
+            { id: '돌봄', label: '🧸 돌봄/심부름' },
             { id: '패스트푸드', label: '🍔 패스트푸드' },
-            { id: '마트', label: '📦 마트' },
+            { id: '마트', label: '📦 마트/물류' },
           ].map(cat => (
             <button
               key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
+              onClick={() => {
+                if (cat.id === '1시간') {
+                  setSelectedHours('1h');
+                  setSelectedCategory('전체');
+                } else {
+                  setSelectedCategory(cat.id);
+                  if (cat.id === '전체') setSelectedHours('all');
+                }
+              }}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 active:scale-95 ${
-                selectedCategory === cat.id
-                  ? 'bg-blue-600 text-white font-black shadow-md shadow-blue-500/20'
+                (cat.id === '1시간' && selectedHours === '1h') || (selectedCategory === cat.id && (cat.id !== '전체' || selectedHours !== '1h'))
+                  ? 'bg-[#FB521C] text-white font-black shadow-xs'
                   : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
@@ -880,16 +872,16 @@ function AgentTab() {
 
 
 
-      {/* 6. AI 매칭 추천 긱 (목록 전체 유지) */}
-      <div className="bg-white rounded-3xl border border-slate-100 p-4 space-y-3 shadow-md">
+      {/* 6. AI 매칭 추천 긱 (땡겨요 클린 카드 피드) */}
+      <div className="bg-white rounded-3xl border border-slate-100 p-4 space-y-3 shadow-xs">
         <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
           <div>
-            <span className="text-[9.5px] font-black text-indigo-600 tracking-widest uppercase">AI Smart Matcher</span>
+            <span className="text-[9.5px] font-black text-[#FB521C] tracking-widest uppercase">Ddangyo Works AI Matcher</span>
             <h4 className="font-black text-sm text-slate-900">
-              쏠이 추천 긱 목록
+              도담이 추천 긱 목록
               {mapSelectedStoreName && (
-                <span className="ml-2 text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                  📍 {mapSelectedStoreName} 선택됨
+                <span className="ml-2 text-xs font-bold text-[#FB521C] bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
+                  📍 {mapSelectedStoreName}
                 </span>
               )}
             </h4>
@@ -899,7 +891,7 @@ function AgentTab() {
           <select
             value={sortMode}
             onChange={e => setSortMode(e.target.value as any)}
-            className="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10.5px] font-black rounded-xl px-2 py-1 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+            className="bg-orange-50 border border-orange-200 text-[#FB521C] text-[10.5px] font-black rounded-xl px-2.5 py-1 outline-none focus:border-[#FB521C] transition-all cursor-pointer"
           >
             <option value="ai">✨ AI 추천순</option>
             <option value="wage_desc">💰 시급 높은순</option>
@@ -910,23 +902,23 @@ function AgentTab() {
           </select>
         </div>
 
-        {/* 근무시간 범위 필터 칩 (지도 핀 미선택 시만 노출) */}
+        {/* 근무시간 범위 필터 칩 */}
         {!mapSelectedGigId && (
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-            <span className="text-[10px] font-bold text-slate-400 shrink-0">시간선택:</span>
+            <span className="text-[10px] font-bold text-slate-400 shrink-0">시간:</span>
             {[
-              { id: 'all', label: '전체시간' },
-              { id: '1h', label: '⚡ 1시간 (초단기)' },
+              { id: 'all', label: '전체' },
+              { id: '1h', label: '⚡ 1시간' },
               { id: '2h', label: '⏱️ 2시간' },
               { id: '4h', label: '4시간' },
-              { id: '5h_plus', label: '5시간 이상' },
+              { id: '5h_plus', label: '5h+' },
             ].map(hf => (
               <button
                 key={hf.id}
                 onClick={() => setSelectedHours(hf.id as any)}
                 className={`flex-shrink-0 px-2.5 py-1 rounded-xl text-[10.5px] font-bold transition-all active:scale-95 ${
                   selectedHours === hf.id
-                    ? 'bg-indigo-600 text-white font-black shadow-md shadow-indigo-500/20'
+                    ? 'bg-[#FB521C] text-white font-black shadow-xs'
                     : 'bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -936,7 +928,7 @@ function AgentTab() {
           </div>
         )}
 
-        {/* 필터링 및 정렬된 긱 카드리스트 (핀 선택 시 해당 가맹점 카드 1개만 정확히 노출) */}
+        {/* 필터링 및 정렬된 긱 카드리스트 */}
         <div className="space-y-3 pt-1">
           {filteredAgentGigs.length === 0 ? (
             <div className="text-center py-8 text-slate-400 text-xs bg-slate-50 rounded-2xl border border-slate-200">
@@ -961,85 +953,85 @@ function AgentTab() {
                   onClick={() => {
                     setMapSelectedGigId(isCardSelected ? null : pinId);
                   }}
-                  className={`rounded-2xl p-3.5 text-white space-y-2 transition-all text-left relative overflow-hidden cursor-pointer ${
+                  className={`rounded-2xl p-4 transition-all text-left relative overflow-hidden cursor-pointer space-y-2.5 ${
                     isCardSelected
-                      ? 'bg-gradient-to-br from-[#1E1B4B] via-[#0F172A] to-[#1E293B] border-2 border-amber-400 ring-4 ring-amber-400/40 shadow-[0_0_35px_rgba(251,191,36,0.5)] scale-[1.015] z-10'
+                      ? 'bg-orange-50/40 border-2 border-[#FB521C] ring-4 ring-orange-500/20 shadow-sm scale-[1.01] z-10'
                       : isRecommended
-                      ? 'bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-indigo-400/80 ring-1 ring-indigo-500/30 shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:border-amber-400/70'
-                      : 'bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-slate-800 hover:border-amber-400/70 hover:scale-[1.005]'
+                      ? 'bg-gradient-to-br from-orange-50/30 via-white to-amber-50/20 border border-orange-200/80 shadow-xs hover:border-[#FB521C]'
+                      : 'bg-white border border-slate-200/90 shadow-xs hover:border-[#FB521C]'
                   }`}
                 >
                   {/* 지도 핀 선택 안내 뱃지 */}
                   {isCardSelected && (
-                    <div className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-lg inline-flex items-center gap-1.5 shadow-md border border-amber-300 mb-1 animate-pulse">
-                      <MapPin className="w-3 h-3 fill-slate-950" />
-                      <span>📍 선택된 시프트 (지도 핀 ↔ 목록 테두리 양방향 연결됨)</span>
+                    <div className="bg-[#FB521C] text-white text-[10px] font-black px-2.5 py-1 rounded-lg inline-flex items-center gap-1.5 shadow-xs mb-0.5">
+                      <MapPin className="w-3 h-3 fill-white" />
+                      <span>📍 선택된 시프트 (지도 ↔ 목록 동기화)</span>
                     </div>
                   )}
 
-                  {/* 상단 1줄: AI 추천 랭킹 배지 (독자 탑 라인으로 겹침 100% 방지) */}
+                  {/* 상단 1줄: AI 추천 랭킹 배지 */}
                   {isRecommended && !isCardSelected && (
-                    <div className="flex items-center justify-between gap-1 border-b border-indigo-500/20 pb-1 mb-1">
-                      <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0 animate-pulse">
-                        <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-                        쏠이 AI 1위 추천 (적합도 {g.aiScore}%)
+                    <div className="flex items-center justify-between gap-1 border-b border-orange-100 pb-1 mb-0.5">
+                      <span className="bg-gradient-to-r from-[#FB521C] to-amber-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0 shadow-xs">
+                        <Sparkles className="w-2.5 h-2.5 text-amber-200" />
+                        AI 1위 추천 (적합도 {g.aiScore}%)
                       </span>
-                      <span className="text-[9.5px] font-mono font-bold text-indigo-300">
+                      <span className="text-[9.5px] font-mono font-bold text-[#FB521C]">
                         AI Score {g.aiScore}점
                       </span>
                     </div>
                   )}
 
-                  {/* 가게명 & 시급/총액 (SOL 시프트 카드리스트 고도화) */}
+                  {/* 가게명 & 시급/총액 */}
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 min-w-0">
-                      <h5 className="font-black text-sm text-white truncate flex items-center gap-1">
+                      <h5 className="font-black text-sm text-slate-900 truncate flex items-center gap-1">
                         {g.storeName}
-                        <span className="text-[9.5px] font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.2 rounded border border-amber-400/30 flex items-center gap-0.5 shrink-0">
-                          <Star className="w-2.5 h-2.5 fill-amber-400" /> 4.9
+                        <span className="text-[9.5px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 flex items-center gap-0.5 shrink-0">
+                          <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" /> 4.9
                         </span>
                       </h5>
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 shrink-0">
+                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-orange-50 text-[#FB521C] border border-orange-200/80 shrink-0">
                         {g.category}
                       </span>
                       {g.urgency ? (
-                        <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-gradient-to-r from-red-600 to-rose-600 text-white border border-red-400/50 shrink-0 animate-pulse shadow-sm">
+                        <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200 shrink-0">
                           🚨 1시간 이내 임박
                         </span>
                       ) : (
-                        <span className="text-[8.5px] font-bold px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 shrink-0">
+                        <span className="text-[8.5px] font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
                           🕐 1시간 이후
                         </span>
                       )}
                     </div>
 
                     <div className="text-right shrink-0">
-                      <div className="text-base font-black text-emerald-400 leading-tight">₩{g.pay.toLocaleString()}</div>
-                      <div className="text-[9px] font-bold text-slate-400">시급 ₩{g.hourlyRate.toLocaleString()}</div>
+                      <div className="text-base font-black text-[#FB521C] leading-tight">₩{g.pay.toLocaleString()}</div>
+                      <div className="text-[9px] font-bold text-slate-500">시급 ₩{g.hourlyRate.toLocaleString()}</div>
                     </div>
                   </div>
 
                   {/* 역할 & 근무시간 1줄 */}
-                  <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
-                    <p className="truncate font-semibold text-slate-200">{g.role}</p>
+                  <div className="flex items-center justify-between text-xs text-slate-700 font-medium">
+                    <p className="truncate font-bold text-slate-800">{g.role}</p>
                     <span className={`text-[10px] font-black px-2 py-0.5 rounded-md shrink-0 ml-2 ${
                       g.urgency
-                        ? 'text-white bg-gradient-to-r from-red-600 to-rose-600 border border-red-400/60 shadow-sm'
-                        : 'text-zinc-300 bg-zinc-900 border border-zinc-700'
+                        ? 'text-rose-700 bg-rose-50 border border-rose-200 shadow-xs'
+                        : 'text-slate-700 bg-slate-100 border border-slate-200'
                     }`}>
                       {g.urgency ? `🚨 ${g.startTime}–${g.endTime} (${g.hours}h)` : `🕐 ${g.startTime}–${g.endTime} (${g.hours}h)`}
                     </span>
                   </div>
 
-                  {/* SOL 스타일 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ Instapay 인증) */}
-                  <div className="flex items-center justify-between text-[10px] text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800">
-                    <span className="font-bold text-slate-200 flex items-center gap-1">
-                      <Navigation className="w-3 h-3 text-blue-400" />
-                      {g.distanceM}m <span className="text-slate-400 font-medium">(도보 {Math.ceil(g.distanceM / 80)}분)</span>
+                  {/* 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ 0.1초 땡겨받기) */}
+                  <div className="flex items-center justify-between text-[10px] text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200/90">
+                    <span className="font-bold text-slate-700 flex items-center gap-1">
+                      <Navigation className="w-3 h-3 text-[#FB521C]" />
+                      {g.distanceM}m <span className="text-slate-500 font-medium">(도보 {Math.ceil(g.distanceM / 80)}분)</span>
                     </span>
-                    <span className="font-bold text-indigo-300">✨ AI {g.aiScore}점 Match</span>
-                    <span className="text-emerald-400 font-black flex items-center gap-0.5 bg-emerald-500/10 px-1.5 py-0.2 rounded border border-emerald-500/30">
-                      <Zap className="w-2.5 h-2.5 text-amber-300" /> ⚡ 0.1s Instapay
+                    <span className="font-bold text-[#FB521C]">✨ AI {g.aiScore}점</span>
+                    <span className="text-emerald-700 font-black flex items-center gap-0.5 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                      <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-500" /> ⚡ 0.1초 즉시정산
                     </span>
                   </div>
 
@@ -1047,28 +1039,28 @@ function AgentTab() {
                   <div className="flex items-center gap-1.5 pt-0.5">
                     <button
                       onClick={() => setSelectedDetailGig(g)}
-                      className="px-3 py-2 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1 shrink-0 transition-all active:scale-95 shadow-sm"
+                      className="px-3 py-2 rounded-xl font-bold text-xs bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 flex items-center gap-1 shrink-0 transition-all active:scale-95 shadow-xs"
                       title="근무/모집 조건 상세보기"
                     >
-                      <FileText className="w-3.5 h-3.5 text-indigo-400" />
+                      <FileText className="w-3.5 h-3.5 text-[#FB521C]" />
                       <span>상세보기</span>
                     </button>
 
                     <button
                       onClick={() => handleAgentApply(g.id, g.storeName, g.role)}
                       disabled={g.applied}
-                      className={`flex-1 py-2 rounded-xl font-black text-xs transition-all shadow-md flex items-center justify-center gap-1 active:scale-95 ${
+                      className={`flex-1 py-2 rounded-xl font-black text-xs transition-all shadow-xs flex items-center justify-center gap-1 active:scale-95 ${
                         g.applied
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-default'
-                          : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 text-white hover:brightness-110'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 cursor-default'
+                          : 'bg-[#FB521C] hover:bg-[#E4410E] text-white'
                       }`}
                     >
                       {g.applied ? (
                         <span>✓ 지원 완료 · 0.1초 에스크로</span>
                       ) : (
                         <>
-                          <Zap className="w-3 h-3 text-amber-300" />
-                          <span>⚡ 0.1초 지원 & Pay</span>
+                          <Zap className="w-3 h-3 text-amber-200 fill-amber-200" />
+                          <span>⚡ 0.1초 즉시 지원하기</span>
                           <ArrowUpRight className="w-3 h-3" />
                         </>
                       )}
@@ -2452,28 +2444,28 @@ function MyPageScreen({
   };
 
   return (
-    <div className="space-y-5 pb-8 px-4">
+    <div className="space-y-4 pb-8 px-4 font-sans">
       {/* 1. 롤 스위처 */}
-      <div className="flex bg-slate-900 p-1.5 rounded-2xl border border-slate-800 shadow-md">
+      <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-xs">
         <button
           onClick={() => setRole('worker')}
-          className={`flex-1 py-2.5 text-xs font-black rounded-xl transition-all ${
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
             role === 'worker' 
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md' 
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-[#FB521C] text-white shadow-xs' 
+              : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          🙋 지원자(알바생) 마이페이지
+          🙋 지원자(알바생) 마이
         </button>
         <button
           onClick={() => setRole('employer')}
-          className={`flex-1 py-2.5 text-xs font-black rounded-xl transition-all ${
+          className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
             role === 'employer' 
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md' 
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-slate-900 text-white shadow-xs' 
+              : 'text-slate-600 hover:text-slate-900'
           }`}
         >
-          🏪 점주 마이페이지
+          🏪 점주 마이
         </button>
       </div>
 
@@ -2481,27 +2473,26 @@ function MyPageScreen({
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-5"
+          className="space-y-4"
         >
           {/* 프로필 카드 */}
-          <div className="relative overflow-hidden bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0A1128] border border-slate-800 rounded-3xl p-5 text-white shadow-xl">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-sm">
             <div className="flex items-center gap-4">
               {/* 클릭 시 실시간 사진 변경 가능한 프로필 아바타 */}
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="relative w-15 h-15 rounded-2xl overflow-hidden cursor-pointer group shrink-0 border-2 border-blue-500/50 shadow-lg shadow-blue-500/30"
+                className="relative w-15 h-15 rounded-2xl overflow-hidden cursor-pointer group shrink-0 border-2 border-orange-200 shadow-xs"
                 title="클릭하여 프로필 사진 변경"
               >
                 <img 
                   src={profileImg} 
                   alt="조이수 프로필" 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                   <Camera className="w-5 h-5 text-white" />
                 </div>
-                <div className="absolute bottom-0 right-0 p-1 bg-blue-600 rounded-tl-lg text-white">
+                <div className="absolute bottom-0 right-0 p-1 bg-[#FB521C] rounded-tl-lg text-white">
                   <Camera className="w-3 h-3" />
                 </div>
                 <input 
@@ -2514,83 +2505,83 @@ function MyPageScreen({
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <h3 className="font-black text-lg text-white">조이수</h3>
-                  <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
-                    👨 남성 · 24세 (2002년생)
+                  <h3 className="font-bold text-lg text-slate-900">조이수</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                    👨 남성 · 24세
                   </span>
-                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-50 text-[#FB521C] border border-orange-200">
                     신한 씬파일러 1등급
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 font-mono">
-                  {walletConnected ? walletAddress : '0x71C...4e89 (S-BRIDGE 연동 완료)'}
+                <p className="text-[11px] text-slate-500 font-mono">
+                  {walletConnected ? walletAddress : '0x71C...4e89 (신한 슈퍼SOL 연동)'}
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-slate-800/80 text-center">
-              <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-                <p className="text-[9px] text-slate-400 font-bold uppercase">SBT 신용뱃지</p>
-                <p className="text-xs font-black text-indigo-400 mt-0.5">D-GCS 980점</p>
+            <div className="grid grid-cols-3 gap-2 mt-4 pt-3.5 border-t border-slate-100 text-center">
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                <p className="text-[9.5px] text-slate-400 font-bold uppercase">SBT 신용뱃지</p>
+                <p className="text-xs font-bold text-[#FB521C] mt-0.5">D-GCS 980점</p>
               </div>
-              <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-                <p className="text-[9px] text-slate-400 font-bold uppercase">지갑 토큰 자산</p>
-                <p className="text-xs font-black text-emerald-400 mt-0.5">🪙 {solcBalance.toFixed(1)} SOLC</p>
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                <p className="text-[9.5px] text-slate-400 font-bold uppercase">지갑 토큰</p>
+                <p className="text-xs font-bold text-emerald-600 mt-0.5">🪙 {solcBalance.toFixed(1)} SOLC</p>
               </div>
-              <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-                <p className="text-[9px] text-slate-400 font-bold uppercase">보건증 OCR 상태</p>
-                <p className="text-xs font-black text-emerald-400 mt-0.5 flex items-center justify-center gap-0.5">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" /> 검증완료
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                <p className="text-[9.5px] text-slate-400 font-bold uppercase">보건증 검증</p>
+                <p className="text-xs font-bold text-emerald-600 mt-0.5 flex items-center justify-center gap-0.5">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" /> 검증완료
                 </p>
               </div>
             </div>
           </div>
 
           {/* 🏆 SOL Top Pro & 오늘 출근 예정 시프트 Command Center 카드 */}
-          <div className="bg-gradient-to-br from-[#0B0F19] via-[#111827] to-[#0B0F19] border border-indigo-500/30 rounded-3xl p-4 space-y-3 shadow-xl relative overflow-hidden">
-            {/* SOL Pro Level Status Header */}
-            <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2.5">
+          <div className="bg-white border border-slate-200/90 rounded-3xl p-4.5 space-y-3 shadow-sm">
+            {/* Pro Level Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-400 to-[#FF5517] flex items-center justify-center font-black text-slate-950 text-base shadow-md">
+                <div className="w-9 h-9 rounded-2xl bg-orange-50 text-[#FB521C] border border-orange-200 flex items-center justify-center font-bold text-base shadow-xs">
                   🏆
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h4 className="text-xs font-black text-white">SOL Top Pro (Gold Level)</h4>
-                    <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                    <h4 className="text-xs font-bold text-slate-900">SOL Top Pro (Gold Level)</h4>
+                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-50 text-amber-700 border border-amber-200">
                       980 PTS
                     </span>
                   </div>
-                  <p className="text-[9.5px] text-slate-400 font-medium">
+                  <p className="text-[10px] text-slate-500 font-normal">
                     💯 출근 이행률 100% · 노쇼 0건 · 가맹점 평점 ⭐ 4.9
                   </p>
                 </div>
               </div>
-              <span className="text-[9.5px] font-black px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+              <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
                 S-Bridge 인증
               </span>
             </div>
 
-            {/* SOL Active Confirmed Shift Card */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
+            {/* Active Confirmed Shift Card */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2.5">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="font-black text-white">오늘 출근 예정 시프트</span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                  <span className="font-bold text-slate-900">오늘 출근 예정 시프트</span>
                 </div>
-                <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded border border-amber-400/30">
+                <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
                   ⏱️ 01시간 15분 후 시작
                 </span>
               </div>
 
-              <div className="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800/80">
+              <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
                 <div>
-                  <h5 className="text-xs font-black text-white">CU 강남파이낸스점</h5>
-                  <p className="text-[10.5px] text-indigo-300 font-bold mt-0.5">12:00 ~ 13:00 (1시간 물류 알바)</p>
+                  <h5 className="text-xs font-bold text-slate-900">CU 강남파이낸스점</h5>
+                  <p className="text-[10.5px] text-slate-600 font-medium mt-0.5">12:00 ~ 13:00 (1시간 물류 알바)</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-black text-emerald-400">₩16,000</span>
-                  <span className="text-[9px] text-slate-400 block font-bold">⚡ 0.1s Instant Pay</span>
+                  <span className="text-sm font-bold text-[#FB521C]">₩16,000</span>
+                  <span className="text-[9px] text-slate-400 block font-medium">⚡ 0.1초 즉시정산</span>
                 </div>
               </div>
 
@@ -2603,21 +2594,21 @@ function MyPageScreen({
                       particleCount: 120,
                       spread: 70,
                       origin: { y: 0.6 },
-                      colors: ['#10B981', '#FF5517', '#3B82F6'],
+                      colors: ['#FB521C', '#10B981', '#3B82F6'],
                     });
                   }}
-                  className="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 active:scale-95 text-white text-xs font-black py-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all"
+                  className="w-full bg-[#FB521C] hover:bg-[#E04514] active:scale-95 text-white text-xs font-bold py-2.5 rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all"
                 >
-                  <MapPin className="w-4 h-4 text-amber-300" />
+                  <MapPin className="w-4 h-4" />
                   <span>GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
                 </button>
               ) : (
-                <div className="bg-emerald-500/20 border border-emerald-500/40 p-3 rounded-xl text-center space-y-1">
-                  <p className="text-xs font-black text-emerald-300 flex items-center justify-center gap-1">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 출근 인증 완료!
+                <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center space-y-0.5">
+                  <p className="text-xs font-bold text-emerald-700 flex items-center justify-center gap-1">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" /> 출근 인증 완료!
                   </p>
-                  <p className="text-[9.5px] text-slate-300 font-medium">
-                    🛡️ 신한EZ 0.1초 단기 상해보험 자동 개시 · 퇴근 시 ₩16,000 0.1초 자동 입금
+                  <p className="text-[10px] text-slate-600">
+                    🛡️ 신한EZ 0.1초 단기 상해보험 자동 개시 · 퇴근 시 ₩16,000 자동 입금
                   </p>
                 </div>
               )}
@@ -2625,22 +2616,22 @@ function MyPageScreen({
           </div>
 
           {/* 🩺 보건증(건강진단결과서) AI Vision OCR 스캔 & 자동 검증 등록 카드 */}
-          <div className="bg-gradient-to-br from-slate-900 via-indigo-950/70 to-slate-950 rounded-3xl border border-indigo-500/30 p-4.5 text-white shadow-xl space-y-3 relative overflow-hidden">
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-4.5 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8.5 h-8.5 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-black text-emerald-400 text-base shadow-sm shrink-0">
+                <div className="w-8.5 h-8.5 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center font-bold text-emerald-600 text-base shadow-xs shrink-0">
                   🩺
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h4 className="font-black text-sm text-white">보건증(건강진단결과서) OCR 검증</h4>
+                    <h4 className="font-bold text-sm text-slate-900">보건증 AI Vision OCR 검증</h4>
                     {certStatus === 'VERIFIED' && (
-                      <span className="text-[8.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-0.5">
-                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" /> 검증 완료
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-0.5">
+                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" /> 검증 완료
                       </span>
                     )}
                   </div>
-                  <p className="text-[10px] text-slate-400 font-mono">정부24 연동 AI Vision OCR 자동 텍스트 인식 및 진위 확인</p>
+                  <p className="text-[10px] text-slate-500 font-normal">정부24 연동 AI Vision OCR 자동 텍스트 인식 및 진위 확인</p>
                 </div>
               </div>
               <input 
@@ -2653,7 +2644,7 @@ function MyPageScreen({
               <button
                 onClick={() => certInputRef.current?.click()}
                 disabled={isOcrScanning}
-                className="px-3 py-1.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 hover:brightness-110 active:scale-95 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1 shrink-0 disabled:opacity-50"
+                className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1 shrink-0 disabled:opacity-50"
               >
                 <Camera className="w-3.5 h-3.5" />
                 <span>{certStatus === 'VERIFIED' ? '재촬영/갱신' : '보건증 촬영'}</span>
@@ -2662,46 +2653,46 @@ function MyPageScreen({
 
             {/* OCR 스캔 중 애니메이션 상태 */}
             {isOcrScanning && (
-              <div className="bg-indigo-950/80 border border-indigo-500/40 rounded-2xl p-3 text-center space-y-1.5 animate-pulse">
-                <div className="flex items-center justify-center gap-2 text-indigo-300 font-bold text-xs">
-                  <span className="animate-spin w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full" />
-                  <span>AI Vision OCR 엔진이 보건증 텍스트를 분석 중입니다...</span>
+              <div className="bg-orange-50 border border-orange-200 rounded-2xl p-3 text-center space-y-1 animate-pulse">
+                <div className="flex items-center justify-center gap-2 text-[#FB521C] font-bold text-xs">
+                  <span className="animate-spin w-3.5 h-3.5 border-2 border-[#FB521C]/30 border-t-[#FB521C] rounded-full" />
+                  <span>AI Vision OCR 엔진이 보건증을 분석 중입니다...</span>
                 </div>
-                <p className="text-[9.5px] text-slate-400 font-mono">발행기관 · 판정결과(음성) · 검진일자 · 유효기간 진위 자동 대조 중 (신뢰도 99.4%)</p>
+                <p className="text-[10px] text-slate-500">발행기관 · 판정결과 · 검진일자 진위 대조 중 (신뢰도 99.4%)</p>
               </div>
             )}
 
             {/* 검증 완료 보건증 명세 카드 */}
             {certStatus === 'VERIFIED' && !isOcrScanning && (
-              <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 space-y-2 text-xs">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2 text-xs">
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                  <div className="bg-white p-2 rounded-xl border border-slate-200">
                     <span className="text-slate-400 text-[9.5px] block font-bold">발급 기관</span>
-                    <span className="font-bold text-white">서울 강남구 보건소</span>
+                    <span className="font-bold text-slate-900">서울 강남구 보건소</span>
                   </div>
-                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                  <div className="bg-white p-2 rounded-xl border border-slate-200">
                     <span className="text-slate-400 text-[9.5px] block font-bold">인증 관리번호</span>
-                    <span className="font-mono font-bold text-indigo-300">2026-강남보건-048291</span>
+                    <span className="font-mono font-bold text-slate-900">2026-강남보건-048291</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                  <div className="bg-white p-2 rounded-xl border border-slate-200">
                     <span className="text-slate-400 text-[9.5px] block font-bold">판정 결과</span>
-                    <span className="font-black text-emerald-400">정상 (전염성 질환 음성)</span>
+                    <span className="font-bold text-emerald-600">정상 (전염성 질환 음성)</span>
                   </div>
-                  <div className="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                  <div className="bg-white p-2 rounded-xl border border-slate-200">
                     <span className="text-slate-400 text-[9.5px] block font-bold">보건증 유효기간</span>
-                    <span className="font-black text-amber-300 font-mono">2027.03.14 (안전 유효)</span>
+                    <span className="font-bold text-amber-700 font-mono">2027.03.14 (안전 유효)</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800/80">
-                  <span className="flex items-center gap-1 font-semibold text-slate-300">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-200">
+                  <span className="flex items-center gap-1 font-medium text-slate-600">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                     시프트 지원 시 점주에게 1초 자동 증명서 전송
                   </span>
-                  <span className="font-bold text-emerald-400">OCR 검증 99.4%</span>
+                  <span className="font-bold text-emerald-600">OCR 검증 99.4%</span>
                 </div>
               </div>
             )}
@@ -2770,14 +2761,14 @@ function MyPageScreen({
               </span>
             </div>
 
-            <div className="bg-purple-950/40 border border-purple-500/20 rounded-2xl p-3 text-white flex items-center justify-between">
+            <div className="bg-purple-50/60 border border-purple-200 rounded-2xl p-3.5 flex items-center justify-between shadow-xs">
               <div>
-                <p className="text-[10px] text-purple-300 font-bold">누적 신한투자증권 ETF 자산</p>
-                <p className="text-lg font-black text-white mt-0.5">₩48,500 <span className="text-xs text-emerald-400 font-bold font-mono">(+₩2,230)</span></p>
+                <p className="text-[10px] text-purple-700 font-bold">누적 신한투자증권 ETF 자산</p>
+                <p className="text-lg font-black text-slate-900 mt-0.5">₩48,500 <span className="text-xs text-emerald-600 font-bold font-mono">(+₩2,230)</span></p>
               </div>
               <button 
                 onClick={() => setShowPortfolioModal(true)}
-                className="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-110 text-white font-black text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1 shrink-0"
+                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] rounded-xl shadow-xs transition-all active:scale-95 flex items-center gap-1 shrink-0"
               >
                 <TrendingUp className="w-3.5 h-3.5" />
                 <span>포트폴리오 변경</span>
@@ -2788,22 +2779,22 @@ function MyPageScreen({
             <div className="grid grid-cols-2 gap-2 text-[10.5px]">
               <div className="bg-purple-50 border border-purple-100 rounded-xl p-2 font-medium">
                 <span className="text-purple-700 font-bold block">🏪 점주 지불 수수료 지원</span>
-                <span className="text-slate-700 font-black">매 긱당 ₩425 (50%)</span>
+                <span className="text-slate-700 font-bold">매 긱당 ₩425 (50%)</span>
               </div>
-              <div className="bg-blue-50 border border-blue-100 rounded-xl p-2 font-medium">
-                <span className="text-blue-700 font-bold block">💸 알바비 잔돈 스윕</span>
-                <span className="text-slate-700 font-black">매 긱당 ₩400 (자투리)</span>
+              <div className="bg-orange-50 border border-orange-100 rounded-xl p-2 font-medium">
+                <span className="text-[#FB521C] font-bold block">💸 알바비 잔돈 스윕</span>
+                <span className="text-slate-700 font-bold">매 긱당 ₩400 (자투리)</span>
               </div>
             </div>
 
             {/* 투자 종목 세부 리스트 */}
             <div className="space-y-2 text-xs">
-              <div className="bg-purple-50/70 p-2.5 rounded-xl border border-purple-200 flex justify-between items-center shadow-sm">
+              <div className="bg-purple-50/50 p-2.5 rounded-xl border border-purple-200 flex justify-between items-center shadow-xs">
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-lg shrink-0">{activeProduct.icon}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <p className="font-black text-slate-900 truncate">{activeProduct.name}</p>
+                      <p className="font-bold text-slate-900 truncate">{activeProduct.name}</p>
                       <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-purple-600 text-white shrink-0">
                         선택됨
                       </span>
@@ -2812,8 +2803,8 @@ function MyPageScreen({
                   </div>
                 </div>
                 <div className="text-right shrink-0 pl-2">
-                  <p className="font-black text-slate-900">₩32,100</p>
-                  <p className="text-[9.5px] text-emerald-600 font-black">{activeProduct.yield}</p>
+                  <p className="font-bold text-slate-900">₩32,100</p>
+                  <p className="text-[9.5px] text-emerald-600 font-bold">{activeProduct.yield}</p>
                 </div>
               </div>
 
@@ -2826,7 +2817,7 @@ function MyPageScreen({
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-black text-slate-900">₩16,400</p>
+                  <p className="font-bold text-slate-900">₩16,400</p>
                   <p className="text-[9px] text-emerald-600 font-bold">+4.0%</p>
                 </div>
               </div>
@@ -2836,65 +2827,65 @@ function MyPageScreen({
           {/* 3. 💳 신한카드 대안신용(ACS) & 🌿 신한라이프 마이크로 연금 */}
           <div className="grid grid-cols-2 gap-3 text-xs">
             {/* 신한카드 ACS */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-md p-4 space-y-2">
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-4 space-y-2">
               <div className="flex items-center gap-1.5 text-blue-600">
                 <CreditCard className="w-4 h-4" />
-                <span className="font-black text-xs text-slate-900">신한카드 ACS</span>
+                <span className="font-bold text-xs text-slate-900">신한카드 ACS</span>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400">대안신용점수 평가</p>
-                <p className="text-sm font-black text-blue-600 mt-0.5">875점 <span className="text-[9px] text-slate-500 font-normal">(상위 2%)</span></p>
+                <p className="text-sm font-bold text-blue-600 mt-0.5">875점 <span className="text-[9px] text-slate-500 font-normal">(상위 2%)</span></p>
               </div>
               <div className="bg-blue-50 p-2 rounded-xl border border-blue-100 text-[10px] text-blue-800">
-                💳 우대 대출 한도: <strong>+₩2,500,000</strong> 증액 완료
+                💳 우대 대출 한도: <strong>+₩2,500,000</strong> 증액
               </div>
             </div>
 
             {/* 신한라이프 연금 */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-md p-4 space-y-2">
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-4 space-y-2">
               <div className="flex items-center gap-1.5 text-emerald-600">
                 <ShieldCheck className="w-4 h-4" />
-                <span className="font-black text-xs text-slate-900">신한라이프 연금</span>
+                <span className="font-bold text-xs text-slate-900">신한라이프 연금</span>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400">1% 자동 적립 연금</p>
-                <p className="text-sm font-black text-emerald-600 mt-0.5">₩12,400 <span className="text-[9px] text-slate-500 font-normal">적립</span></p>
+                <p className="text-sm font-bold text-emerald-600 mt-0.5">₩12,400 <span className="text-[9px] text-slate-500 font-normal">적립</span></p>
               </div>
               <div className="bg-emerald-50 p-2 rounded-xl border border-emerald-100 text-[10px] text-emerald-800">
-                ☂️ 18시간 초단기 상해보험 <strong>무상 100% 보장</strong>
+                ☂️ 18시간 초단기 상해보험 <strong>무상 보장</strong>
               </div>
             </div>
           </div>
 
           {/* 4. 📋 지원자 긱워크 일한 내역 & 종합 수익·투자 정산 리포트 */}
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-md p-5 space-y-4">
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <span className="text-[10px] font-black text-blue-600 tracking-widest uppercase">Work History & Investment Ledger</span>
-                <h4 className="font-black text-base text-slate-900 mt-0.5">내가 지금까지 일한 내역 & 수익·투자 리포트</h4>
+                <span className="text-[10px] font-bold text-[#FB521C] tracking-widest uppercase">Work History & Investment Ledger</span>
+                <h4 className="font-bold text-base text-slate-900 mt-0.5">내가 지금까지 일한 내역 & 수익·투자 리포트</h4>
                 <p className="text-xs text-slate-500 mt-0.5">총 24건의 긱워크 완료 · 지각/노쇼 0건 · D-GCS 980점 달성</p>
               </div>
-              <span className="text-[10.5px] font-black px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+              <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-orange-50 text-[#FB521C] border border-orange-200 shrink-0">
                 총 24회 완수
               </span>
             </div>
 
             {/* 수익 & 투자 종합 요약 3대 전광판 */}
-            <div className="grid grid-cols-3 gap-2 text-center bg-gradient-to-br from-slate-900 to-[#0F172A] p-3.5 rounded-2xl text-white shadow-inner">
-              <div className="border-r border-slate-800 pr-1">
-                <p className="text-[10px] text-slate-400 font-bold">총 긱워크 수입</p>
-                <p className="text-sm font-black text-white mt-0.5">₩1,420,000</p>
-                <p className="text-[9px] text-emerald-400 mt-0.5">0.1초 입금 완료</p>
+            <div className="grid grid-cols-3 gap-2 text-center bg-slate-50 p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+              <div className="border-r border-slate-200 pr-1">
+                <p className="text-[10px] text-slate-500 font-bold">총 긱워크 수입</p>
+                <p className="text-sm font-black text-slate-900 mt-0.5">₩1,420,000</p>
+                <p className="text-[9px] text-[#FB521C] font-medium mt-0.5">0.1초 정산</p>
               </div>
-              <div className="border-r border-slate-800 px-1">
-                <p className="text-[10px] text-purple-300 font-bold">총 증권/연금 투자</p>
-                <p className="text-sm font-black text-purple-300 mt-0.5">₩128,500</p>
-                <p className="text-[9px] text-purple-200 mt-0.5">ETF+연금 적립</p>
+              <div className="border-r border-slate-200 px-1">
+                <p className="text-[10px] text-purple-700 font-bold">증권/연금 투자</p>
+                <p className="text-sm font-black text-purple-700 mt-0.5">₩128,500</p>
+                <p className="text-[9px] text-purple-600 font-medium mt-0.5">ETF+연금</p>
               </div>
               <div className="pl-1">
-                <p className="text-[10px] text-amber-300 font-bold">점주 수수료 지원</p>
-                <p className="text-sm font-black text-amber-400 mt-0.5">₩10,200</p>
-                <p className="text-[9px] text-amber-300 mt-0.5">5% 시너지 매칭</p>
+                <p className="text-[10px] text-amber-700 font-bold">점주 수수료 지원</p>
+                <p className="text-sm font-black text-amber-700 mt-0.5">₩10,200</p>
+                <p className="text-[9px] text-amber-600 font-medium mt-0.5">5% 시너지</p>
               </div>
             </div>
 
@@ -3485,30 +3476,29 @@ export default function ShinhanDDangApp() {
         `}</style>
 
         {/* 상단 헤더 & 역할 모드 스위처 */}
-      <header className="sticky top-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 shadow-xs">
-        <div className="flex items-center justify-between px-2 sm:px-3 py-1.5 gap-1 w-full overflow-hidden">
+      <header className="sticky top-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
+        <div className="flex items-center justify-between px-2 sm:px-3 py-2 gap-1 w-full overflow-hidden">
           {/* 로고 및 역할 스위처 */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 min-w-0">
-            <div className="flex items-center gap-1 shrink-0">
-              <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-br from-[#0046FF] to-[#0022AA] border border-blue-300/50 flex items-center justify-center shadow-xs text-white text-[9.5px] font-black shrink-0">
-                🏛️
-              </div>
-              <div className="whitespace-nowrap leading-none shrink-0">
-                <p className="text-[7px] font-black text-[#0046FF] tracking-widest uppercase leading-none hidden xs:block">Shinhan BaaS</p>
-                <h1 className="font-black text-[11px] sm:text-xs text-[#0F172A] leading-none whitespace-nowrap mt-0.5">땡겨요 웍스</h1>
-              </div>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="bg-[#FB521C] text-white text-[10px] font-black px-2 py-0.5 rounded-lg shadow-xs">
+                웍스
+              </span>
+              <h1 className="font-bold text-xs sm:text-sm text-slate-900 tracking-tight leading-none whitespace-nowrap">
+                땡겨요 WORKS
+              </h1>
             </div>
             
             {/* 동적 역할 모드 스위처 캡슐 버튼 (워커 / 점주 / 관리자 3가지 스위칭) */}
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0 gap-0.5">
+            <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0 gap-0.5 ml-1">
               <button
                 onClick={() => {
                   setUserRole('worker');
                   setActiveTab('agent');
                 }}
-                className={`px-1.5 py-0.5 rounded-full text-[8px] sm:text-[8.5px] font-black transition-all whitespace-nowrap ${
+                className={`px-2 py-0.5 rounded-full text-[8.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'worker'
-                    ? 'bg-[#FF5517] text-white shadow-xs'
+                    ? 'bg-[#FB521C] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -3519,9 +3509,9 @@ export default function ShinhanDDangApp() {
                   setUserRole('employer');
                   setActiveTab('employer');
                 }}
-                className={`px-1.5 py-0.5 rounded-full text-[8px] sm:text-[8.5px] font-black transition-all whitespace-nowrap ${
+                className={`px-2 py-0.5 rounded-full text-[8.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'employer'
-                    ? 'bg-[#0046FF] text-white shadow-xs'
+                    ? 'bg-slate-900 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -3532,13 +3522,13 @@ export default function ShinhanDDangApp() {
                   setUserRole('admin');
                   setActiveTab('admin');
                 }}
-                className={`px-1.5 py-0.5 rounded-full text-[8px] sm:text-[8.5px] font-black transition-all whitespace-nowrap ${
+                className={`px-2 py-0.5 rounded-full text-[8.5px] font-black transition-all whitespace-nowrap ${
                   userRole === 'admin'
-                    ? 'bg-gradient-to-r from-[#0046FF] to-indigo-600 text-white shadow-xs'
+                    ? 'bg-indigo-600 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                💻 관리자
+                ⚙️ 관리자
               </button>
             </div>
           </div>
@@ -3858,7 +3848,7 @@ export default function ShinhanDDangApp() {
               onClick={() => setActiveTab(id)}
               className={`flex flex-col items-center justify-center gap-0.5 py-1 px-0.5 rounded-2xl transition-all active:scale-90 ${
                 activeTab === id
-                  ? 'text-[#FF5517]'
+                  ? 'text-[#FB521C]'
                   : 'text-slate-400 hover:text-slate-600'
               }`}
             >
@@ -3871,7 +3861,7 @@ export default function ShinhanDDangApp() {
               </div>
               <span className={`text-[9.5px] font-black tracking-tight leading-none text-center ${
                 activeTab === id
-                  ? 'text-[#FF5517]'
+                  ? 'text-[#FB521C]'
                   : 'text-slate-400'
               }`}>
                 {label}

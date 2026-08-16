@@ -288,7 +288,7 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
 
   return (
     <>
-      <div className="relative w-full h-full overflow-hidden bg-[#0F172A]">
+      <div className="relative w-full h-full overflow-hidden bg-slate-100">
         {/* 모드 토글 (제거됨) */}
 
         {/* 내 위치 가기 FAB */}
@@ -300,45 +300,45 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
               exit={{ opacity: 0, scale: 0.8 }}
               whileTap={{ scale: 0.9 }}
               onClick={centerToUser}
-              className="absolute bottom-6 right-4 z-10 bg-white/90 backdrop-blur-md p-3.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/50 text-[#FF5517] hover:bg-white transition-colors"
+              className="absolute bottom-6 right-4 z-10 bg-white/95 backdrop-blur-md p-3.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-slate-200 text-[#1D4ED8] hover:bg-white transition-colors"
             >
               <LocateFixed className="w-6 h-6" />
             </motion.button>
           )}
         </AnimatePresence>
 
-        {/* 상단 스마트 지도 컨트롤 바 (클러스터링 & 핀 모드 전환) */}
+        {/* 상단 초슬림 스마트 지도 컨트롤 바 (땡겨요 시그니처 화이트 & 레드) */}
         {isLoaded && (
-          <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
-            <div className="flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-2xl p-1 shadow-xl pointer-events-auto text-xs">
+          <div className="absolute top-2 left-2 right-2 z-20 flex items-center justify-between pointer-events-none">
+            <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full p-0.5 shadow-xs pointer-events-auto">
               <button
                 onClick={() => setPinMode(pinMode === 'compact' ? 'detailed' : 'compact')}
-                className={`px-2.5 py-1.5 rounded-xl font-extrabold flex items-center gap-1.5 transition-all text-[11px] ${
+                className={`px-2.5 py-0.5 rounded-full font-black flex items-center gap-1 transition-all text-[9.5px] ${
                   pinMode === 'compact'
-                    ? 'bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/30'
-                    : 'bg-slate-800 text-slate-300 hover:text-white'
+                    ? 'bg-[#FB521C] text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                {pinMode === 'compact' ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
-                <span>{pinMode === 'compact' ? '📍 콤팩트 핀' : '📋 상세 핀'}</span>
+                {pinMode === 'compact' ? <Minimize2 className="w-2.5 h-2.5" /> : <Maximize2 className="w-2.5 h-2.5" />}
+                <span>{pinMode === 'compact' ? '콤팩트' : '상세'}</span>
               </button>
 
               <button
                 onClick={() => setIsClustered(!isClustered)}
-                className={`px-2.5 py-1.5 rounded-xl font-extrabold flex items-center gap-1.5 transition-all text-[11px] ${
+                className={`px-2 py-0.5 rounded-full font-black flex items-center gap-1 transition-all text-[9.5px] ${
                   isClustered
-                    ? 'bg-slate-800 text-amber-400 border border-amber-500/40 shadow-sm'
-                    : 'bg-slate-900/60 text-slate-400 border border-slate-700/50'
+                    ? 'bg-orange-50 text-[#FB521C] border border-orange-200'
+                    : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
-                <Layers className="w-3.5 h-3.5 text-amber-400" />
-                <span>{isClustered ? '🧩 그룹화 ON' : '🧩 그룹화 OFF'}</span>
+                <Layers className="w-2.5 h-2.5" />
+                <span>{isClustered ? '그룹 ON' : '그룹 OFF'}</span>
               </button>
             </div>
 
-            <div className="bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-2xl px-3 py-1.5 text-[10.5px] font-black text-slate-300 shadow-xl pointer-events-auto flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>주변 긱 <strong className="text-orange-400">{gigs.length}개</strong> 가동 중</span>
+            <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full px-2.5 py-0.5 text-[9.5px] font-bold text-slate-700 shadow-xs pointer-events-auto flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span><strong className="text-[#FB521C] font-black">{gigs.length}개</strong> 긱 가동</span>
             </div>
           </div>
         )}
@@ -367,13 +367,13 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
                   className="relative flex items-center justify-center w-6 h-6 cursor-pointer"
                   onClick={centerToUser}
                 >
-                  <div className="absolute w-full h-full bg-blue-400 rounded-full animate-ping opacity-75" />
-                  <div className="relative w-3 h-3 bg-blue-600 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.8)] border-2 border-white" />
+                  <div className="absolute w-full h-full bg-orange-400 rounded-full animate-ping opacity-75" />
+                  <div className="relative w-3 h-3 bg-[#FB521C] rounded-full shadow-[0_0_10px_rgba(251,82,28,0.8)] border-2 border-white" />
                 </div>
               </CustomOverlayMap>
             )}
 
-            {/* 긱 마커 클러스터링 및 오버레이 렌더링 */}
+            {/* 긱 마커 클러스터링 및 오버레이 렌더링 (땡겨요 스타일) */}
             {(() => {
               const markerElements = gigs.map(gig => {
                 const isSelected = selectedGig?.id === gig.id || (selectedGigId && (gig.id === selectedGigId || gig.id === selectedGigId.replace('ag', 'g')));
@@ -404,18 +404,20 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
                         showCompact ? 'px-2.5 py-1 rounded-full' : 'px-3 py-1.5 rounded-2xl'
                       } ${
                         isSelected
-                          ? 'ring-4 ring-amber-400 ring-offset-2 ring-offset-slate-900 scale-125 z-40 shadow-[0_0_30px_rgba(251,191,36,0.9)] animate-pulse'
+                          ? 'ring-4 ring-[#FB521C] ring-offset-2 ring-offset-white scale-125 z-40 shadow-[0_4px_25px_rgba(251,82,28,0.4)]'
                           : ''
                       } ${
-                        isHighlighted ? 'ring-4 ring-emerald-400 ring-offset-1 scale-110 shadow-[0_0_25px_rgba(16,185,129,0.8)] z-30 animate-pulse' : ''
+                        isHighlighted ? 'ring-4 ring-emerald-500 ring-offset-1 scale-110 shadow-[0_4px_20px_rgba(16,185,129,0.4)] z-30' : ''
                       } ${
                         gig.is_surge
-                          ? 'bg-gradient-to-r from-red-600 via-red-500 to-rose-600 text-white border border-red-400/80 shadow-[0_4px_16px_rgba(220,38,38,0.65)] z-20'
-                          : 'bg-[#09090B] text-white border border-zinc-700/90 shadow-md'
+                          ? 'bg-gradient-to-r from-[#FB521C] via-[#F97316] to-[#EF4444] text-white border-2 border-white shadow-[0_4px_16px_rgba(251,82,28,0.4)] z-20'
+                          : 'bg-white text-slate-900 border border-slate-200/90 shadow-[0_4px_14px_rgba(0,0,0,0.08)] hover:border-[#FB521C]'
                       }`}
                     >
                       {/* 금액 및 타이틀 */}
-                      <div className="font-black text-xs leading-tight tracking-tight flex items-center gap-1">
+                      <div className={`font-black text-xs leading-tight tracking-tight flex items-center gap-1 ${
+                        gig.is_surge ? 'text-white' : 'text-slate-900'
+                      }`}>
                         {showCompact ? (
                           gig.is_surge ? `🔥 ${formatWageCompact(gig.hourly_wage)}` : `₩${formatWageCompact(gig.hourly_wage)}`
                         ) : (
@@ -426,7 +428,7 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
                       {/* 상세 모드에서만 시간대 텍스트 표시 */}
                       {!showCompact && (
                         <div className={`text-[9px] font-bold mt-0.5 px-1.5 py-0.2 rounded whitespace-nowrap tracking-tighter ${
-                          gig.is_surge ? 'bg-black/50 text-yellow-300' : 'bg-zinc-800 text-zinc-300'
+                          gig.is_surge ? 'bg-black/20 text-yellow-100' : 'bg-slate-100 text-slate-600'
                         }`}>
                           {gig.is_surge ? `🚨 임박 (${gig.startTime}-${gig.endTime})` : `🕐 ${gig.startTime}-${gig.endTime}`}
                         </div>
@@ -434,7 +436,7 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
 
                       {/* 말풍선 꼬리 */}
                       <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 ${
-                        gig.is_surge ? 'bg-rose-600 border-r border-b border-red-400' : 'bg-[#09090B] border-r border-b border-zinc-700'
+                        gig.is_surge ? 'bg-[#EF4444] border-r border-b border-white' : 'bg-white border-r border-b border-slate-200'
                       }`} />
                     </motion.div>
                   </CustomOverlayMap>
@@ -451,14 +453,14 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
                     {
                       width: '46px',
                       height: '46px',
-                      background: 'linear-gradient(135deg, #FF5517 0%, #E04106 100%)',
+                      background: 'linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%)',
                       borderRadius: '23px',
                       color: '#ffffff',
                       textAlign: 'center',
                       fontWeight: '900',
                       lineHeight: '46px',
                       fontSize: '13px',
-                      boxShadow: '0 8px 24px rgba(255,85,23,0.65), 0 0 0 3px rgba(255,255,255,0.9)',
+                      boxShadow: '0 8px 24px rgba(29,78,216,0.45), 0 0 0 3px rgba(255,255,255,0.95)',
                       cursor: 'pointer',
                     }
                   ]}
@@ -471,7 +473,7 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
             })()}
           </Map>
         ) : (
-          <div className="flex items-center justify-center w-full h-full bg-[#0F172A]">
+          <div className="flex items-center justify-center w-full h-full bg-slate-100">
             <div className="animate-spin w-8 h-8 border-4 border-blue-500/30 border-t-blue-500 rounded-full" />
           </div>
         )}
