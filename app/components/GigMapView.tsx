@@ -190,10 +190,10 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
           fetchGigs(loc.lat, loc.lng);
         },
         (error) => {
-          console.warn('Geolocation failed', error);
+          console.info('Geolocation notice: Using default center (Gangnam).', error?.message || error);
           fetchGigs(mapCenter.lat, mapCenter.lng);
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
       );
     } else {
       fetchGigs(mapCenter.lat, mapCenter.lng);
@@ -258,14 +258,14 @@ export default function GigMapView({ initialCenter, onGigSelect, selectedGigId, 
           }
         },
         (error) => {
-          console.warn('Geolocation error:', error);
+          console.info('Geolocation notice: Center fallback to default.', error?.message || error);
           if (userLocation && map && window.kakao?.maps) {
             map.panTo(new window.kakao.maps.LatLng(userLocation.lat, userLocation.lng));
           } else if (map && window.kakao?.maps) {
             map.panTo(new window.kakao.maps.LatLng(mapCenter.lat, mapCenter.lng));
           }
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
       );
     } else if (userLocation && map && window.kakao?.maps) {
       map.panTo(new window.kakao.maps.LatLng(userLocation.lat, userLocation.lng));
