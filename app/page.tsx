@@ -10,6 +10,7 @@ import {
   AlertCircle, ChevronDown, Copy, LogOut, ExternalLink,
   Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2, Camera, X, Check, RefreshCw,
   MessageSquare, Users, UserCheck, Star, Navigation, Award, Search, SlidersHorizontal, Info, PieChart,
+  Bell,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useWallet } from './hooks/useWallet';
@@ -35,6 +36,7 @@ const HealthCertModal = dynamic(() => import('./components/HealthCertModal'), { 
 const GpsCheckInModal = dynamic(() => import('./components/GpsCheckInModal'), { ssr: false });
 const OneShinhanSynergyDetailModal = dynamic(() => import('./components/OneShinhanSynergyDetailModal'), { ssr: false });
 const WorkerProfileDetailModal = dynamic(() => import('./components/WorkerProfileDetailModal'), { ssr: false });
+const LiveNotificationModal = dynamic(() => import('./components/LiveNotificationModal'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -680,30 +682,6 @@ function AgentTab() {
                 <span>지도 메인으로 (접기)</span>
                 <span className="text-amber-400">▼</span>
               </button>
-            </div>
-
-            {/* 🔥 [AI 대화창 내부 통합] 실시간 핫스팟 현황판 및 Trojan 전략 바 */}
-            <div className="shrink-0 space-y-1.5 mb-2">
-              {/* 실시간 핫스팟 마키 티커 */}
-              <div className="bg-slate-950 border border-blue-500/40 rounded-xl px-3 py-1.5 flex items-center justify-between gap-2 shadow-inner">
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-                  </span>
-                  <AnimatePresence mode="wait">
-                    <motion.p
-                      key={notificationIdx}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      className="text-[10.5px] font-bold text-amber-300 truncate"
-                    >
-                      {LIVE_NOTIFICATIONS[notificationIdx]}
-                    </motion.p>
-                  </AnimatePresence>
-                </div>
-              </div>
             </div>
 
             {/* 채팅 영역 */}
@@ -3602,6 +3580,7 @@ export default function ShinhanDDangApp() {
   const [showWalletPopup, setShowWalletPopup] = useState(false);
   const [showWalletDropdown, setShowWalletDropdown] = useState(false);
   const [showWorkerProfileModal, setShowWorkerProfileModal] = useState(false);
+  const [showLiveNotificationModal, setShowLiveNotificationModal] = useState(false);
   const [healthCertVerified, setHealthCertVerified] = useState(true);
   const [showHealthCertModal, setShowHealthCertModal] = useState(false);
 
@@ -3714,8 +3693,20 @@ export default function ShinhanDDangApp() {
             </div>
           </div>
 
-          {/* 우측 조이수 워커 프로필 & D-GCS/지갑 정보 영역 */}
-          <div className="flex items-center gap-1.5 shrink-0">
+          {/* 우측 조이수 워커 프로필 & 알림 & D-GCS/지갑 정보 영역 */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            {/* 🔔 실시간 정산/에스크로 알림 아이콘 (건수 배지 표시 및 클릭 시 상세 모달) */}
+            <button
+              onClick={() => setShowLiveNotificationModal(true)}
+              className="relative w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 flex items-center justify-center text-slate-700 transition-all border border-slate-200 shrink-0 cursor-pointer"
+              title="실시간 알림 센터 (5건)"
+            >
+              <Bell className="w-3.5 h-3.5 text-slate-700" />
+              <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-red-500 text-white font-black text-[8.5px] flex items-center justify-center shadow-xs animate-pulse">
+                5
+              </span>
+            </button>
+
             {/* 👤 조이수 프로필 캡슐 버튼 (이름만 표시, 클릭 시 상세 팝업) */}
             <button
               onClick={() => setShowWorkerProfileModal(true)}
@@ -4080,6 +4071,12 @@ export default function ShinhanDDangApp() {
           healthCertVerified={healthCertVerified}
           onOpenHealthCertModal={() => setShowHealthCertModal(true)}
           solcBalance={solcBalance}
+        />
+
+        {/* 🔔 상단 우측 알림 벨 클릭 시 표출되는 실시간 알림 센터 모달 */}
+        <LiveNotificationModal
+          isOpen={showLiveNotificationModal}
+          onClose={() => setShowLiveNotificationModal(false)}
         />
       </div>
     </div>
