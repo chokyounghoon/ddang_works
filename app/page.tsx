@@ -33,6 +33,7 @@ const InstantContractModal = dynamic(() => import('./components/InstantContractM
 const CheckoutScreen = dynamic(() => import('./components/CheckoutScreen'), { ssr: false });
 const HealthCertModal = dynamic(() => import('./components/HealthCertModal'), { ssr: false });
 const GpsCheckInModal = dynamic(() => import('./components/GpsCheckInModal'), { ssr: false });
+const OneShinhanSynergyDetailModal = dynamic(() => import('./components/OneShinhanSynergyDetailModal'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -2517,6 +2518,8 @@ function MyPageScreen({
   const certInputRef = useRef<HTMLInputElement>(null);
   const [isCheckedInMyPage, setIsCheckedInMyPage] = useState(false);
   const [showGpsCheckInModal, setShowGpsCheckInModal] = useState(false);
+  const [showSynergyModal, setShowSynergyModal] = useState(false);
+  const [selectedAffiliateId, setSelectedAffiliateId] = useState('bank');
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -2793,162 +2796,243 @@ function MyPageScreen({
             )}
           </div>
 
-          {/* 1. 🏦 신한은행 주거래 모계좌 & 에스크로 현황 카드 */}
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-md p-5 space-y-3.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center font-black text-blue-600 text-sm">
-                  🏦
+          {/* 🏛️ 1. [핵심] One-Shinhan 7대 금융 계열사 시너지 혜택 종합 허브 (Grand Synergy Ledger) */}
+          <div className="bg-gradient-to-br from-[#0c1a30] via-slate-900 to-[#071322] border-2 border-blue-500/40 rounded-3xl p-5 text-white shadow-xl space-y-4 relative overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black shadow-lg shadow-blue-500/30">
+                  🏛️
                 </div>
                 <div>
-                  <h4 className="font-black text-sm text-slate-900">신한은행 주거래 모계좌 현황</h4>
-                  <p className="text-[10px] text-slate-400">110-482-****** (CASA 저원가성 예금 연동)</p>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                      One-Shinhan Synergy
+                    </span>
+                    <span className="text-[9.5px] text-slate-400 font-mono">
+                      SH-7-ECOSYSTEM
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-black text-white mt-0.5">
+                    One-Shinhan 7대 금융사 실시간 수혜 현황
+                  </h3>
                 </div>
               </div>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                우대금리 3.2% 적용
+
+              <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 shrink-0">
+                <Sparkles className="w-3 h-3 text-amber-300" /> 총 ₩348,200 수혜
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="bg-slate-50 rounded-2xl p-3 border border-slate-100">
-                <p className="text-[10px] text-slate-400 font-bold">현재 은행 입출금 잔액</p>
-                <p className="text-base font-black text-slate-900 mt-0.5">₩3,450,000</p>
-                <p className="text-[9px] text-emerald-600 mt-1">✓ 0.1초 즉시정산 모계좌 입금 완료</p>
-              </div>
-              <div className="bg-amber-50/60 rounded-2xl p-3 border border-amber-200/60">
-                <p className="text-[10px] text-amber-700 font-bold">노쇼 방지 에스크로 락업</p>
-                <p className="text-base font-black text-amber-800 mt-0.5">
-                  {matched ? '₩10,000' : '₩0'}
-                </p>
-                <p className="text-[9px] text-amber-700 mt-1">
-                  {matched ? '🔒 스마트계약 원장 예치 중' : '✓ 출근 시 0.1초 즉시 해제'}
-                </p>
-              </div>
-            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              조이수님이 땡겨요 WORKS에서 긱을 뛸 때마다 <strong>점주 지불 5% 수수료와 신한 7대 금융 계열사 인프라</strong>가 결합되어 <strong>즉시정산·보험·투자·연금·신용 혜택</strong>으로 100% 자동 환원됩니다.
+            </p>
 
-            {matched && (
-              <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3 text-xs text-amber-200 space-y-1">
-                <p className="font-bold text-amber-300 text-[11px] flex items-center gap-1">
-                  <Lock className="w-3.5 h-3.5" /> 신한은행 에스크로 락업 상태 안내
-                </p>
-                <p className="text-[10px] text-slate-300 leading-normal">
-                  오늘 스타벅스 강남2호점 매칭 건으로 <strong>₩10,000</strong>이 에스크로에 예치되었습니다. 매장에 도착하여 앱으로 [출근 스와이프]를 수행하면 0.1초 만에 락업이 해제되며 정상 반환됩니다.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* 2. 📈 신한투자증권 잔돈 & 점주 시너지 수수료 지원 자동 투자 현황 */}
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-md p-5 space-y-3.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center font-black text-purple-600 text-sm">
-                  📈
-                </div>
-                <div>
-                  <h4 className="font-black text-sm text-slate-900">신한투자증권 자동 투자 포트폴리오</h4>
-                  <p className="text-[10px] text-slate-500 font-medium">점주 지불 수수료 지원금(₩425) + 알바비 잔돈(₩400) 매칭 투자</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
-                수익률 +4.8%
-              </span>
-            </div>
-
-            <div className="bg-purple-50/60 border border-purple-200 rounded-2xl p-3.5 flex items-center justify-between shadow-xs">
-              <div>
-                <p className="text-[10px] text-purple-700 font-bold">누적 신한투자증권 ETF 자산</p>
-                <p className="text-lg font-black text-slate-900 mt-0.5">₩48,500 <span className="text-xs text-emerald-600 font-bold font-mono">(+₩2,230)</span></p>
-              </div>
-              <button 
-                onClick={() => setShowPortfolioModal(true)}
-                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] rounded-xl shadow-xs transition-all active:scale-95 flex items-center gap-1 shrink-0"
+            {/* 7대 금융사 인터랙티브 카드 그리드 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+              {/* ① 신한은행 */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('bank');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-blue-500/30 hover:border-blue-400/60 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm"
               >
-                <TrendingUp className="w-3.5 h-3.5" />
-                <span>포트폴리오 변경</span>
-              </button>
-            </div>
-
-            {/* 재원 구성안 안내 칩 */}
-            <div className="grid grid-cols-2 gap-2 text-[10.5px]">
-              <div className="bg-purple-50 border border-purple-100 rounded-xl p-2 font-medium">
-                <span className="text-purple-700 font-bold block">🏪 점주 지불 수수료 지원</span>
-                <span className="text-slate-700 font-bold">매 긱당 ₩425 (50%)</span>
-              </div>
-              <div className="bg-orange-50 border border-orange-100 rounded-xl p-2 font-medium">
-                <span className="text-[#FB521C] font-bold block">💸 알바비 잔돈 스윕</span>
-                <span className="text-slate-700 font-bold">매 긱당 ₩400 (자투리)</span>
-              </div>
-            </div>
-
-            {/* 투자 종목 세부 리스트 */}
-            <div className="space-y-2 text-xs">
-              <div className="bg-purple-50/50 p-2.5 rounded-xl border border-purple-200 flex justify-between items-center shadow-xs">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-lg shrink-0">{activeProduct.icon}</span>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <p className="font-bold text-slate-900 truncate">{activeProduct.name}</p>
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-purple-600 text-white shrink-0">
-                        선택됨
-                      </span>
-                    </div>
-                    <p className="text-[9.5px] text-purple-700 font-medium truncate mt-0.5">{activeProduct.desc}</p>
-                  </div>
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-blue-300 flex items-center gap-1.5">
+                    🏦 신한은행
+                  </span>
+                  <span className="text-[10px] text-indigo-300 font-mono font-bold">
+                    ₩124,500 수혜
+                  </span>
                 </div>
-                <div className="text-right shrink-0 pl-2">
-                  <p className="font-bold text-slate-900">₩32,100</p>
-                  <p className="text-[9.5px] text-emerald-600 font-bold">{activeProduct.yield}</p>
+                <div className="space-y-1 text-slate-300 text-[11px]">
+                  <p className="font-black text-white text-xs">CASA 모계좌 0.1초 즉시 입금</p>
+                  <p className="text-slate-400 text-[10px]">110-482-****** (급여이체 우대금리 3.2% 적용)</p>
+                </div>
+                <div className="flex items-center justify-between text-[9.5px] text-blue-400 pt-1 border-t border-slate-800/80">
+                  <span>PG 수수료 ₩0 전액 면제</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
 
-              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="text-base">🏢</span>
+              {/* ② 신한투자증권 */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('invest');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-purple-500/30 hover:border-purple-400/60 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-purple-300 flex items-center gap-1.5">
+                    📈 신한투자증권
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-mono font-bold">
+                    ₩48,500 (+4.8%)
+                  </span>
+                </div>
+                <div className="space-y-1 text-slate-300 text-[11px]">
+                  <p className="font-black text-white text-xs">{selectedPortfolio} ETF 스윕</p>
+                  <p className="text-slate-400 text-[10px]">점주 지원금(₩425) + 잔돈(₩400) 자동 매칭 투자</p>
+                </div>
+                <div className="flex items-center justify-between text-[9.5px] text-purple-400 pt-1 border-t border-slate-800/80">
+                  <span>부동산 STO 조각투자 15주</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+
+              {/* ③ 신한EZ손해보험 */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('ez');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-cyan-500/30 hover:border-cyan-400/60 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-cyan-300 flex items-center gap-1.5">
+                    🛡️ 신한EZ손해보험
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-mono font-bold">
+                    ₩84,000 보장
+                  </span>
+                </div>
+                <div className="space-y-1 text-slate-300 text-[11px]">
+                  <p className="font-black text-white text-xs">초단기 마이크로 상해/배상책임</p>
+                  <p className="text-slate-400 text-[10px]">비급여 치료비 1,000만원 + 대물 배상 5,000만원</p>
+                </div>
+                <div className="flex items-center justify-between text-[9.5px] text-cyan-400 pt-1 border-t border-slate-800/80">
+                  <span>점주 5% 수수료로 100% 무상 가입</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+
+              {/* ④ 신한카드 */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('card');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-pink-500/30 hover:border-pink-400/60 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-pink-300 flex items-center gap-1.5">
+                    💳 신한카드
+                  </span>
+                  <span className="text-[10px] text-indigo-300 font-mono font-bold">
+                    ACS 875점 (상위 2%)
+                  </span>
+                </div>
+                <div className="space-y-1 text-slate-300 text-[11px]">
+                  <p className="font-black text-white text-xs">대안신용 기반 신용한도 +250만원</p>
+                  <p className="text-slate-400 text-[10px]">근태 100% 빅데이터로 씬파일러 신용 등급 상향</p>
+                </div>
+                <div className="flex items-center justify-between text-[9.5px] text-pink-400 pt-1 border-t border-slate-800/80">
+                  <span>가맹점 2.0% 상생 캐시백</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+
+              {/* ⑤ 신한라이프 */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('life');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-emerald-500/30 hover:border-emerald-400/60 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-emerald-300 flex items-center gap-1.5">
+                    🌱 신한라이프
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-mono font-bold">
+                    ₩12,400 연금 적립
+                  </span>
+                </div>
+                <div className="space-y-1 text-slate-300 text-[11px]">
+                  <p className="font-black text-white text-xs">1% 마이크로 연금 자동 적립</p>
+                  <p className="text-slate-400 text-[10px]">GPS 동선 헬스케어 생체 DB 연동 추가 리워드</p>
+                </div>
+                <div className="flex items-center justify-between text-[9.5px] text-emerald-400 pt-1 border-t border-slate-800/80">
+                  <span>18시간 초단기 상해보장 무상</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+
+              {/* ⑥ 신한저축은행 & 캐피탈 */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('savingsCapital');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-orange-500/30 hover:border-orange-400/60 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-orange-300 flex items-center gap-1.5">
+                    💰 신한저축은행/캐피탈
+                  </span>
+                  <span className="text-[10px] text-amber-300 font-mono font-bold">
+                    Cascade 스탠바이
+                  </span>
+                </div>
+                <div className="space-y-1 text-slate-300 text-[11px]">
+                  <p className="font-black text-white text-xs">연 8.5% 중금리 대출 즉시 전환</p>
+                  <p className="text-slate-400 text-[10px]">은행 대출 탈락 방지 포용금융 + 서빙로봇 B2B 리스</p>
+                </div>
+                <div className="flex items-center justify-between text-[9.5px] text-orange-400 pt-1 border-t border-slate-800/80">
+                  <span>성실 근무 시 금리 1.5%p 자동 인하</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+
+              {/* ⑦ 신한DS (Gov-Tech) */}
+              <div 
+                onClick={() => {
+                  setSelectedAffiliateId('ds');
+                  setShowSynergyModal(true);
+                }}
+                className="bg-slate-950/80 hover:bg-slate-900 border border-slate-700 hover:border-slate-500 rounded-2xl p-3.5 space-y-2 cursor-pointer transition-all active:scale-[0.99] group shadow-sm sm:col-span-2"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                  <span className="font-bold text-slate-200 flex items-center gap-1.5">
+                    ⚙️ 신한DS (Gov-Tech & PoA 블록체인)
+                  </span>
+                  <span className="text-[10px] text-blue-300 font-mono font-bold">
+                    BATCH 100% 자동 대행
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300 text-[11px]">
                   <div>
-                    <p className="font-bold text-slate-800">신한 STO 강남 타워 조각투자</p>
-                    <p className="text-[9px] text-slate-400">부동산 블록체인 토큰증권 15주</p>
+                    <p className="font-black text-white text-xs">국세청 홈택스 일용근로소득 지급명세서</p>
+                    <p className="text-slate-400 text-[10px]">1일 15만원 비과세 자동 판정 ➔ 원천징수 세금 0원</p>
+                  </div>
+                  <div>
+                    <p className="font-black text-white text-xs">근로복지공단 4대보험 EDI BATCH</p>
+                    <p className="text-slate-400 text-[10px]">월 15시간 미만 초단기 예외 처리 준수</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-slate-900">₩16,400</p>
-                  <p className="text-[9px] text-emerald-600 font-bold">+4.0%</p>
+                <div className="flex items-center justify-between text-[9.5px] text-slate-400 pt-1 border-t border-slate-800/80">
+                  <span>신한DS PoA 분산원장 D-GCS 980점 평판 영구 박제</span>
+                  <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* 3. 💳 신한카드 대안신용(ACS) & 🌿 신한라이프 마이크로 연금 */}
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            {/* 신한카드 ACS */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-4 space-y-2">
-              <div className="flex items-center gap-1.5 text-blue-600">
-                <CreditCard className="w-4 h-4" />
-                <span className="font-bold text-xs text-slate-900">신한카드 ACS</span>
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-400">대안신용점수 평가</p>
-                <p className="text-sm font-bold text-blue-600 mt-0.5">875점 <span className="text-[9px] text-slate-500 font-normal">(상위 2%)</span></p>
-              </div>
-              <div className="bg-blue-50 p-2 rounded-xl border border-blue-100 text-[10px] text-blue-800">
-                💳 우대 대출 한도: <strong>+₩2,500,000</strong> 증액
-              </div>
-            </div>
-
-            {/* 신한라이프 연금 */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-4 space-y-2">
-              <div className="flex items-center gap-1.5 text-emerald-600">
-                <ShieldCheck className="w-4 h-4" />
-                <span className="font-bold text-xs text-slate-900">신한라이프 연금</span>
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-400">1% 자동 적립 연금</p>
-                <p className="text-sm font-bold text-emerald-600 mt-0.5">₩12,400 <span className="text-[9px] text-slate-500 font-normal">적립</span></p>
-              </div>
-              <div className="bg-emerald-50 p-2 rounded-xl border border-emerald-100 text-[10px] text-emerald-800">
-                ☂️ 18시간 초단기 상해보험 <strong>무상 보장</strong>
-              </div>
+            {/* 하단 금융 증명서 통합 발급 버튼 */}
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+              <span className="text-[10px] text-slate-400">
+                * 카드를 클릭하면 계열사별 상세 혜택 내역과 원장을 확인할 수 있습니다.
+              </span>
+              <button
+                onClick={() => {
+                  setSelectedAffiliateId('bank');
+                  setShowSynergyModal(true);
+                }}
+                className="py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1 active:scale-95 transition-all shrink-0"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>7대 금융 혜택 종합 증명서</span>
+              </button>
             </div>
           </div>
 
@@ -3401,6 +3485,13 @@ function MyPageScreen({
             storeRole="12:00 ~ 13:00 (1시간 물류 알바)"
             storeLat={37.5000}
             storeLng={127.0365}
+          />
+
+          {/* 🏛️ One-Shinhan 7대 금융 계열사 시너지 상세 명세 및 증명서 모달 */}
+          <OneShinhanSynergyDetailModal
+            isOpen={showSynergyModal}
+            onClose={() => setShowSynergyModal(false)}
+            initialAffiliateId={selectedAffiliateId}
           />
         </motion.div>
       ) : (
