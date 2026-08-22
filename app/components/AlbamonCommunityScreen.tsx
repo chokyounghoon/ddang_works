@@ -144,6 +144,9 @@ export default function AlbamonCommunityScreen() {
     if (!matchesSearch) return false;
     if (categoryFilter === 'ALL') return true;
     if (categoryFilter === 'POPULAR') return post.isHot || post.likes >= 40;
+    if (categoryFilter === 'HEARTWARMING') {
+      return post.id.startsWith('post-heart-') || post.title.includes('실화') || post.title.includes('감동') || post.title.includes('눈물') || post.categoryLabel.includes('💖');
+    }
     return post.category === categoryFilter;
   });
 
@@ -177,6 +180,41 @@ export default function AlbamonCommunityScreen() {
         </button>
       </div>
 
+      {/* ─── 💖 심금을 울리는 땡겨요 웍스 5대 상생 감동 스토리 스포트라이트 ─── */}
+      <div className="bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 p-3.5 text-white shrink-0 border-b border-slate-800 relative overflow-hidden">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5">
+            <span className="w-5 h-5 rounded-full bg-rose-500/30 border border-rose-400/50 flex items-center justify-center text-rose-300 text-xs">
+              💖
+            </span>
+            <span className="text-[11px] font-black text-white tracking-tight">
+              심금을 울리는 땡겨요 웍스 기적의 실화 & 상생 가치
+            </span>
+          </div>
+          <span className="text-[9.5px] font-bold text-rose-300">실화 5선</span>
+        </div>
+
+        {/* 가로 스크롤 감동 스토리 칩 카드 */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+          {[
+            { id: 'post-heart-1', tag: '🍼 미혼부의 눈물', title: '0.1초 정산이 구한 아기 해열제와 분유', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-200' },
+            { id: 'post-heart-2', tag: '🍗 점주의 감사', title: '알바몬 60만원 노쇼 지옥 ➔ 8개월 노쇼 0건', color: 'from-amber-500/20 to-orange-500/20 border-amber-400/40 text-amber-200' },
+            { id: 'post-heart-3', tag: '🏥 무상 안전망', title: '손가락 부상 당일 병원비 100% 무상 케어', color: 'from-cyan-500/20 to-blue-500/20 border-cyan-400/40 text-cyan-200' },
+            { id: 'post-heart-4', tag: '🌱 청년 자립', title: '알바비 끝전(800원) 모아 대학교 등록금 완납', color: 'from-emerald-500/20 to-teal-500/20 border-emerald-400/40 text-emerald-200' },
+            { id: 'post-heart-5', tag: '👵 할머니의 편지', title: '73세 백반집 폐업 위기 막은 세무 100% 자동 대행', color: 'from-purple-500/20 to-indigo-500/20 border-purple-400/40 text-purple-200' },
+          ].map(story => (
+            <button
+              key={story.id}
+              onClick={() => setSelectedPostId(story.id)}
+              className={`bg-gradient-to-r ${story.color} border rounded-xl px-2.5 py-1.5 text-left shrink-0 max-w-[200px] hover:brightness-125 active:scale-95 transition-all cursor-pointer shadow-xs`}
+            >
+              <span className="text-[9px] font-black block tracking-wider opacity-90">{story.tag}</span>
+              <p className="text-[10.5px] font-black text-white truncate mt-0.5">{story.title}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* ─── 검색 및 카테고리 필터 바 ─── */}
       <div className="p-3 bg-white border-b border-slate-100 space-y-2 shrink-0">
         <div className="relative">
@@ -193,6 +231,7 @@ export default function AlbamonCommunityScreen() {
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
           {[
             { id: 'ALL', label: '전체피드' },
+            { id: 'HEARTWARMING', label: '💖 감동 실화' },
             { id: 'POPULAR', label: '🔥 실시간 인기' },
             { id: 'PAYOUT_REVIEW', label: '⚡ 0.1초 정산 후기' },
             { id: 'BOSS_LOUNGE', label: '🏪 점주 대나무숲' },
