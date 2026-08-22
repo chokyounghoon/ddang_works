@@ -630,28 +630,33 @@ function AgentTab() {
       {/* 1. 🤖 대화형 AI 매칭 비서 쏠이 (SOL-E 스마트 챗 바) */}
       <div className="shrink-0 z-40">
         {!isChatExpanded ? (
-          <div className="bg-gradient-to-r from-[#003db3] via-blue-900 to-slate-900 border-2 border-blue-400/60 rounded-2xl p-3 shadow-lg hover:shadow-xl transition-all flex items-center justify-between gap-2.5 text-white">
-            <div className="flex items-center gap-2.5 min-w-0 flex-1 cursor-pointer" onClick={() => setIsChatExpanded(true)}>
-              <div className="relative flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-orange-500 shrink-0 shadow-md text-slate-950 font-black text-sm">
-                <span>⚡</span>
+          <div 
+            onClick={() => setIsChatExpanded(true)}
+            className="bg-gradient-to-r from-[#003db3] via-blue-900 to-slate-900 border border-blue-400/50 rounded-2xl px-3 py-1.5 shadow-md hover:brightness-110 active:scale-98 transition-all flex items-center justify-between gap-2 text-white cursor-pointer"
+          >
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-amber-400 to-orange-500 shrink-0 shadow-xs text-slate-950 font-black text-xs flex items-center justify-center">
+                ⚡
               </div>
-              <div className="truncate flex-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black text-white tracking-wide">AI 비서 쏠이</span>
-                  <span className="text-[9px] bg-amber-400/20 text-amber-300 font-black px-2 py-0.5 rounded-full border border-amber-400/40">
-                    스마트 매칭
-                  </span>
-                  <span className="text-[9px] text-emerald-300 font-bold">🔥 1km 긴급 7건</span>
-                </div>
-                <p className="text-[11px] text-slate-200 truncate mt-0.5 font-medium">"쏠이에게 물어보기: '부평역 근처 1시간 서빙 찾아줘'"</p>
+              <div className="flex items-center gap-1.5 truncate">
+                <span className="text-xs font-black text-white tracking-tight whitespace-nowrap">AI 쏠이</span>
+                <span className="text-[9px] bg-amber-400/20 text-amber-300 font-bold px-1.5 py-0.2 rounded-full border border-amber-400/40 whitespace-nowrap">
+                  1km 긴급 7건
+                </span>
+                <span className="text-[10px] text-blue-200 truncate hidden xs:inline">
+                  "부평역 1시간 알바 찾아줘"
+                </span>
               </div>
             </div>
             <button
-              onClick={() => setIsChatExpanded(true)}
-              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md active:scale-95 transition-all shrink-0 flex items-center gap-1.5"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsChatExpanded(true);
+              }}
+              className="px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black text-[10.5px] shadow-xs active:scale-95 transition-all shrink-0 flex items-center gap-1 cursor-pointer whitespace-nowrap"
             >
-              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span>쏠이와 대화</span>
+              <Sparkles className="w-3 h-3 text-slate-950" />
+              <span>대화하기</span>
             </button>
           </div>
         ) : (
