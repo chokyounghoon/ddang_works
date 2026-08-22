@@ -12,10 +12,11 @@ import {
   Lock, TrendingDown, TrendingUp, Crown, Trophy, ChevronRight,
   XCircle, Clock, Flame, Info, CheckCircle, Shield, Activity,
   PhoneCall, Download, Check, AlertCircle, FileText, Landmark,
-  Building2, User, Sparkles
+  Building2, User, Sparkles, ShieldAlert
 } from 'lucide-react';
 import { useAppPush } from './AppPushToast';
 import confetti from 'canvas-confetti';
+import ShinhanAntiFraudModal from './ShinhanAntiFraudModal';
 
 // ─── 원형 게이지 (D-GCS) ──────────────────────────────────────────────────────
 
@@ -266,6 +267,7 @@ export default function DGCSScreen() {
   const [simulating, setSimulating] = useState(false);
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [claimSuccess, setClaimSuccess] = useState(false);
+  const [showAntiFraudModal, setShowAntiFraudModal] = useState(false);
 
   // 실시간 긱 대상 보험 상태 (CU 강남파이낸스점 또는 진행 긱)
   const [insuranceActive, setInsuranceActive] = useState(true);
@@ -299,60 +301,60 @@ export default function DGCSScreen() {
   };
 
   return (
-    <div className="min-h-full bg-[#F8FAFC] pb-12 text-slate-900 font-sans">
+    <div className="min-h-full bg-[#F8FAFC] pb-12 text-slate-900 font-sans w-full">
       {/* 1. 상단 인트로 헤더 & 탭 스위처 */}
-      <div className="px-5 pt-5 pb-3">
-        <div className="flex items-center justify-between gap-2 mb-2">
+      <div className="px-3.5 sm:px-4 pt-4 pb-2.5 w-full">
+        <div className="flex items-center justify-between gap-2 mb-1.5">
           <div className="flex items-center gap-1.5">
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[9.5px] font-black px-2 py-0.5 rounded-md shadow-xs">
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md shadow-xs whitespace-nowrap">
               신한 One-Safety
             </span>
-            <span className="text-[11px] font-bold text-slate-500">
+            <span className="text-[10.5px] font-bold text-slate-500 whitespace-nowrap">
               신한EZ손보 & D-GCS
             </span>
           </div>
-          <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> 실시간 보장 작동 중
+          <span className="text-[9.5px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1 whitespace-nowrap">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" /> 실시간 보장 가동
           </span>
         </div>
 
-        <h2 className="text-xl font-bold tracking-tight text-slate-900">
+        <h2 className="text-base sm:text-lg font-black tracking-tight text-slate-900 leading-tight">
           {mainView === 'ez_insurance' ? '신한EZ 초단기 마이크로 보험' : '근태 데이터가 금융 권력이 된다'}
         </h2>
-        <p className="text-xs text-slate-500 mt-1 font-normal leading-relaxed">
+        <p className="text-[11px] text-slate-500 mt-0.5 font-normal leading-relaxed">
           {mainView === 'ez_insurance' 
-            ? '출근 스와이프 0.1초 즉시 발효 · 육아/서빙/물류 현장 비급여 치료비 & 대물 100% 무상 보장'
+            ? '출근 스와이프 0.1초 즉시 발효 · 육아/서빙/물류 비급여 치료비 & 대물 100% 무상 보장'
             : '성실성을 신용으로 계량화하는 신한DS 독점 대안신용 평가 시스템'}
         </p>
 
         {/* 상단 탭 전환 바 */}
-        <div className="grid grid-cols-2 gap-2 mt-4 p-1 bg-slate-200/80 rounded-2xl">
+        <div className="grid grid-cols-2 gap-1.5 mt-3 p-1 bg-slate-200/80 rounded-2xl w-full">
           <button
             onClick={() => setMainView('ez_insurance')}
-            className={`py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all ${
+            className={`py-2 px-1.5 rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-all whitespace-nowrap overflow-hidden ${
               mainView === 'ez_insurance'
                 ? 'bg-white text-blue-700 shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <ShieldCheck className="w-4 h-4 text-blue-600" />
-            <span>신한EZ 실시간 보험</span>
-            <span className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.2 rounded-full font-bold border border-blue-200">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <span className="whitespace-nowrap">신한EZ 실시간 보험</span>
+            <span className="text-[8.5px] bg-blue-50 text-blue-600 px-1.5 py-0.2 rounded-full font-bold border border-blue-200 shrink-0 whitespace-nowrap">
               인증서
             </span>
           </button>
 
           <button
             onClick={() => setMainView('dgcs_credit')}
-            className={`py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all ${
+            className={`py-2 px-1.5 rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-all whitespace-nowrap overflow-hidden ${
               mainView === 'dgcs_credit'
                 ? 'bg-white text-[#FB521C] shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Star className="w-4 h-4 text-[#FB521C]" />
-            <span>D-GCS 신용평가</span>
-            <span className="text-[9px] bg-orange-50 text-[#FB521C] px-1.5 py-0.2 rounded-full font-bold border border-orange-200">
+            <Star className="w-3.5 h-3.5 text-[#FB521C] shrink-0" />
+            <span className="whitespace-nowrap">D-GCS 신용평가</span>
+            <span className="text-[8.5px] bg-orange-50 text-[#FB521C] px-1.5 py-0.2 rounded-full font-bold border border-orange-200 shrink-0 whitespace-nowrap">
               {score}점
             </span>
           </button>
@@ -363,29 +365,55 @@ export default function DGCSScreen() {
         /* ═══════════════════════════════════════════════════════════════════════════
            탭 1: 🛡️ 신한EZ손해보험 초단기 마이크로 보험 실시간 디지털 인증서 
            ═══════════════════════════════════════════════════════════════════════════ */
-        <div className="px-5 space-y-4">
+        <div className="px-3.5 sm:px-4 space-y-3.5 w-full">
+          {/* 🛡️ [신한 FDS 24/7] 고의 자해·보험 사기 원천 차단 4대 방어 시스템 배너 */}
+          <button
+            onClick={() => setShowAntiFraudModal(true)}
+            className="w-full bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 border border-rose-500/40 rounded-2xl p-3 text-white flex items-center justify-between hover:brightness-110 active:scale-[0.99] transition-all shadow-xs text-left cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-xl bg-rose-600/20 border border-rose-500/40 flex items-center justify-center text-rose-400 font-black text-xs shrink-0">
+                <ShieldAlert className="w-4 h-4" />
+              </div>
+              <div className="truncate">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                    신한 FDS 24/7
+                  </span>
+                  <span className="text-[10px] text-slate-400">50m GPS 락 · AI FDS 감시</span>
+                </div>
+                <p className="text-xs font-black text-white truncate mt-0.5">
+                  고의 자해·보험 사기 원천 차단 4대 안전장치 가동중
+                </p>
+              </div>
+            </div>
+            <span className="text-[10.5px] font-bold text-rose-300 bg-white/10 px-2 py-1 rounded-lg border border-rose-400/30 shrink-0 ml-2">
+              방어 원리 &gt;
+            </span>
+          </button>
+
           {/* 1. 신한EZ손보 디지털 보험 증권 카드 (Hero Certificate) */}
-          <div className="bg-gradient-to-br from-[#0A192F] via-[#0F284E] to-[#0A192F] rounded-3xl p-5 text-white shadow-xl border border-blue-500/40 relative overflow-hidden space-y-4">
+          <div className="bg-gradient-to-br from-[#0A192F] via-[#0F284E] to-[#0A192F] rounded-3xl p-4 sm:p-5 text-white shadow-xl border border-blue-500/40 relative overflow-hidden space-y-3.5">
             {/* 네온 배경 효과 */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
 
             {/* 인증서 상단 헤더 */}
-            <div className="flex items-start justify-between border-b border-blue-500/30 pb-3.5 relative">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-400 flex items-center justify-center text-white font-black shadow-lg shadow-blue-500/30">
-                  <ShieldCheck className="w-6 h-6 text-white" />
+            <div className="flex items-start justify-between border-b border-blue-500/30 pb-3 relative">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-400 flex items-center justify-center text-white font-black shadow-lg shadow-blue-500/30 shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                    <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 whitespace-nowrap">
                       신한EZ손해보험
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">
-                      증권번호: EZ-2026-GIG-0822-CU98
+                    <span className="text-[9.5px] font-mono text-slate-400 truncate">
+                      EZ-2026-GIG-0822-CU98
                     </span>
                   </div>
-                  <h3 className="text-base font-black text-white tracking-tight">
+                  <h3 className="text-sm sm:text-base font-black text-white tracking-tight">
                     초단기 마이크로 상해·배상 책임보험
                   </h3>
                 </div>
@@ -393,56 +421,56 @@ export default function DGCSScreen() {
             </div>
 
             {/* 🟢 실시간 활성 상태 안내 배너 (요구사항 필수 문구 반영) */}
-            <div className="bg-emerald-500/10 border border-emerald-500/40 rounded-2xl p-3.5 flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
+            <div className="bg-emerald-500/10 border border-emerald-500/40 rounded-2xl p-3 flex items-start gap-2.5">
+              <div className="w-7 h-7 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               </div>
               <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-black text-emerald-300">
-                    🟢 LIVE ACTIVE · 실시간 보험 보장 가동 중
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] sm:text-xs font-black text-emerald-300 whitespace-nowrap">
+                    🟢 LIVE ACTIVE · 실시간 보험 가동 중
                   </span>
-                  <span className="text-[9.5px] bg-emerald-500/20 text-emerald-200 px-1.5 py-0.2 rounded font-bold">
+                  <span className="text-[9px] bg-emerald-500/20 text-emerald-200 px-1.5 py-0.2 rounded font-bold whitespace-nowrap">
                     0.1초 자동 연동
                   </span>
                 </div>
-                <p className="text-[11.5px] text-slate-200 leading-relaxed font-medium">
+                <p className="text-[11px] text-slate-200 leading-relaxed font-medium">
                   <strong>근무 시작 스와이프 시 0.1초 만에 활성화</strong>되며, 육아/서빙/물류 현장의 <strong>비급여 치료비 및 대물 배상까지 완벽 보장 중</strong>입니다.
                 </p>
               </div>
             </div>
 
             {/* 현재 보장 대상 긱 정보 그리드 */}
-            <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 space-y-2.5 text-xs">
-              <div className="flex items-center justify-between text-slate-400 text-[11px] border-b border-slate-800 pb-2">
-                <span className="font-bold text-slate-200 flex items-center gap-1.5">
+            <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-3.5 space-y-2 text-xs">
+              <div className="flex items-center justify-between text-slate-400 text-[10.5px] border-b border-slate-800 pb-1.5">
+                <span className="font-bold text-slate-200 flex items-center gap-1">
                   <Building2 className="w-3.5 h-3.5 text-blue-400" /> 보장 대상 사업장 및 피보험자
                 </span>
-                <span className="text-emerald-400 font-mono">신한 원장 인증 완료</span>
+                <span className="text-emerald-400 font-mono text-[10px]">신한 원장 인증 완료</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[11.5px]">
-                <div className="space-y-1">
-                  <div className="text-slate-400 text-[10.5px]">사업장(피보험 업체)</div>
-                  <div className="font-black text-white text-xs">CU 강남파이낸스점</div>
-                  <div className="text-[10px] text-slate-400">강남구 테헤란로 152</div>
+              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <div className="space-y-0.5">
+                  <div className="text-slate-400 text-[10px]">사업장(피보험 업체)</div>
+                  <div className="font-black text-white text-xs truncate">CU 강남파이낸스점</div>
+                  <div className="text-[9.5px] text-slate-400 truncate">강남구 테헤란로 152</div>
                 </div>
 
-                <div className="space-y-1">
-                  <div className="text-slate-400 text-[10.5px]">피보험 근로자 (워커)</div>
-                  <div className="font-black text-white text-xs">조이수 (D-GCS 980점)</div>
-                  <div className="text-[10px] text-blue-300">물류 하역 1시간 피크 시프트</div>
+                <div className="space-y-0.5">
+                  <div className="text-slate-400 text-[10px]">피보험 근로자 (워커)</div>
+                  <div className="font-black text-white text-xs truncate">조이수 (D-GCS 980점)</div>
+                  <div className="text-[9.5px] text-blue-300 truncate">물류 하역 1시간 피크 시프트</div>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
+              <div className="pt-1.5 border-t border-slate-800 flex items-center justify-between text-[10.5px]">
                 <span className="text-slate-400">보장 유효 시간:</span>
-                <span className="font-bold text-amber-300">오늘 12:00 ~ 13:00 (1시간 실시간 락업)</span>
+                <span className="font-bold text-amber-300">오늘 12:00 ~ 13:00 (1시간 락업)</span>
               </div>
 
-              <div className="flex items-center justify-between text-[11px]">
+              <div className="flex items-center justify-between text-[10.5px]">
                 <span className="text-slate-400">워커 부담 보험료:</span>
-                <span className="font-black text-emerald-400">₩0원 (점주 5% 시너지 수수료 100% 무상 지원)</span>
+                <span className="font-black text-emerald-400">₩0원 (점주 5% 시너지 무상 지원)</span>
               </div>
             </div>
 
@@ -455,46 +483,46 @@ export default function DGCSScreen() {
 
               <div className="grid grid-cols-1 gap-2 text-xs">
                 {/* 1. 비급여 상해 치료비 */}
-                <div className="bg-slate-900/90 border border-blue-500/20 rounded-2xl p-3.5 space-y-1">
+                <div className="bg-slate-900/90 border border-blue-500/20 rounded-2xl p-3 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-black text-white text-xs flex items-center gap-1.5">
+                    <span className="font-black text-white text-[11px] sm:text-xs flex items-center gap-1">
                       🏥 ① 비급여 의료비 및 상해 치료비
                     </span>
-                    <span className="text-xs font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/20">
+                    <span className="text-[11px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/20 whitespace-nowrap">
                       최대 1,000만 원
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-normal">
+                  <p className="text-[10.5px] text-slate-300 leading-normal">
                     물류 박스 하역/이동 중 발목 염좌, 골절, 베임 사고 시 MRI·도수치료·비급여 주사제 100% 실손 보상 (자기부담금 0원)
                   </p>
                 </div>
 
                 {/* 2. 대물 배상 책임 */}
-                <div className="bg-slate-900/90 border border-blue-500/20 rounded-2xl p-3.5 space-y-1">
+                <div className="bg-slate-900/90 border border-blue-500/20 rounded-2xl p-3 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-black text-white text-xs flex items-center gap-1.5">
+                    <span className="font-black text-white text-[11px] sm:text-xs flex items-center gap-1">
                       ☕ ② 현장 대물 배상책임 (기물 파손)
                     </span>
-                    <span className="text-xs font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-lg border border-blue-500/20">
+                    <span className="text-[11px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-lg border border-blue-500/20 whitespace-nowrap">
                       최대 5,000만 원
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-normal">
+                  <p className="text-[10.5px] text-slate-300 leading-normal">
                     서빙 중 고가 와인/식기 파손, 매장 POS기 음료 침수, 매장 진열대 파손 등 업무 중 우발적 대물 사고 전액 면책 배상
                   </p>
                 </div>
 
                 {/* 3. 긴급 구급 이송 & 후유장해 */}
-                <div className="bg-slate-900/90 border border-blue-500/20 rounded-2xl p-3.5 space-y-1">
+                <div className="bg-slate-900/90 border border-blue-500/20 rounded-2xl p-3 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-black text-white text-xs flex items-center gap-1.5">
+                    <span className="font-black text-white text-[11px] sm:text-xs flex items-center gap-1">
                       🚑 ③ 긴급 구급 이송 & 후유장해
                     </span>
-                    <span className="text-xs font-black text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-lg border border-purple-500/20">
+                    <span className="text-[11px] font-black text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-lg border border-purple-500/20 whitespace-nowrap">
                       최대 1억 원
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-normal">
+                  <p className="text-[10.5px] text-slate-300 leading-normal">
                     응급 119 이송 지원금 및 중증 상해 시 신한금융그룹 원스톱 안심 케어 보상금 지급
                   </p>
                 </div>
@@ -505,10 +533,10 @@ export default function DGCSScreen() {
             <div className="pt-2 border-t border-blue-500/30 grid grid-cols-2 gap-2">
               <button
                 onClick={() => setShowClaimModal(true)}
-                className="py-3 px-3 rounded-2xl font-black text-xs bg-gradient-to-r from-rose-600 to-red-600 hover:brightness-110 text-white shadow-lg shadow-rose-600/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                className="py-2.5 px-2 rounded-2xl font-black text-[11px] sm:text-xs bg-gradient-to-r from-rose-600 to-red-600 hover:brightness-110 text-white shadow-lg shadow-rose-600/30 flex items-center justify-center gap-1 active:scale-95 transition-all whitespace-nowrap cursor-pointer"
               >
-                <PhoneCall className="w-4 h-4 text-white animate-bounce" />
-                <span>🚨 1초 간편 사고 접수</span>
+                <PhoneCall className="w-3.5 h-3.5 text-white shrink-0 animate-bounce" />
+                <span className="whitespace-nowrap">1초 간편 사고 접수</span>
               </button>
 
               <button
@@ -519,18 +547,18 @@ export default function DGCSScreen() {
                     type: 'apply',
                   });
                 }}
-                className="py-3 px-3 rounded-2xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                className="py-2.5 px-2 rounded-2xl font-bold text-[11px] sm:text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1 active:scale-95 transition-all whitespace-nowrap cursor-pointer"
               >
-                <Download className="w-4 h-4 text-blue-400" />
-                <span>보험 증권 PDF 받기</span>
+                <Download className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <span className="whitespace-nowrap">보험 증권 PDF 받기</span>
               </button>
             </div>
           </div>
 
           {/* 2. 점주 & 알바생 무과실 안심 보장 설명 카드 */}
-          <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-sm space-y-3">
+          <div className="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold shrink-0">
                 <Landmark className="w-4.5 h-4.5" />
               </div>
               <div>
@@ -540,7 +568,7 @@ export default function DGCSScreen() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-1">
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1">
                 <div className="font-bold text-blue-700 flex items-center gap-1">
                   <span>👔</span> 사장님(점주) 안심 면책
                 </div>
@@ -549,7 +577,7 @@ export default function DGCSScreen() {
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-1">
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1">
                 <div className="font-bold text-emerald-700 flex items-center gap-1">
                   <span>🏃</span> 워커(알바생) 0원 보장
                 </div>
@@ -564,16 +592,16 @@ export default function DGCSScreen() {
         /* ═══════════════════════════════════════════════════════════════════════════
            탭 2: 📊 D-GCS 대안신용 평가 & 페널티 시뮬레이션
            ═══════════════════════════════════════════════════════════════════════════ */
-        <div className="space-y-5">
+        <div className="space-y-4 px-3.5 sm:px-4 w-full">
           {/* 점수 원형 게이지 & 시뮬레이션 카드 */}
-          <div className="px-5">
-            <div className="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-sm flex flex-col items-center space-y-4">
+          <div>
+            <div className="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col items-center space-y-4">
               <ScoreGauge score={score} />
 
               {/* 점수 조작 시뮬레이터 */}
               <div className="w-full space-y-2 pt-1 border-t border-slate-100">
                 <p className="text-[10.5px] text-slate-500 text-center font-bold">⚠️ 페널티 실시간 시뮬레이션</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-1.5">
                   {[
                     { label: 'Lv.1 발동', color: 'bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100', lv: 1 },
                     { label: 'Lv.2 발동', color: 'bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100', lv: 2 },
@@ -583,7 +611,7 @@ export default function DGCSScreen() {
                       key={b.lv}
                       onClick={() => simulatePenalty(b.lv)}
                       disabled={simulating}
-                      className={`py-2 rounded-xl border text-[11px] font-bold ${b.color} disabled:opacity-40 active:scale-95 transition-all shadow-xs`}
+                      className={`py-2 rounded-xl border text-[10.5px] font-bold ${b.color} disabled:opacity-40 active:scale-95 transition-all shadow-xs whitespace-nowrap cursor-pointer`}
                     >
                       {b.label}
                     </button>
@@ -591,7 +619,7 @@ export default function DGCSScreen() {
                 </div>
                 <button
                   onClick={resetScore}
-                  className="w-full py-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 font-bold hover:bg-slate-100 active:scale-95 transition-all"
+                  className="w-full py-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 font-bold hover:bg-slate-100 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
                 >
                   점수 초기화 (872점)
                 </button>
@@ -600,8 +628,8 @@ export default function DGCSScreen() {
           </div>
 
           {/* W-Model 가중치 */}
-          <div className="px-5">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2.5">
+          <div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
               W-Model 4요소 신용 가중치
             </h3>
             <div className="space-y-2">
@@ -617,8 +645,8 @@ export default function DGCSScreen() {
           </div>
 
           {/* 페널티 3단계 */}
-          <div className="px-5">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2.5">
+          <div>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
               D-GCS 3단계 페널티 거버넌스
             </h3>
             <div className="space-y-2">
@@ -712,6 +740,12 @@ export default function DGCSScreen() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* 🛡️ 신한EZ 4중 보험사기·도덕적해이 방어 시스템 상세 팝업 모달 */}
+      <ShinhanAntiFraudModal
+        isOpen={showAntiFraudModal}
+        onClose={() => setShowAntiFraudModal(false)}
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@
   --primary: #FB521C;
   --primary-hover: #E04514;
   --primary-light: #FFF2EE;
+  --primary-blue: #2563EB;
 }
 
 body {
@@ -22,29 +23,30 @@ body {
 }
 
 /* 텍스트 위계 질서 (Typography Hierarchy) 표준화 */
-.text-title-lg {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+.text-h1 {
+  font-size: 1.5rem;
+  line-height: 2rem;
   font-weight: 700;
   letter-spacing: -0.025em;
   color: #0F172A;
 }
 
-.text-title-md {
-  font-size: 1rem;
+.text-h2 {
+  font-size: 1.125rem;
   line-height: 1.5rem;
   font-weight: 600;
+  letter-spacing: -0.015em;
   color: #0F172A;
 }
 
-.text-body-base {
+.text-body {
   font-size: 0.875rem;
-  line-height: 1.25rem;
+  line-height: 1.35rem;
   font-weight: 400;
   color: #334155;
 }
 
-.text-caption-sm {
+.text-caption {
   font-size: 0.75rem;
   line-height: 1rem;
   font-weight: 500;
@@ -74,5 +76,13 @@ body {
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .active-scale:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
+}
+
+/* 글래스모피즘 표준 카드 스타일 */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  border-radius: 1.25rem;
 }

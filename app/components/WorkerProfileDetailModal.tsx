@@ -11,11 +11,15 @@ import {
   Calendar, Phone, MapPin, ExternalLink
 } from 'lucide-react';
 
+import MerchantFeeSynergyNoticeModal from './MerchantFeeSynergyNoticeModal';
+
 interface WorkerProfileDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   healthCertVerified: boolean;
   onOpenHealthCertModal: () => void;
+  onOpenRateDiscountModal?: () => void;
+  onOpenEZClaimModal?: () => void;
   solcBalance?: number;
 }
 
@@ -24,8 +28,12 @@ export default function WorkerProfileDetailModal({
   onClose,
   healthCertVerified,
   onOpenHealthCertModal,
+  onOpenRateDiscountModal,
+  onOpenEZClaimModal,
   solcBalance = 12.5,
 }: WorkerProfileDetailModalProps) {
+  const [showFeeNoticeModal, setShowFeeNoticeModal] = React.useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -67,7 +75,7 @@ export default function WorkerProfileDetailModal({
             </div>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -75,6 +83,36 @@ export default function WorkerProfileDetailModal({
 
           {/* 바디 컨텐츠 */}
           <div className="p-4.5 overflow-y-auto space-y-3.5 text-xs">
+            {/* 📢 [신한 상생 공지] 점주 5% 수수료 ➔ 긱워커 100% 금융 환원 시너지 배너 */}
+            <div 
+              onClick={() => setShowFeeNoticeModal(true)}
+              className="bg-gradient-to-r from-amber-950/80 via-slate-900 to-indigo-950/80 border border-amber-500/50 hover:border-amber-400 rounded-2xl p-3 space-y-1.5 shadow-sm cursor-pointer transition-all active:scale-[0.99] group text-white"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 flex items-center gap-1 shadow-xs">
+                    📢 [신한 상생 공지]
+                  </span>
+                  <span className="text-[9.5px] font-extrabold text-amber-300 font-mono">
+                    점주 수수료 5% ➔ 100% 금융 환원
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold text-amber-400 flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                  자세히 보기 <ChevronRight className="w-3 h-3" />
+                </span>
+              </div>
+
+              <div>
+                <p className="text-xs font-black text-white flex items-center gap-1">
+                  <span>점주 부담 5% 수수료는</span>
+                  <span className="text-amber-400">어떻게 긱워커에게 환원될까요?</span>
+                </p>
+                <p className="text-[10.5px] text-slate-300 mt-0.5 leading-snug">
+                  신한EZ 무상 상해보험(2%) + 신한투자증권 ETF 잔돈매칭(1.5%) + 신한라이프 연금(1%) + 신한DS 세무대행(0.5%) 시너지 구조를 확인하세요.
+                </p>
+              </div>
+            </div>
+
             {/* 1. D-GCS 신용 평판 & 근태 요약 */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2.5">
               <div className="flex items-center justify-between">
@@ -188,6 +226,41 @@ export default function WorkerProfileDetailModal({
                 </div>
               </div>
             </div>
+
+            {/* 4. One Shinhan 퀵 혜택 액션 바 */}
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                onClick={() => {
+                  onClose();
+                  if (onOpenRateDiscountModal) onOpenRateDiscountModal();
+                }}
+                className="p-2.5 bg-gradient-to-r from-amber-500/15 to-orange-500/15 hover:from-amber-500/25 hover:to-orange-500/25 border border-amber-400/40 rounded-2xl text-left transition-all active:scale-98 cursor-pointer flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-[10px] font-black text-amber-700">D-GCS 1등급 특권</span>
+                  <Award className="w-3.5 h-3.5 text-amber-600" />
+                </div>
+                <div className="mt-1 font-black text-[11px] text-slate-900 leading-tight">
+                  우대금리 -1.2%p 쿠폰
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  onClose();
+                  if (onOpenEZClaimModal) onOpenEZClaimModal();
+                }}
+                className="p-2.5 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/25 border border-cyan-400/40 rounded-2xl text-left transition-all active:scale-98 cursor-pointer flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-[10px] font-black text-cyan-700">신한EZ 무상케어</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-cyan-600" />
+                </div>
+                <div className="mt-1 font-black text-[11px] text-slate-900 leading-tight">
+                  상해보험 0.1초 실비 청구
+                </div>
+              </button>
+            </div>
           </div>
 
           {/* 푸터 */}
@@ -201,6 +274,12 @@ export default function WorkerProfileDetailModal({
           </div>
         </motion.div>
       </div>
+
+      {/* 📢 [신한 상생 공지] 5% 점주 수수료 100% 금융 환원 상세 모달 */}
+      <MerchantFeeSynergyNoticeModal
+        isOpen={showFeeNoticeModal}
+        onClose={() => setShowFeeNoticeModal(false)}
+      />
     </AnimatePresence>
   );
 }
