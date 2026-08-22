@@ -29,6 +29,9 @@ const AdminDashboard    = dynamic(() => import('./components/AdminDashboard'),  
 const ShinhanVsAlbamonModal = dynamic(() => import('./components/ShinhanVsAlbamonModal'), { ssr: false });
 const AlbamonChatScreen = dynamic(() => import('./components/AlbamonChatScreen'), { ssr: false });
 const AlbamonCommunityScreen = dynamic(() => import('./components/AlbamonCommunityScreen'), { ssr: false });
+const InstantContractModal = dynamic(() => import('./components/InstantContractModal'), { ssr: false });
+const CheckoutScreen = dynamic(() => import('./components/CheckoutScreen'), { ssr: false });
+const HealthCertModal = dynamic(() => import('./components/HealthCertModal'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -338,6 +341,10 @@ function AgentTab() {
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
   const [sortMode, setSortMode] = useState<'ai' | 'wage_desc' | 'wage_asc' | 'dist_asc' | 'dist_desc' | 'pay_desc'>('ai');
   const [selectedDetailGig, setSelectedDetailGig] = useState<any | null>(null);
+  const [instantContractGig, setInstantContractGig] = useState<any | null>(null);
+  const [showContractModal, setShowContractModal] = useState(false);
+  const [healthCertVerified, setHealthCertVerified] = useState(true);
+  const [showHealthCertModal, setShowHealthCertModal] = useState(false);
   const [quickFilter, setQuickFilter] = useState<'all' | 'instapay' | 'high_wage' | 'urgent'>('all');
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const { triggerPush } = useAppPush();
@@ -549,14 +556,35 @@ function AgentTab() {
     sendMessageText(inputText);
   };
 
-  const handleAgentApply = (gigId: string, storeName: string, role: string) => {
+  const handleAgentApply = (gigId: string, storeName: string, role: string, gigData?: any) => {
+    const targetGig = gigData || matchedGigsState.find(g => g.id === gigId);
+
+    // 🩺 식품위생법 제49조 준수: 카페/음식점/서빙 긱 보건증 자동 검증 가드
+    const isFoodGig = targetGig?.category === '카페' || targetGig?.category === '서빙' || targetGig?.category === '패스트푸드';
+    if (isFoodGig && !healthCertVerified) {
+      triggerPush({
+        title: '⚠️ [식품위생법 제49조] 보건증 인증 필요',
+        body: `${storeName}은(는) 식품위생법 대상 사업장입니다. 0.1초 AI Vision OCR 보건증을 먼저 인증해주세요. (점주 과태료 500만원 방지)`,
+        type: 'apply',
+        actionText: '보건증 0.1초 인증',
+      });
+      setShowHealthCertModal(true);
+      return;
+    }
+
     setMatchedGigsState(prev => prev.map(g => g.id === gigId ? { ...g, applied: true } : g));
-    triggerPush({
-      title: `[지원 접수] ${storeName}`,
-      body: `조이수님의 ${role} 지원서가 AI 매칭 비서를 통해 정상 접수되었습니다. (신한 에스크로 원장 예치 대기)`,
-      type: 'apply',
-      actionText: '지원 상태 보기',
-    });
+    
+    if (targetGig) {
+      setInstantContractGig(targetGig);
+      setShowContractModal(true);
+    } else {
+      triggerPush({
+        title: `[지원 접수] ${storeName}`,
+        body: `조이수님의 ${role} 지원서가 AI 매칭 비서를 통해 정상 접수되었습니다. (신한 에스크로 원장 예치 대기)`,
+        type: 'apply',
+        actionText: '지원 상태 보기',
+      });
+    }
 
     setTimeout(() => {
       triggerPush({
@@ -565,7 +593,7 @@ function AgentTab() {
         type: 'confirm',
         actionText: '점주 탭 바로가기',
       });
-    }, 2000);
+    }, 2500);
   };
 
   // 근무시간 & 카테고리 필터 및 정렬 처리 (선택 시에도 전체 목록 유지)
@@ -593,6 +621,37 @@ function AgentTab() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden space-y-2">
+      {/* 0. 👤 조이수 워커 프로필 & 보건증 AI Vision OCR 배지 바 */}
+      <div className="shrink-0 bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] text-white rounded-2xl p-2.5 px-3 border border-slate-800 shadow-sm flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white font-black text-xs shrink-0 shadow-sm">
+            🏆
+          </div>
+          <div className="truncate">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black text-white">조이수</span>
+              <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                SBT 980점 Gold
+              </span>
+            </div>
+            <p className="text-[9.5px] text-slate-400 truncate">노쇼 0건 · 출근율 100% · 신한 BaaS 인증</p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setShowHealthCertModal(true)}
+          className={`px-2.5 py-1 rounded-xl text-[10.5px] font-black flex items-center gap-1 border active:scale-95 transition-all shrink-0 ${
+            healthCertVerified
+              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/30'
+              : 'bg-amber-500/20 text-amber-300 border-amber-500/40 animate-pulse hover:bg-amber-500/30'
+          }`}
+          title="보건증 AI Vision OCR 판독 및 유효기간 확인"
+        >
+          <span>{healthCertVerified ? '🟢 보건증 인증완료' : '⚠️ 보건증 미인증'}</span>
+          <ChevronRight className="w-3 h-3 opacity-70" />
+        </button>
+      </div>
+
       {/* 1. 🤖 대화형 AI 매칭 비서 도담이 (땡겨요 라이프스타일 UX 스마트 챗 바) */}
       <div className="shrink-0 z-40">
         {!isChatExpanded ? (
@@ -1023,13 +1082,22 @@ function AgentTab() {
                     </span>
                   </div>
 
-                  {/* 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ 0.1초 땡겨받기) */}
-                  <div className="flex items-center justify-between text-[10px] text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200/90">
+                  {/* 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ 0.1초 땡겨받기 / 보건증 상태) */}
+                  <div className="flex items-center justify-between text-[10px] text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-200/90 flex-wrap gap-1">
                     <span className="font-bold text-slate-700 flex items-center gap-1">
                       <Navigation className="w-3 h-3 text-[#FB521C]" />
                       {g.distanceM}m <span className="text-slate-500 font-medium">(도보 {Math.ceil(g.distanceM / 80)}분)</span>
                     </span>
-                    <span className="font-bold text-[#FB521C]">✨ AI {g.aiScore}점</span>
+                    {(g.category === '카페' || g.category === '서빙' || g.category === '패스트푸드') && (
+                      <span className={`font-bold text-[9px] px-1.5 py-0.2 rounded border flex items-center gap-0.5 ${
+                        healthCertVerified
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          : 'bg-amber-50 text-amber-700 border-amber-200 animate-pulse'
+                      }`}>
+                        {healthCertVerified ? <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" /> : <AlertCircle className="w-2.5 h-2.5 text-amber-600" />}
+                        {healthCertVerified ? '보건증 검증 패스' : '보건증 필요'}
+                      </span>
+                    )}
                     <span className="text-emerald-700 font-black flex items-center gap-0.5 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
                       <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-500" /> ⚡ 0.1초 즉시정산
                     </span>
@@ -1047,16 +1115,27 @@ function AgentTab() {
                     </button>
 
                     <button
-                      onClick={() => handleAgentApply(g.id, g.storeName, g.role)}
-                      disabled={g.applied}
+                      onClick={() => {
+                        if (g.applied) {
+                          setInstantContractGig(g);
+                          setShowContractModal(true);
+                        } else {
+                          handleAgentApply(g.id, g.storeName, g.role, g);
+                        }
+                      }}
                       className={`flex-1 py-2 rounded-xl font-black text-xs transition-all shadow-xs flex items-center justify-center gap-1 active:scale-95 ${
                         g.applied
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-300 cursor-default'
+                          ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 cursor-pointer'
                           : 'bg-[#FB521C] hover:bg-[#E4410E] text-white'
                       }`}
+                      title={g.applied ? '전자계약서 및 신한 에스크로 예치 원장 열람' : '즉시 지원하기'}
                     >
                       {g.applied ? (
-                        <span>✓ 지원 완료 · 0.1초 에스크로</span>
+                        <>
+                          <Lock className="w-3 h-3 text-emerald-600" />
+                          <span>✓ 계약·에스크로 ₩{g.pay.toLocaleString()} 예치됨</span>
+                          <ChevronRight className="w-3 h-3 text-emerald-600" />
+                        </>
                       ) : (
                         <>
                           <Zap className="w-3 h-3 text-amber-200 fill-amber-200" />
@@ -1452,7 +1531,7 @@ function AgentTab() {
                 </button>
                 <button
                   onClick={() => {
-                    handleAgentApply(selectedDetailGig.id, selectedDetailGig.storeName, selectedDetailGig.role);
+                    handleAgentApply(selectedDetailGig.id, selectedDetailGig.storeName, selectedDetailGig.role, selectedDetailGig);
                     setSelectedDetailGig(null);
                   }}
                   disabled={selectedDetailGig.applied}
@@ -1476,6 +1555,24 @@ function AgentTab() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ⚡ 0초 전자근로계약 자동 체결 플로우 모달 */}
+      <InstantContractModal
+        isOpen={showContractModal}
+        onClose={() => setShowContractModal(false)}
+        gig={instantContractGig}
+        onConfirm={(gigId) => {
+          setMatchedGigsState(prev => prev.map(g => g.id === gigId ? { ...g, applied: true } : g));
+        }}
+      />
+
+      {/* 🩺 보건증 AI Vision OCR 자동 인증 & 식품위생법 제49조 준수 모달 */}
+      <HealthCertModal
+        isOpen={showHealthCertModal}
+        onClose={() => setShowHealthCertModal(false)}
+        certVerified={healthCertVerified}
+        setCertVerified={setHealthCertVerified}
+      />
     </div>
   </div>
 );
@@ -3789,7 +3886,7 @@ export default function ShinhanDDangApp() {
 
           {activeTab === 'checkout' && (
             <motion.div key="checkout" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}>
-              <CheckoutTab 
+              <CheckoutScreen 
                 walletConnected={walletConnected} 
                 walletAddress={walletAddress} 
                 solcBalance={solcBalance}
