@@ -703,28 +703,8 @@ function AgentTab() {
                     </motion.p>
                   </AnimatePresence>
                 </div>
-                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
-                  0.1초 정산
-                </span>
               </div>
-
-              {/* 💡 Trojan Horse Strategy 바 버튼 */}
-              <button
-                onClick={() => setShowAlbamonModal(true)}
-                className="w-full bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border border-blue-400/40 rounded-xl px-3 py-1.5 text-white flex items-center justify-between hover:brightness-110 active:scale-95 transition-all text-left shadow-sm"
-              >
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="text-[9.5px] font-black text-emerald-400 uppercase tracking-wider shrink-0">💡 STRATEGY</span>
-                  <p className="text-[10.5px] font-bold text-blue-200 truncate">왜 사장님들은 알바몬을 버리고 땡겨요 웍스로 올까?</p>
-                </div>
-                <span className="text-[9.5px] font-black text-amber-300 underline shrink-0 flex items-center gap-0.5">
-                  혁신 비교 <ArrowUpRight className="w-3 h-3" />
-                </span>
-              </button>
             </div>
-
-            {/* 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 팝업 모달 */}
-            <ShinhanVsAlbamonModal isOpen={showAlbamonModal} onClose={() => setShowAlbamonModal(false)} />
 
             {/* 채팅 영역 */}
             <div ref={chatScrollRef} className="flex-1 overflow-y-auto space-y-2.5 pr-1 custom-scrollbar">
@@ -1557,10 +1537,39 @@ function AgentTab() {
 
 function EmployerTab({ matched, setMatched }: { matched: boolean; setMatched: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [activeLegalTab, setActiveLegalTab] = useState<'contract' | 'insurance' | 'tax' | 'ezCoverage'>('contract');
+  const [showAlbamonModal, setShowAlbamonModal] = useState(false);
   const { triggerPush } = useAppPush();
 
   return (
     <div className="space-y-4 pb-8">
+      {/* 💡 [점주 전용] 알바몬 VS 땡겨요 웍스 파괴적 혁신 비교 전략 배너 */}
+      <button
+        onClick={() => setShowAlbamonModal(true)}
+        className="w-full bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border-2 border-blue-400/50 rounded-3xl p-3.5 text-white flex items-center justify-between hover:brightness-110 active:scale-98 transition-all shadow-md text-left cursor-pointer"
+      >
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 font-black text-sm shrink-0 shadow-sm">
+            💡
+          </div>
+          <div className="truncate">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider">
+                점주 전용 혁신 리포트
+              </span>
+              <span className="text-[10px] text-blue-300 font-bold">광고비 0원 · 세무 자동화</span>
+            </div>
+            <p className="text-xs font-black text-white truncate mt-0.5">
+              왜 사장님들은 알바몬을 버리고 땡겨요 웍스로 올까?
+            </p>
+          </div>
+        </div>
+        <span className="text-xs font-black text-amber-300 bg-white/10 px-2.5 py-1.5 rounded-xl border border-amber-300/30 flex items-center gap-1 shrink-0 ml-2">
+          혁신 비교 <ArrowUpRight className="w-3.5 h-3.5" />
+        </span>
+      </button>
+
+      {/* 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 팝업 모달 */}
+      <ShinhanVsAlbamonModal isOpen={showAlbamonModal} onClose={() => setShowAlbamonModal(false)} />
       {/* 1. 점주 헤더 & 신한금융 지원 혜택 */}
       <div className="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] rounded-3xl border border-slate-800 shadow-xl p-4 text-white relative overflow-hidden">
         <div className="flex items-center justify-between mb-3">
