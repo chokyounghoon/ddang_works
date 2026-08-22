@@ -32,6 +32,7 @@ const AlbamonCommunityScreen = dynamic(() => import('./components/AlbamonCommuni
 const InstantContractModal = dynamic(() => import('./components/InstantContractModal'), { ssr: false });
 const CheckoutScreen = dynamic(() => import('./components/CheckoutScreen'), { ssr: false });
 const HealthCertModal = dynamic(() => import('./components/HealthCertModal'), { ssr: false });
+const GpsCheckInModal = dynamic(() => import('./components/GpsCheckInModal'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -2515,6 +2516,7 @@ function MyPageScreen({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const certInputRef = useRef<HTMLInputElement>(null);
   const [isCheckedInMyPage, setIsCheckedInMyPage] = useState(false);
+  const [showGpsCheckInModal, setShowGpsCheckInModal] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -2685,24 +2687,20 @@ function MyPageScreen({
               {/* GPS 출근 바코드 스캔 / 스와이프 버튼 */}
               {!isCheckedInMyPage ? (
                 <button
-                  onClick={() => {
-                    setIsCheckedInMyPage(true);
-                    confetti({
-                      particleCount: 120,
-                      spread: 70,
-                      origin: { y: 0.6 },
-                      colors: ['#FB521C', '#10B981', '#3B82F6'],
-                    });
-                  }}
-                  className="w-full bg-[#FB521C] hover:bg-[#E04514] active:scale-95 text-white text-xs font-bold py-2.5 rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all"
+                  onClick={() => setShowGpsCheckInModal(true)}
+                  className="w-full bg-gradient-to-r from-[#FB521C] to-orange-500 hover:from-[#E04514] hover:to-orange-600 active:scale-95 text-white text-xs font-bold py-3 rounded-2xl shadow-md shadow-orange-500/20 flex items-center justify-center gap-1.5 transition-all"
                 >
-                  <MapPin className="w-4 h-4" />
+                  <MapPin className="w-4 h-4 text-amber-200" />
                   <span>GPS 출근 바코드 스캔 (매장 50m 진입 확인)</span>
                 </button>
               ) : (
-                <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center space-y-0.5">
+                <div 
+                  onClick={() => setShowGpsCheckInModal(true)}
+                  className="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-center space-y-0.5 cursor-pointer hover:bg-emerald-100/70 transition-all shadow-xs"
+                  title="실시간 GPS 연동 지도 열기"
+                >
                   <p className="text-xs font-bold text-emerald-700 flex items-center justify-center gap-1">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" /> 출근 인증 완료!
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" /> 출근 인증 완료! (실시간 GPS 지도 보기)
                   </p>
                   <p className="text-[10px] text-slate-600">
                     🛡️ 신한EZ 0.1초 단기 상해보험 자동 개시 · 퇴근 시 ₩16,000 자동 입금
@@ -3393,6 +3391,17 @@ function MyPageScreen({
               </div>
             )}
           </AnimatePresence>
+
+          {/* 🗺️ 실시간 모바일 GPS 연동 지도 & 출근 인증 모달 */}
+          <GpsCheckInModal
+            isOpen={showGpsCheckInModal}
+            onClose={() => setShowGpsCheckInModal(false)}
+            onCheckInSuccess={() => setIsCheckedInMyPage(true)}
+            storeName="CU 강남파이낸스점"
+            storeRole="12:00 ~ 13:00 (1시간 물류 알바)"
+            storeLat={37.5000}
+            storeLng={127.0365}
+          />
         </motion.div>
       ) : (
         /* 점주 마이페이지 탭 */
