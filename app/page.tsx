@@ -34,6 +34,7 @@ const CheckoutScreen = dynamic(() => import('./components/CheckoutScreen'), { ss
 const HealthCertModal = dynamic(() => import('./components/HealthCertModal'), { ssr: false });
 const GpsCheckInModal = dynamic(() => import('./components/GpsCheckInModal'), { ssr: false });
 const OneShinhanSynergyDetailModal = dynamic(() => import('./components/OneShinhanSynergyDetailModal'), { ssr: false });
+const WorkerProfileDetailModal = dynamic(() => import('./components/WorkerProfileDetailModal'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -347,6 +348,7 @@ function AgentTab() {
   const [showContractModal, setShowContractModal] = useState(false);
   const [healthCertVerified, setHealthCertVerified] = useState(true);
   const [showHealthCertModal, setShowHealthCertModal] = useState(false);
+  const [showWorkerProfileModal, setShowWorkerProfileModal] = useState(false);
   const [quickFilter, setQuickFilter] = useState<'all' | 'instapay' | 'high_wage' | 'urgent'>('all');
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const { triggerPush } = useAppPush();
@@ -623,37 +625,6 @@ function AgentTab() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden space-y-2">
-      {/* 0. 👤 조이수 워커 프로필 & 보건증 AI Vision OCR 배지 바 */}
-      <div className="shrink-0 bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] text-white rounded-2xl p-2.5 px-3 border border-slate-800 shadow-sm flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white font-black text-xs shrink-0 shadow-sm">
-            🏆
-          </div>
-          <div className="truncate">
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-black text-white">조이수</span>
-              <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                SBT 980점 Gold
-              </span>
-            </div>
-            <p className="text-[9.5px] text-slate-400 truncate">노쇼 0건 · 출근율 100% · 신한 BaaS 인증</p>
-          </div>
-        </div>
-
-        <button
-          onClick={() => setShowHealthCertModal(true)}
-          className={`px-2.5 py-1 rounded-xl text-[10.5px] font-black flex items-center gap-1 border active:scale-95 transition-all shrink-0 ${
-            healthCertVerified
-              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/30'
-              : 'bg-amber-500/20 text-amber-300 border-amber-500/40 animate-pulse hover:bg-amber-500/30'
-          }`}
-          title="보건증 AI Vision OCR 판독 및 유효기간 확인"
-        >
-          <span>{healthCertVerified ? '🟢 보건증 인증완료' : '⚠️ 보건증 미인증'}</span>
-          <ChevronRight className="w-3 h-3 opacity-70" />
-        </button>
-      </div>
-
       {/* 1. 🤖 대화형 AI 매칭 비서 쏠이 (SOL-E 스마트 챗 바) */}
       <div className="shrink-0 z-40">
         {!isChatExpanded ? (
@@ -3621,6 +3592,9 @@ export default function ShinhanDDangApp() {
   const [matched, setMatched] = useState(false);
   const [showWalletPopup, setShowWalletPopup] = useState(false);
   const [showWalletDropdown, setShowWalletDropdown] = useState(false);
+  const [showWorkerProfileModal, setShowWorkerProfileModal] = useState(false);
+  const [healthCertVerified, setHealthCertVerified] = useState(true);
+  const [showHealthCertModal, setShowHealthCertModal] = useState(false);
 
   // ── Web3 지갑 훅 (Option C: 신한 슈퍼SOL 딥링크 전용)
   const wallet = useWallet();
@@ -3731,8 +3705,24 @@ export default function ShinhanDDangApp() {
             </div>
           </div>
 
-          {/* 우측 지갑 & D-GCS 정보 영역 */}
-          <div className="flex items-center gap-1 shrink-0">
+          {/* 우측 조이수 워커 프로필 & D-GCS/지갑 정보 영역 */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* 👤 조이수 프로필 캡슐 버튼 (이름만 표시, 클릭 시 상세 팝업) */}
+            <button
+              onClick={() => setShowWorkerProfileModal(true)}
+              className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white pl-1.5 pr-2.5 py-1 rounded-full border border-slate-700 shadow-xs transition-all cursor-pointer"
+              title="조이수 프로필 및 SBT 신용/보건증 상세 보기"
+            >
+              <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 font-black text-[10px] shadow-xs">
+                🏆
+              </div>
+              <span className="text-xs font-black text-white tracking-tight">조이수</span>
+              <span 
+                className={`w-2 h-2 rounded-full ${healthCertVerified ? 'bg-emerald-400' : 'bg-amber-400'} border border-slate-900`} 
+                title={healthCertVerified ? "보건증 인증완료" : "보건증 미인증"} 
+              />
+            </button>
+
             {wallet.isConnecting ? (
               <button disabled className="bg-blue-50 text-[#0046FF] text-[8.5px] font-black px-2 py-0.5 rounded-full border border-blue-200 flex items-center gap-0.5 whitespace-nowrap">
                 <span className="animate-spin w-2 h-2 border-2 border-[#0046FF]/30 border-t-[#0046FF] rounded-full" />
@@ -4073,6 +4063,15 @@ export default function ShinhanDDangApp() {
         <div className="hidden sm:block py-1 bg-white border-t border-slate-100">
           <div className="w-32 h-1 bg-slate-300 rounded-full mx-auto" />
         </div>
+
+        {/* 👤 우측 상단 [조이수 🏆] 클릭 시 표출되는 워커 상세 프로필 & SBT 신용/보건증 모달 */}
+        <WorkerProfileDetailModal
+          isOpen={showWorkerProfileModal}
+          onClose={() => setShowWorkerProfileModal(false)}
+          healthCertVerified={healthCertVerified}
+          onOpenHealthCertModal={() => setShowHealthCertModal(true)}
+          solcBalance={solcBalance}
+        />
       </div>
     </div>
     </AppPushProvider>
