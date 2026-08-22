@@ -659,28 +659,28 @@ function AgentTab() {
             <div className="absolute top-0 right-0 w-36 h-36 bg-blue-100/40 opacity-60 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-indigo-100/30 opacity-60 rounded-full blur-3xl pointer-events-none" />
             
-            {/* 헤더 */}
-            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-slate-100 pb-2">
-              <div className="flex items-center gap-2">
-                <div className="relative flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-md text-white font-black text-xs">
-                  <span>⚡</span>
+            {/* 헤더 (한 줄 심플 레이아웃) */}
+            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-slate-100 pb-1.5 gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-sm text-white font-black text-xs flex items-center justify-center shrink-0">
+                  ⚡
                 </div>
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-black text-slate-900 tracking-wider">땡겨요 웍스 AI 비서 쏠이</span>
-                    <span className="text-[8.5px] bg-blue-50 text-blue-700 font-black px-2 py-0.5 rounded-full border border-blue-200 whitespace-nowrap">
-                      0.1초 LBS 스마트 매칭
-                    </span>
-                  </div>
-                  <p className="text-[9.5px] text-slate-500 font-medium">실시간 위치 기반 최적 알바 & 0.1초 즉시정산 안내</p>
+                <div className="flex items-center gap-1.5 truncate">
+                  <span className="text-xs font-black text-slate-900 tracking-tight whitespace-nowrap">
+                    AI 비서 쏠이
+                  </span>
+                  <span className="text-[9px] bg-blue-50 text-blue-700 font-bold px-1.5 py-0.2 rounded-full border border-blue-200 whitespace-nowrap">
+                    0.1초 매칭
+                  </span>
                 </div>
               </div>
               <button
                 onClick={() => setIsChatExpanded(false)}
-                className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-[11px] shadow-md border border-slate-700 flex items-center gap-1 active:scale-95 transition-all shrink-0"
+                className="px-2.5 py-1 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-[10.5px] shadow-xs border border-slate-700 flex items-center gap-1 active:scale-95 transition-all shrink-0 cursor-pointer"
+                title="지도 메인 화면으로 접기"
               >
-                <span>지도 메인으로 (접기)</span>
-                <span className="text-amber-400">▼</span>
+                <span>지도 접기</span>
+                <span className="text-amber-400 font-bold">▼</span>
               </button>
             </div>
 
