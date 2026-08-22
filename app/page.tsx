@@ -654,66 +654,67 @@ function AgentTab() {
         </button>
       </div>
 
-      {/* 1. 🤖 대화형 AI 매칭 비서 도담이 (땡겨요 라이프스타일 UX 스마트 챗 바) */}
+      {/* 1. 🤖 대화형 AI 매칭 비서 쏠이 (SOL-E 스마트 챗 바) */}
       <div className="shrink-0 z-40">
         {!isChatExpanded ? (
-          <div className="bg-white border border-orange-100 rounded-2xl p-2.5 shadow-xs hover:shadow-sm transition-all flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => setIsChatExpanded(true)}>
-              <div className="relative flex items-center justify-center w-7.5 h-7.5 rounded-full bg-gradient-to-tr from-[#FB521C] to-amber-500 shrink-0 shadow-xs text-white text-xs">
-                <span>🥕</span>
+          <div className="bg-gradient-to-r from-[#003db3] via-blue-900 to-slate-900 border-2 border-blue-400/60 rounded-2xl p-3 shadow-lg hover:shadow-xl transition-all flex items-center justify-between gap-2.5 text-white">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1 cursor-pointer" onClick={() => setIsChatExpanded(true)}>
+              <div className="relative flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-orange-500 shrink-0 shadow-md text-slate-950 font-black text-sm">
+                <span>⚡</span>
               </div>
               <div className="truncate flex-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black text-slate-900">도담이 AI</span>
-                  <span className="text-[8.5px] bg-orange-50 text-[#FB521C] font-black px-1.5 py-0.2 rounded-full border border-orange-200">
+                  <span className="text-xs font-black text-white tracking-wide">AI 비서 쏠이</span>
+                  <span className="text-[9px] bg-amber-400/20 text-amber-300 font-black px-2 py-0.5 rounded-full border border-amber-400/40">
                     스마트 매칭
                   </span>
-                  <span className="text-[8.5px] text-amber-700 font-bold">🔥 1km 긴급 7건</span>
+                  <span className="text-[9px] text-emerald-300 font-bold">🔥 1km 긴급 7건</span>
                 </div>
-                <p className="text-[10.5px] text-slate-500 truncate mt-0.5">"도담이에게 물어보기: '부평역 근처 1시간 서빙 찾아줘'"</p>
+                <p className="text-[11px] text-slate-200 truncate mt-0.5 font-medium">"쏠이에게 물어보기: '부평역 근처 1시간 서빙 찾아줘'"</p>
               </div>
             </div>
             <button
               onClick={() => setIsChatExpanded(true)}
-              className="px-3 py-1.5 rounded-xl bg-[#FB521C] hover:bg-[#E4410E] text-white font-black text-[10.5px] shadow-xs active:scale-95 transition-all shrink-0 flex items-center gap-1"
+              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md active:scale-95 transition-all shrink-0 flex items-center gap-1.5"
             >
-              <Sparkles className="w-3 h-3 text-amber-200" />
-              <span>AI 대화</span>
+              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+              <span>쏠이와 대화</span>
             </button>
           </div>
         ) : (
-          <div className="bg-white p-3.5 rounded-3xl shadow-lg border border-slate-200 flex flex-col h-[320px] relative overflow-hidden transition-all">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-orange-100/40 opacity-60 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-amber-100/30 opacity-60 rounded-full blur-3xl pointer-events-none" />
+          <div className="bg-white p-3.5 rounded-3xl shadow-2xl border-2 border-blue-500 flex flex-col h-[340px] relative overflow-hidden transition-all">
+            <div className="absolute top-0 right-0 w-36 h-36 bg-blue-100/40 opacity-60 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-indigo-100/30 opacity-60 rounded-full blur-3xl pointer-events-none" />
             
             {/* 헤더 */}
-            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-slate-100 pb-1.5">
+            <div className="flex items-center justify-between mb-2 shrink-0 border-b border-slate-100 pb-2">
               <div className="flex items-center gap-2">
-                <div className="relative flex items-center justify-center w-7.5 h-7.5 rounded-full bg-gradient-to-tr from-[#FB521C] to-amber-500 shadow-xs text-white text-xs">
-                  <span>🥕</span>
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-md text-white font-black text-xs">
+                  <span>⚡</span>
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-black text-slate-900 tracking-wider">땡겨요 웍스 AI 비서 도담이</span>
-                    <span className="text-[8px] bg-orange-50 text-[#FB521C] font-black px-2 py-0.5 rounded-full border border-orange-200 whitespace-nowrap">
+                    <span className="text-xs font-black text-slate-900 tracking-wider">땡겨요 웍스 AI 비서 쏠이</span>
+                    <span className="text-[8.5px] bg-blue-50 text-blue-700 font-black px-2 py-0.5 rounded-full border border-blue-200 whitespace-nowrap">
                       0.1초 LBS 스마트 매칭
                     </span>
                   </div>
-                  <p className="text-[9px] text-slate-500">실시간 위치 기반 최적 알바 & 0.1초 즉시정산 안내</p>
+                  <p className="text-[9.5px] text-slate-500 font-medium">실시간 위치 기반 최적 알바 & 0.1초 즉시정산 안내</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsChatExpanded(false)}
-                className="text-[9.5px] px-2.5 py-1 rounded-full bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-200 border border-indigo-500/40 font-bold transition-all flex items-center gap-1 active:scale-95 shrink-0"
+                className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-[11px] shadow-md border border-slate-700 flex items-center gap-1 active:scale-95 transition-all shrink-0"
               >
-                지도 메인으로 (접기) ▼
+                <span>지도 메인으로 (접기)</span>
+                <span className="text-amber-400">▼</span>
               </button>
             </div>
 
             {/* 🔥 [AI 대화창 내부 통합] 실시간 핫스팟 현황판 및 Trojan 전략 바 */}
             <div className="shrink-0 space-y-1.5 mb-2">
               {/* 실시간 핫스팟 마키 티커 */}
-              <div className="bg-blue-950/70 border border-blue-500/30 rounded-xl px-2.5 py-1 flex items-center justify-between gap-2 shadow-inner">
+              <div className="bg-slate-950 border border-blue-500/40 rounded-xl px-3 py-1.5 flex items-center justify-between gap-2 shadow-inner">
                 <div className="flex items-center gap-1.5 min-w-0">
                   <span className="relative flex h-2 w-2 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
@@ -725,13 +726,13 @@ function AgentTab() {
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
-                      className="text-[10px] font-bold text-amber-300 truncate"
+                      className="text-[10.5px] font-bold text-amber-300 truncate"
                     >
                       {LIVE_NOTIFICATIONS[notificationIdx]}
                     </motion.p>
                   </AnimatePresence>
                 </div>
-                <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
                   0.1초 정산
                 </span>
               </div>
@@ -739,14 +740,14 @@ function AgentTab() {
               {/* 💡 Trojan Horse Strategy 바 버튼 */}
               <button
                 onClick={() => setShowAlbamonModal(true)}
-                className="w-full bg-gradient-to-r from-blue-900/80 via-indigo-900/80 to-slate-900 border border-blue-400/30 rounded-xl px-2.5 py-1 text-white flex items-center justify-between hover:brightness-110 active:scale-95 transition-all text-left"
+                className="w-full bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 border border-blue-400/40 rounded-xl px-3 py-1.5 text-white flex items-center justify-between hover:brightness-110 active:scale-95 transition-all text-left shadow-sm"
               >
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="text-[9px] font-black text-emerald-400 uppercase tracking-wider shrink-0">💡 STRATEGY</span>
-                  <p className="text-[10px] font-bold text-blue-200 truncate">왜 사장님들은 알바몬을 버리고 땡겨요 웍스로 올까?</p>
+                  <span className="text-[9.5px] font-black text-emerald-400 uppercase tracking-wider shrink-0">💡 STRATEGY</span>
+                  <p className="text-[10.5px] font-bold text-blue-200 truncate">왜 사장님들은 알바몬을 버리고 땡겨요 웍스로 올까?</p>
                 </div>
-                <span className="text-[9px] font-black text-amber-300 underline shrink-0 flex items-center gap-0.5">
-                  혁신 비교 <ArrowUpRight className="w-2.5 h-2.5" />
+                <span className="text-[9.5px] font-black text-amber-300 underline shrink-0 flex items-center gap-0.5">
+                  혁신 비교 <ArrowUpRight className="w-3 h-3" />
                 </span>
               </button>
             </div>
@@ -761,7 +762,7 @@ function AgentTab() {
                   <div className={`max-w-[90%] p-3 rounded-2xl text-xs leading-relaxed ${
                     msg.role === 'user' 
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-xs shadow-md font-medium' 
-                      : 'bg-slate-800/90 text-slate-100 rounded-tl-xs border border-slate-700/80 shadow-md font-normal'
+                      : 'bg-slate-100 text-slate-900 rounded-tl-xs border border-slate-200 shadow-sm font-normal'
                   }`}>
                     {msg.text}
                   </div>
@@ -769,16 +770,16 @@ function AgentTab() {
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-slate-800/90 border border-slate-700 text-slate-300 p-2.5 rounded-2xl rounded-tl-xs text-xs flex items-center gap-2">
-                    <span className="animate-spin w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full" />
-                    <span>쏠이가 실시간 DB와 지도(LBS)를 분석하고 있습니다...</span>
+                  <div className="bg-slate-100 border border-slate-200 text-slate-700 p-2.5 rounded-2xl rounded-tl-xs text-xs flex items-center gap-2">
+                    <span className="animate-spin w-3.5 h-3.5 border-2 border-blue-500/30 border-t-blue-600 rounded-full" />
+                    <span className="font-bold text-blue-700">쏠이가 실시간 DB와 지도(LBS)를 분석하고 있습니다...</span>
                   </div>
                 </div>
               )}
             </div>
 
             {/* 입력 폼 */}
-            <div className="shrink-0 pt-2 border-t border-indigo-500/20 space-y-1.5">
+            <div className="shrink-0 pt-2 border-t border-slate-200 space-y-1.5">
               <form 
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -791,19 +792,19 @@ function AgentTab() {
                   value={inputText}
                   onChange={e => setInputText(e.target.value)}
                   placeholder="예: 부평역 1시간 서빙 알바 찾아줘"
-                  className="flex-1 bg-slate-900/90 border border-indigo-500/40 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-400 transition-all font-medium"
+                  className="flex-1 bg-slate-50 border-2 border-blue-400 focus:border-blue-600 rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white transition-all font-semibold shadow-inner"
                 />
                 <button
                   type="submit"
                   disabled={!inputText.trim() || isTyping}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 disabled:opacity-50 text-white p-2 rounded-xl text-xs font-bold active:scale-95 transition-all shrink-0 shadow-md"
+                  className="bg-[#0046FF] hover:bg-[#0038cc] disabled:opacity-50 text-white p-2.5 rounded-xl text-xs font-bold active:scale-95 transition-all shrink-0 shadow-md"
                 >
                   <Sparkles className="w-4 h-4" />
                 </button>
               </form>
 
               {/* 퀵 칩 레코멘더 */}
-              <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
                 {[
                   '📍 부평역 야간 서빙 알바',
                   '⚡ 1시간 초단기 긱 (시급 ₩16,000)',
@@ -814,7 +815,7 @@ function AgentTab() {
                     key={chip}
                     onClick={() => sendMessageText(chip)}
                     disabled={isTyping}
-                    className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-slate-800/90 border border-indigo-500/30 text-indigo-200 hover:text-white hover:bg-indigo-600/40 whitespace-nowrap active:scale-95 transition-all disabled:opacity-50 shadow-xs"
+                    className="text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-50 border-2 border-blue-200 text-blue-800 hover:bg-[#0046FF] hover:text-white hover:border-[#0046FF] whitespace-nowrap active:scale-95 transition-all disabled:opacity-50 shadow-xs cursor-pointer"
                   >
                     {chip}
                   </button>
@@ -939,7 +940,7 @@ function AgentTab() {
           <div>
             <span className="text-[9.5px] font-black text-[#FB521C] tracking-widest uppercase">Ddangyo Works AI Matcher</span>
             <h4 className="font-black text-sm text-slate-900">
-              도담이 추천 긱 목록
+              쏠이 추천 긱 목록
               {mapSelectedStoreName && (
                 <span className="ml-2 text-xs font-bold text-[#FB521C] bg-orange-50 px-2 py-0.5 rounded-md border border-orange-200">
                   📍 {mapSelectedStoreName}
