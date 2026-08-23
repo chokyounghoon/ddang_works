@@ -4215,35 +4215,25 @@ export default function ShinhanDDangApp() {
             </div>
           </div>
 
-          {/* 우측: 알림 & 조이수 프로필 & 슈퍼SOL 지갑 */}
-          <div className="flex items-center gap-1 shrink-0 ml-auto">
+          {/* 우측: 보이스 도담이 & 알림 & 조이수 프로필 */}
+          <div className="flex items-center gap-1.5 shrink-0 ml-auto">
             {/* 🎙️ 보이스 도담이 (Gemini Live 실시간 음성 AI) */}
             <button
               onClick={() => setShowVoiceDodamModal(true)}
-              className="relative w-6 h-6 rounded-full bg-gradient-to-tr from-[#FB521C] to-orange-500 hover:brightness-110 active:scale-90 flex items-center justify-center text-white transition-all shadow-xs shrink-0 cursor-pointer"
+              className="relative w-6.5 h-6.5 rounded-full bg-gradient-to-tr from-[#FB521C] to-orange-500 hover:brightness-110 active:scale-95 flex items-center justify-center text-white transition-all shadow-xs shrink-0 cursor-pointer"
               title="보이스 도담이 (실시간 음성 AI)"
             >
-              <Mic className="w-3.5 h-3.5 text-white animate-pulse" />
-              <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping" />
-            </button>
-
-            {/* 🌐 10개국어 AI 실시간 동시통역 */}
-            <button
-              onClick={() => setShowGlobalTranslateModal(true)}
-              className="w-5.5 h-5.5 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 flex items-center justify-center text-slate-700 transition-all border border-slate-200 shrink-0 cursor-pointer"
-              title="10개국어 AI 실시간 동시통역"
-            >
-              <Globe className="w-3 h-3 text-blue-600" />
+              <Mic className="w-3.5 h-3.5 text-white" />
             </button>
 
             {/* 🔔 실시간 정산/에스크로 알림 아이콘 */}
             <button
               onClick={() => setShowLiveNotificationModal(true)}
-              className="relative w-5.5 h-5.5 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 flex items-center justify-center text-slate-700 transition-all border border-slate-200 shrink-0 cursor-pointer"
+              className="relative w-6.5 h-6.5 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 flex items-center justify-center text-slate-700 transition-all border border-slate-200/80 shrink-0 cursor-pointer"
               title="실시간 알림 센터 (5건)"
             >
-              <Bell className="w-3 h-3 text-slate-700" />
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-red-500 text-white font-black text-[7px] flex items-center justify-center shadow-xs animate-pulse">
+              <Bell className="w-3.5 h-3.5 text-slate-700" />
+              <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-red-500 text-white font-black text-[7.5px] flex items-center justify-center shadow-xs">
                 5
               </span>
             </button>
@@ -4251,13 +4241,13 @@ export default function ShinhanDDangApp() {
             {/* 👤 조이수 프로필 캡슐 버튼 (이름만 표시, 클릭 시 상세 팝업) */}
             <button
               onClick={() => setShowWorkerProfileModal(true)}
-              className="flex items-center gap-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white px-1.5 py-0.5 rounded-full border border-slate-700 shadow-xs transition-all cursor-pointer shrink-0"
+              className="h-6.5 flex items-center gap-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white px-2 rounded-full border border-slate-700 shadow-xs transition-all cursor-pointer shrink-0"
               title="조이수 프로필 및 SBT 신용/보건증 상세 보기"
             >
               <div className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 font-black text-[8px] shadow-xs">
                 🏆
               </div>
-              <span className="text-[9.5px] font-black text-white tracking-tight">조이수</span>
+              <span className="text-[10px] font-black text-white tracking-tight">조이수</span>
               <span 
                 className={`w-1.5 h-1.5 rounded-full ${healthCertVerified ? 'bg-emerald-400' : 'bg-amber-400'} border border-slate-900`} 
                 title={healthCertVerified ? "보건증 인증완료" : "보건증 미인증"} 
