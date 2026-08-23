@@ -55,6 +55,11 @@ const EmployerTaxFactoringModal = dynamic(() => import('./components/EmployerTax
 const VoiceDodamModal = dynamic(() => import('./components/VoiceDodamModal'), { ssr: false });
 const StreamingCashModal = dynamic(() => import('./components/StreamingCashModal'), { ssr: false });
 const GlobalTranslateChatModal = dynamic(() => import('./components/GlobalTranslateChatModal'), { ssr: false });
+const AdminUsersScreen = dynamic(() => import('./components/AdminUsersScreen'), { ssr: false });
+const AdminFdsScreen = dynamic(() => import('./components/AdminFdsScreen'), { ssr: false });
+const AdminSettlementScreen = dynamic(() => import('./components/AdminSettlementScreen'), { ssr: false });
+const AdminWeb3Screen = dynamic(() => import('./components/AdminWeb3Screen'), { ssr: false });
+const AdminTaxScreen = dynamic(() => import('./components/AdminTaxScreen'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -4037,7 +4042,7 @@ function MyPageScreen({
 
 // ─── 메인 ────────────────────────────────────────────────────────────────────
 
-type Tab = 'agent' | 'chat' | 'community' | 'checkout' | 'dgcs' | 'mypage' | 'employer' | 'employer_finance' | 'employer_applicants' | 'admin' | 'p2p_request';
+type Tab = 'agent' | 'chat' | 'community' | 'checkout' | 'dgcs' | 'mypage' | 'employer' | 'employer_finance' | 'employer_applicants' | 'admin' | 'p2p_request' | 'admin_users' | 'admin_fds' | 'admin_settlement' | 'admin_web3' | 'admin_tax';
 type UserRole = 'worker' | 'employer' | 'p2p' | 'admin';
 
 const workerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
@@ -4068,12 +4073,12 @@ const employerTabs: Array<{ id: Tab; Icon: any; label: string }> = [
 ];
 
 const adminTabs: Array<{ id: Tab; Icon: any; label: string }> = [
-  { id: 'admin',               Icon: Activity,      label: '그룹 시너지' },
-  { id: 'chat',                Icon: MessageSquare, label: '통합 땡톡' },
-  { id: 'community',           Icon: Users,         label: '커뮤니티' },
-  { id: 'dgcs',                Icon: ShieldCheck,   label: 'D-GCS 평가' },
-  { id: 'checkout',            Icon: DollarSign,    label: 'BaaS 정산' },
-  { id: 'mypage',              Icon: User,          label: '시스템 마이' },
+  { id: 'admin',               Icon: BarChart3,     label: '시너지총괄' },
+  { id: 'admin_users',         Icon: Users,         label: '회원/매장' },
+  { id: 'admin_fds',           Icon: ShieldAlert,   label: 'AI FDS관제' },
+  { id: 'admin_settlement',    Icon: DollarSign,    label: '정산/유동성' },
+  { id: 'admin_web3',          Icon: Cpu,           label: '온체인원장' },
+  { id: 'admin_tax',           Icon: Building2,     label: '세무/EDI' },
 ];
 
 export default function ShinhanDDangApp() {
@@ -4524,6 +4529,41 @@ export default function ShinhanDDangApp() {
             <motion.div key="admin" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
               className="pb-6">
               <AdminDashboard />
+            </motion.div>
+          )}
+
+          {activeTab === 'admin_users' && (
+            <motion.div key="admin_users" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
+              className="pb-6">
+              <AdminUsersScreen />
+            </motion.div>
+          )}
+
+          {activeTab === 'admin_fds' && (
+            <motion.div key="admin_fds" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
+              className="pb-6">
+              <AdminFdsScreen />
+            </motion.div>
+          )}
+
+          {activeTab === 'admin_settlement' && (
+            <motion.div key="admin_settlement" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
+              className="pb-6">
+              <AdminSettlementScreen />
+            </motion.div>
+          )}
+
+          {activeTab === 'admin_web3' && (
+            <motion.div key="admin_web3" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
+              className="pb-6">
+              <AdminWeb3Screen />
+            </motion.div>
+          )}
+
+          {activeTab === 'admin_tax' && (
+            <motion.div key="admin_tax" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
+              className="pb-6">
+              <AdminTaxScreen />
             </motion.div>
           )}
 
