@@ -420,15 +420,15 @@ export default function CheckoutScreen({
               <button
                 onClick={doCheckout}
                 disabled={loading || !clockOutStamped}
-                className={`w-full py-4.5 rounded-2xl font-black text-base transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 ${
+                className={`w-full py-4 rounded-2xl font-black text-sm sm:text-base transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 px-3 ${
                   !clockOutStamped
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300'
                     : 'bg-gradient-to-r from-[#FB521C] via-orange-500 to-amber-500 text-white shadow-orange-500/30 hover:brightness-110'
                 }`}
               >
-                <Zap className="w-5 h-5 text-amber-200 fill-amber-200" />
-                <span>
-                  {loading ? '0.1초 신한은행 이체 처리 중...' : '⚡ 오늘의 긱 완료하고 0.1초 만에 땡겨받기'}
+                <Zap className="w-5 h-5 text-amber-200 fill-amber-200 shrink-0" />
+                <span className="whitespace-nowrap tracking-tight">
+                  {loading ? '0.1초 신한은행 이체 처리 중...' : '오늘의 긱 완료하고 0.1초 만에 땡겨받기'}
                 </span>
               </button>
             </div>
