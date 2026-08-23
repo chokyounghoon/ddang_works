@@ -43,41 +43,31 @@ export default function AdminDashboard() {
   const currentMetric = periodMetrics[timePeriod];
 
   return (
-    <div className="space-y-4 pb-8 font-sans">
-      {/* 1. 최고 경영진(C-Suite) C-Level 핀테크 통제 센터 헤더 & 실시간 KPI 전광판 */}
-      <div className="bg-gradient-to-br from-[#0B0F19] via-[#10172A] to-[#080D1A] rounded-3xl p-5 border border-blue-500/30 shadow-2xl relative overflow-hidden text-white">
-        <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-bl from-[#FB521C]/20 via-blue-600/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+    <div className="space-y-3.5 pb-8 font-sans">
+      {/* 1. C-Suite 핀테크 통제 센터 헤더 & 실시간 KPI 전광판 */}
+      <div className="bg-gradient-to-br from-[#0B0F19] via-[#10172A] to-[#080D1A] rounded-3xl p-4 sm:p-5 border border-blue-500/30 shadow-2xl relative overflow-hidden text-white">
+        <div className="absolute top-0 right-0 w-60 h-60 bg-gradient-to-bl from-[#FB521C]/20 via-blue-600/15 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-        {/* 상단 타이틀 & 시스템 라이브 뱃지 & 주기 필터 */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FB521C] via-blue-600 to-indigo-600 flex items-center justify-center text-white text-xl font-black shadow-lg shadow-orange-500/20 border border-white/20 shrink-0">
-              🛡️
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[9.5px] font-black text-[#FB521C] uppercase tracking-widest bg-orange-500/10 px-2 py-0.5 rounded-md border border-orange-500/30">
-                  땡겨요 WORKS · One Shinhan C-Suite
-                </span>
-                <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  LIVE OPERATIONAL
-                </span>
-              </div>
-              <h3 className="font-black text-base sm:text-lg text-white tracking-tight mt-0.5">
-                신한금융 7대 시너지 & Web3 그룹 통제 센터
-              </h3>
-            </div>
+        {/* 상단 뱃지 & 동기화 버튼 */}
+        <div className="flex items-center justify-between gap-2 mb-3 relative z-10">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-[9px] font-black text-[#FB521C] uppercase tracking-wider bg-orange-500/15 px-2 py-0.5 rounded-md border border-orange-500/30">
+              One Shinhan C-Suite
+            </span>
+            <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              LIVE
+            </span>
           </div>
 
-          <div className="flex items-center gap-1.5 ml-auto sm:ml-0">
+          <div className="flex items-center gap-1.5 shrink-0">
             {/* 기간 필터 */}
-            <div className="bg-slate-900/90 p-0.5 rounded-xl border border-slate-800 flex items-center gap-0.5 text-[10.5px] font-bold">
+            <div className="bg-slate-900/90 p-0.5 rounded-xl border border-slate-800 flex items-center gap-0.5 text-[10px] font-bold">
               {(['today', '7d', '30d', 'year'] as TimePeriod[]).map((p) => (
                 <button
                   key={p}
                   onClick={() => setTimePeriod(p)}
-                  className={`px-2 py-1 rounded-lg transition-all ${
+                  className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
                     timePeriod === p
                       ? 'bg-[#FB521C] text-white font-black shadow-2xs'
                       : 'text-slate-400 hover:text-slate-200'
@@ -90,92 +80,65 @@ export default function AdminDashboard() {
 
             <button
               onClick={handleRefresh}
-              className="flex items-center gap-1.5 text-xs text-slate-300 bg-slate-800/90 hover:bg-slate-700 px-3 py-1.5 rounded-xl border border-slate-700 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
+              className="p-1 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-300 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
+              title="데이터 새로고침"
             >
               <RefreshCw className={`w-3.5 h-3.5 text-[#FB521C] ${isRefreshing ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">동기화</span>
             </button>
           </div>
         </div>
 
-        {/* 2. C-Level 총괄 4대 핵심 KPI 전광판 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 bg-slate-900/80 rounded-2xl border border-slate-800 text-center shadow-inner relative z-10">
-          <div className="p-2 border-r border-slate-800/80">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">7대 계열사 시너지 창출</p>
-            <p className="text-xl font-black text-emerald-400 mt-0.5 font-mono">{currentMetric.synergy}</p>
-            <p className="text-[9px] font-semibold text-emerald-300/80 mt-0.5 flex items-center justify-center gap-0.5">
-              <TrendingUp className="w-2.5 h-2.5" /> +14.8% YoY 증가
-            </p>
-          </div>
-
-          <div className="p-2 border-r border-slate-800/80">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">0.1초 즉시 정산 건수</p>
-            <p className="text-xl font-black text-blue-400 mt-0.5 font-mono">{currentMetric.txCount}</p>
-            <p className="text-[9px] font-semibold text-blue-300/80 mt-0.5">성공률 100.0% 달성</p>
-          </div>
-
-          <div className="p-2 border-r border-slate-800/80">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">AI FDS 사전 차단</p>
-            <p className="text-xl font-black text-amber-400 mt-0.5 font-mono">{currentMetric.fdsBlocked}</p>
-            <p className="text-[9px] font-semibold text-amber-300/80 mt-0.5">손실률 0.01% 방어</p>
-          </div>
-
-          <div className="p-2">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">국세청 BATCH 자동신고</p>
-            <p className="text-xl font-black text-indigo-300 mt-0.5 font-mono">{currentMetric.taxReported}</p>
-            <p className="text-[9px] font-semibold text-indigo-300/80 mt-0.5">100% 비과세 적법 처리</p>
-          </div>
+        {/* 타이틀 */}
+        <div className="mb-3.5 relative z-10">
+          <h3 className="font-black text-base sm:text-lg text-white tracking-tight leading-snug">
+            신한금융 7대 시너지 & Web3 그룹 통제
+          </h3>
+          <p className="text-[11px] text-slate-300 mt-0.5">
+            0.1초 퇴근 스와이프로 가동되는 7대 금융 계열사 독점 시너지 실시간 집계
+          </p>
         </div>
 
-        {/* 3. 4대 서브 탭 통제 스위처 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 text-xs font-bold mt-3.5 relative z-10">
-          <button
-            onClick={() => setSubTab('revenue')}
-            className={`py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              subTab === 'revenue'
-                ? 'bg-gradient-to-r from-[#FB521C] to-orange-600 text-white font-black shadow-lg shadow-orange-500/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <BarChart3 className="w-3.5 h-3.5 text-amber-300" />
-            <span className="truncate">1. 7대 시너지 수익</span>
-          </button>
+        {/* 2. C-Level 총괄 4대 핵심 KPI 전광판 (모바일 2x2 고가독성 그리드) */}
+        <div className="grid grid-cols-2 gap-2 text-left relative z-10">
+          <div className="bg-slate-900/90 p-2.5 rounded-2xl border border-slate-800/90">
+            <span className="text-[10px] font-bold text-slate-400 block">7대 계열사 시너지</span>
+            <span className="text-lg font-black text-emerald-400 font-mono tracking-tight block mt-0.5">
+              {currentMetric.synergy}
+            </span>
+            <span className="text-[9px] font-semibold text-emerald-300/80 mt-0.5 flex items-center gap-0.5">
+              <TrendingUp className="w-2.5 h-2.5" /> +14.8% YoY 증가
+            </span>
+          </div>
 
-          <button
-            onClick={() => setSubTab('web3')}
-            className={`py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              subTab === 'web3'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black shadow-lg shadow-blue-500/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5 text-blue-300" />
-            <span className="truncate">2. Web3 온체인 원장</span>
-          </button>
+          <div className="bg-slate-900/90 p-2.5 rounded-2xl border border-slate-800/90">
+            <span className="text-[10px] font-bold text-slate-400 block">0.1초 즉시 정산</span>
+            <span className="text-lg font-black text-blue-400 font-mono tracking-tight block mt-0.5">
+              {currentMetric.txCount}
+            </span>
+            <span className="text-[9px] font-semibold text-blue-300/80 mt-0.5 block">
+              성공률 100.0% 달성
+            </span>
+          </div>
 
-          <button
-            onClick={() => setSubTab('fds_health')}
-            className={`py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              subTab === 'fds_health'
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black shadow-lg shadow-emerald-500/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <ShieldAlert className="w-3.5 h-3.5 text-emerald-300" />
-            <span className="truncate">3. AI FDS & 헬스</span>
-          </button>
+          <div className="bg-slate-900/90 p-2.5 rounded-2xl border border-slate-800/90">
+            <span className="text-[10px] font-bold text-slate-400 block">AI FDS 사전 차단</span>
+            <span className="text-lg font-black text-amber-400 font-mono tracking-tight block mt-0.5">
+              {currentMetric.fdsBlocked}
+            </span>
+            <span className="text-[9px] font-semibold text-amber-300/80 mt-0.5 block">
+              손실률 0.01% 방어
+            </span>
+          </div>
 
-          <button
-            onClick={() => setSubTab('b2b_tax')}
-            className={`py-2 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              subTab === 'b2b_tax'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black shadow-lg shadow-purple-500/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <Building2 className="w-3.5 h-3.5 text-purple-300" />
-            <span className="truncate">4. B2B 세무 & 정산풀</span>
-          </button>
+          <div className="bg-slate-900/90 p-2.5 rounded-2xl border border-slate-800/90">
+            <span className="text-[10px] font-bold text-slate-400 block">국세청 자동 신고</span>
+            <span className="text-lg font-black text-indigo-300 font-mono tracking-tight block mt-0.5">
+              {currentMetric.taxReported}
+            </span>
+            <span className="text-[9px] font-semibold text-indigo-300/80 mt-0.5 block">
+              100% 비과세 적법 처리
+            </span>
+          </div>
         </div>
       </div>
 

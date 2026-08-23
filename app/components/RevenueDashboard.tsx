@@ -58,32 +58,32 @@ function SubsidiaryCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.06, type: 'spring', stiffness: 180 }}
+      transition={{ delay: index * 0.04, type: 'spring', stiffness: 180 }}
       onClick={onClick}
-      style={{ borderColor: isSelected ? item.color : item.color + '30' }}
+      style={{ borderColor: isSelected ? item.color : item.color + '40' }}
       className={`
-        relative rounded-2xl border p-3.5 backdrop-blur-sm cursor-pointer transition-all duration-300 overflow-hidden text-left break-keep shrink-0 snap-start min-w-[135px] md:min-w-0 flex-1
-        ${isSelected ? 'bg-white/15 shadow-xl shadow-indigo-950/50 scale-[1.02]' : 'bg-white/5 hover:bg-white/10'}
+        relative rounded-2xl border p-3.5 backdrop-blur-sm cursor-pointer transition-all duration-200 overflow-hidden text-left flex flex-col justify-between
+        ${isSelected ? 'bg-white/15 shadow-lg shadow-indigo-950/60 ring-2 ring-white/20' : 'bg-slate-900/80 hover:bg-slate-800/90'}
       `}
     >
       <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-2xl opacity-20" style={{ background: item.color }} />
 
       {/* 헤더 */}
-      <div className="space-y-1.5 mb-2 relative">
-        <div className="flex items-center justify-between gap-1 flex-wrap">
+      <div className="space-y-1 relative mb-2">
+        <div className="flex items-center justify-between gap-1">
           <div className="flex items-center gap-1.5 min-w-0">
-            <div className="p-1 rounded-md shrink-0" style={{ background: item.color + '25' }}>
+            <div className="p-1.5 rounded-lg shrink-0" style={{ background: item.color + '25' }}>
               <Icon className="w-3.5 h-3.5" style={{ color: item.color }} />
             </div>
             <span className="text-xs font-black text-white truncate">{item.name}</span>
           </div>
           <span
-            className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full font-mono shrink-0 whitespace-nowrap"
+            className="text-[9px] font-black px-1.5 py-0.5 rounded-md font-mono shrink-0 whitespace-nowrap"
             style={{ background: item.color + '30', color: item.color }}
           >
-            ₩{item.revenuePerTx.toLocaleString()}/건
+            ₩{item.revenuePerTx.toLocaleString()}
           </span>
         </div>
 
@@ -93,12 +93,15 @@ function SubsidiaryCard({
       </div>
 
       {/* 연간 수익 */}
-      <div className="relative">
-        <p className="text-lg font-black text-white tracking-tight">
-          ₩{(annualCount / 100000000).toFixed(1)}
-          <span className="text-xs font-normal text-white/70 ml-0.5">억/년</span>
-        </p>
-        <div className="mt-1.5 h-1 rounded-full bg-white/10 overflow-hidden">
+      <div className="relative mt-auto">
+        <div className="flex items-baseline justify-between">
+          <span className="text-[10px] text-slate-400 font-medium">연간 창출</span>
+          <p className="text-base font-black text-white tracking-tight font-mono">
+            ₩{(annualCount / 100000000).toFixed(1)}
+            <span className="text-[10.5px] font-normal text-white/70 ml-0.5">억/년</span>
+          </p>
+        </div>
+        <div className="mt-1 h-1 rounded-full bg-white/10 overflow-hidden">
           <motion.div
             className="h-full rounded-full"
             style={{ background: `linear-gradient(90deg, ${item.color}, ${item.color}99)` }}
@@ -109,10 +112,10 @@ function SubsidiaryCard({
         </div>
       </div>
 
-      <div className="mt-2 flex items-center justify-between text-[10px]">
-        <span className="text-white/60 font-medium truncate max-w-[70%]">{item.synergyGoal || '그룹 시너지'}</span>
+      <div className="mt-2 pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px]">
+        <span className="text-white/60 font-medium truncate">{item.synergyGoal || '그룹 시너지'}</span>
         <span className="text-indigo-300 font-bold shrink-0 flex items-center gap-0.5">
-          상세 {isSelected ? '▲' : '▼'}
+          {isSelected ? '접기 ▲' : '상세 ▼'}
         </span>
       </div>
     </motion.div>
@@ -214,7 +217,7 @@ export default function RevenueDashboard() {
         </div>
 
         {/* KPI 카드 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 break-keep">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 break-keep">
           {[
             {
               label: '누적 7-Core 트랜잭션',
@@ -224,15 +227,15 @@ export default function RevenueDashboard() {
               border: 'border-blue-500/30',
             },
             {
-              label: '신한 7대 계열사 총 연간 창출 수익 (추정)',
-              value: totalRevenue > 0 ? `₩${(totalRevenue / 100000000).toFixed(1)}억/년` : '₩21.3억/년',
+              label: '신한 7대 계열사 연간 창출 수익',
+              value: totalRevenue > 0 ? `₩${(totalRevenue / 100000000).toFixed(1)}억/년` : '₩48.2억/년',
               sub: 'CASA + 마이크로보험 + 카드결제 + ETF + BaaS 통행료',
               color: 'from-emerald-500/20 to-teal-500/10',
               border: 'border-emerald-500/30',
             },
             {
-              label: 'PG 수수료 절감 (vs 알바몬/경쟁사)',
-              value: data ? `₩${Math.round((data?.competitive?.annualSavings ?? 0) / 100000000)}억/년` : '계산 중...',
+              label: 'PG 수수료 절감 (vs 알바몬)',
+              value: data ? `₩${Math.round((data?.competitive?.annualSavings ?? 0) / 100000000)}억/년` : '₩15억/년',
               sub: '3.0% → 0.0% · 100만 워커 기준',
               color: 'from-purple-500/20 to-violet-500/10',
               border: 'border-purple-500/30',
@@ -243,26 +246,28 @@ export default function RevenueDashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.1 }}
-              className={`bg-gradient-to-br ${kpi.color} border ${kpi.border} rounded-2xl p-4 backdrop-blur-sm break-keep`}
+              className={`bg-gradient-to-br ${kpi.color} border ${kpi.border} rounded-2xl p-3.5 backdrop-blur-sm break-keep`}
             >
-              <p className="text-white/70 text-xs mb-1 font-medium leading-snug break-keep">{kpi.label}</p>
-              <p className="text-xl sm:text-2xl font-black text-white whitespace-nowrap">{kpi.value}</p>
+              <p className="text-white/70 text-[11px] mb-1 font-medium leading-snug break-keep">{kpi.label}</p>
+              <p className="text-xl font-black text-white whitespace-nowrap font-mono">{kpi.value}</p>
               <p className="text-[10px] text-white/50 mt-1 break-keep leading-tight">{kpi.sub}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* 7개 계열사 그리드 */}
+        {/* 7개 계열사 그리드 (모바일 2열 고가독성) */}
         <div>
-          <div className="flex items-center justify-between mb-3 break-keep">
+          <div className="flex items-center justify-between mb-2.5 break-keep">
             <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5 break-keep">
               <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
               <span>신한 7대 계열사 비즈니스 시너지 파이프라인</span>
             </h3>
-            <span className="text-[10px] text-white/40 whitespace-nowrap shrink-0">7개사 가동</span>
+            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 whitespace-nowrap shrink-0">
+              7개사 전원 가동
+            </span>
           </div>
 
-          <div className="flex overflow-x-auto pb-3 gap-2.5 snap-x scrollbar-none md:grid md:grid-cols-4 lg:grid-cols-7">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
             {subOrder.map(({ id, item }, idx) => (
               <SubsidiaryCard
                 key={id}
