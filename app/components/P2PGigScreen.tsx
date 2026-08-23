@@ -93,6 +93,9 @@ export default function P2PGigScreen() {
   const [showGigEditModal, setShowGigEditModal] = useState(false);
   const [editingGig, setEditingGig] = useState<any | null>(null);
   const [showLiveGpsModal, setShowLiveGpsModal] = useState(false);
+  const [selectedTip, setSelectedTip] = useState<number | null>(null);
+  const [isTipSending, setIsTipSending] = useState(false);
+  const [tipSent, setTipSent] = useState(false);
 
   const { p2pGigs, deleteP2PGig, addP2PGig } = useGigStore();
   const { triggerPush } = useAppPush();
@@ -362,48 +365,92 @@ export default function P2PGigScreen() {
               ))}
             </div>
 
-            {/* AI 비서 도담이와의 대화형 입력창 */}
-            <div className="space-y-1.5 pt-1">
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-[#FB521C]" />
-                <span>AI 도담이에게 편하게 요청 사항을 적어주세요</span>
+            {/* AI 비서 도담이와의 대화형 입력창 & 퀵 시나리오 칩 */}
+            <div className="space-y-2 pt-1">
+              <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#FB521C]" />
+                  <span>AI 도담이에게 편하게 요청 사항을 적어주세요</span>
+                </span>
+                <span className="text-[10px] text-[#FB521C] font-bold">자연어 자동 분석</span>
               </div>
               <textarea
                 value={promptText}
                 onChange={e => setPromptText(e.target.value)}
                 rows={2}
-                className="w-full bg-slate-50 border border-slate-200 focus:border-[#FB521C] rounded-2xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 focus:border-[#FB521C] rounded-2xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-hidden transition-colors"
                 placeholder="예: 오늘 오후 3시부터 2시간 동안 초등학생 하원 및 실내 놀이 돌봄 부탁해"
               />
+
+              {/* 원클릭 인기 퀵 시나리오 칩 */}
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                {[
+                  { label: '🧸 하원·놀이 돌봄 2h', text: '초등학생 방과후 하원 및 실내 놀이 돌봄 부탁해', pay: 30000, h: 2, cat: '아이돌봄' },
+                  { label: '📦 원룸 짐나르기 1.5h', text: '차량에 박스 5개 및 소형 매트리스 싣는 것 도와줘', pay: 35000, h: 1.5, cat: '짐나르기' },
+                  { label: '🛋️ 이케아 서랍장 2h', text: '이케아 6단 서랍장 전동드릴 조립 부탁드려요', pay: 40000, h: 2, cat: '가구조립' },
+                  { label: '🐕 강아지 산책 1h', text: '중형견(골든리트리버) 1시간 단지 내 산책 및 배변 유도', pay: 22000, h: 1, cat: '반려동물' },
+                  { label: '🚗 병원 동행 2h', text: '어르신 안과 진료 동행 및 약국 처방전 수령', pay: 28000, h: 2, cat: '동행심부름' },
+                ].map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setPromptText(preset.text);
+                      setSelectedCategory(preset.cat);
+                      setP2pData(prev => ({
+                        ...prev,
+                        category: preset.cat,
+                        estimatedHours: preset.h,
+                        aiSuggestedPay: preset.pay,
+                        title: preset.text,
+                      }));
+                    }}
+                    className="py-1 px-2.5 rounded-xl bg-orange-50/80 hover:bg-orange-100 border border-orange-200 text-[#FB521C] font-bold text-[10.5px] whitespace-nowrap active:scale-95 transition-all cursor-pointer"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* AI 실시간 스마트 견적 산정 박스 */}
-            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-100 rounded-2xl p-3.5 space-y-2">
+            {/* AI 실시간 스마트 견적 & 난이도 안전 진단 박스 */}
+            <div className="bg-gradient-to-br from-indigo-50 via-white to-orange-50/40 border border-indigo-100 rounded-2xl p-3.5 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-indigo-600 animate-ping" />
-                  <span className="text-xs font-black text-indigo-900">
-                    AI 실시간 시장 시세 & 적정 보수 자동 견적
+                  <span className="w-2 h-2 rounded-full bg-[#FB521C] animate-ping" />
+                  <span className="text-xs font-black text-slate-900">
+                    AI 실시간 시장 시세 & 작업 안전도 자동 진단
                   </span>
                 </div>
-                <span className="text-[9.5px] font-bold text-indigo-600">
+                <span className="text-[9.5px] font-black text-indigo-700 bg-white px-2 py-0.5 rounded-md border border-indigo-200 shadow-2xs">
                   역삼동 최근 30일 시세 기준
                 </span>
               </div>
 
-              <div className="flex items-center justify-between pt-1 border-t border-indigo-100/80">
-                <div>
-                  <span className="text-[10px] text-slate-500 block font-medium">예상 시간 / 권장 보수</span>
-                  <span className="text-sm font-black text-indigo-950">
-                    {p2pData.estimatedHours}시간 · ₩{p2pData.aiSuggestedPay.toLocaleString()}원
+              <div className="grid grid-cols-3 gap-2 text-center text-[10px] pt-1">
+                <div className="bg-white p-2 rounded-xl border border-slate-200">
+                  <span className="text-slate-400 block font-medium">예상 시간 / 보수</span>
+                  <span className="text-xs font-black text-[#FB521C]">
+                    {p2pData.estimatedHours}h · ₩{p2pData.aiSuggestedPay.toLocaleString()}
                   </span>
                 </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-slate-500 block font-medium">보호 인프라</span>
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 inline-block mt-0.5">
-                    신한EZ 5,000만 보험 포함
-                  </span>
+                <div className="bg-white p-2 rounded-xl border border-slate-200">
+                  <span className="text-slate-400 block font-medium">작업 난이도</span>
+                  <span className="text-xs font-black text-indigo-700">안전 보통 (Level 2)</span>
                 </div>
+                <div className="bg-white p-2 rounded-xl border border-slate-200">
+                  <span className="text-slate-400 block font-medium">권장 헬퍼 평판</span>
+                  <span className="text-xs font-black text-emerald-600">D-GCS 900+</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-1 border-t border-slate-200/80 text-[10.5px]">
+                <span className="text-slate-600 font-medium">
+                  🛡️ <strong>신한EZ 5,000만원 이웃케어 보험</strong> (대인/대물 배상책임 100% 보장)
+                </span>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  자동 적용 (무료)
+                </span>
               </div>
             </div>
 
@@ -949,6 +996,81 @@ export default function P2PGigScreen() {
             ) : (
               <div className="bg-emerald-50 text-emerald-800 p-3 rounded-2xl text-center text-xs font-bold border border-emerald-200">
                 🎉 0.1초 만에 김서연 워커 계좌로 ₩{p2pData.aiSuggestedPay.toLocaleString()}원이 입금 완료되었습니다!
+              </div>
+            )}
+
+            {/* 💖 이웃 감사 팁(Tip) 원터치 신한 BaaS 즉시 송금 */}
+            {p2pData.settled && (
+              <div className="bg-gradient-to-br from-orange-50/70 via-white to-amber-50/50 border border-orange-200 rounded-2xl p-3.5 space-y-2.5 shadow-2xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                    <span>💖</span>
+                    <span>이웃 헬퍼에게 감사 팁 보내기</span>
+                  </span>
+                  <span className="text-[9.5px] font-bold text-[#FB521C] bg-white px-2 py-0.5 rounded-full border border-orange-200">
+                    신한 0원 수수료
+                  </span>
+                </div>
+
+                {!tipSent ? (
+                  <div className="space-y-2">
+                    <p className="text-[10.5px] text-slate-600">
+                      오늘 정성껏 도움을 주신 <strong>김서연</strong> 헬퍼님께 따뜻한 감사의 마음을 전해보세요.
+                    </p>
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {[1000, 2000, 3000, 5000].map((amount) => (
+                        <button
+                          key={amount}
+                          type="button"
+                          onClick={() => setSelectedTip(amount)}
+                          className={`py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                            selectedTip === amount
+                              ? 'bg-[#FB521C] text-white shadow-2xs'
+                              : 'bg-white border border-slate-200 text-slate-700 hover:border-orange-300'
+                          }`}
+                        >
+                          +₩{amount.toLocaleString()}
+                        </button>
+                      ))}
+                    </div>
+
+                    {selectedTip && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          setIsTipSending(true);
+                          await new Promise(r => setTimeout(r, 800));
+                          setIsTipSending(false);
+                          setTipSent(true);
+                          confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+                          triggerPush({
+                            title: '💖 [이웃 감사 팁 송금 완료]',
+                            body: `김서연 헬퍼님께 감사 팁 ₩${selectedTip.toLocaleString()}원이 신한 BaaS로 즉시 전달되었습니다.`,
+                            type: 'confirm',
+                          });
+                        }}
+                        disabled={isTipSending}
+                        className="w-full py-2.5 bg-gradient-to-r from-[#FB521C] to-orange-500 hover:brightness-105 active:scale-98 text-white rounded-xl text-xs font-black shadow-2xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        {isTipSending ? (
+                          <>
+                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            <span>신한 BaaS 팁 송금 처리 중...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>감사 팁 ₩{selectedTip.toLocaleString()}원 0.1초 즉시 보내기</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-emerald-50 text-emerald-800 p-2.5 rounded-xl text-center text-xs font-bold border border-emerald-200">
+                    ✓ 김서연 헬퍼님께 감사 팁 ₩{selectedTip?.toLocaleString()}원이 성공적으로 전달되었습니다!
+                  </div>
+                )}
               </div>
             )}
 

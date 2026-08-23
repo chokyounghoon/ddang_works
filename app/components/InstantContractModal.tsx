@@ -174,9 +174,9 @@ export default function InstantContractModal({
             <div className="grid grid-cols-2 gap-2 mt-3 pt-1">
               <button
                 onClick={() => setActiveTab('contract')}
-                className={`py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all ${
+                className={`py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   activeTab === 'contract'
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
+                    ? 'bg-gradient-to-r from-[#FB521C] to-orange-500 text-white shadow-md shadow-orange-500/30'
                     : 'bg-slate-950/70 text-slate-400 hover:text-white border border-slate-800'
                 }`}
               >
@@ -185,9 +185,9 @@ export default function InstantContractModal({
               </button>
               <button
                 onClick={() => setActiveTab('escrow')}
-                className={`py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all ${
+                className={`py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   activeTab === 'escrow'
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/30'
+                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-md shadow-emerald-500/30'
                     : 'bg-slate-950/70 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30'
                 }`}
               >

@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowDownLeft, ArrowUpRight, TrendingUp, TrendingDown,
   User, Wallet, BarChart3, Receipt, CreditCard, Building2,
-  ChevronDown, ChevronUp, RefreshCw, Wifi, WifiOff,
+  ChevronDown, ChevronUp, ChevronRight, RefreshCw, Wifi, WifiOff,
   ShieldCheck, Star, Clock, CheckCircle2, AlertTriangle,
   Banknote, PieChart, Layers, Zap, FileText,
 } from 'lucide-react';
@@ -279,6 +279,8 @@ function TabBtn({ id, label, Icon, active, onClick }: {
   );
 }
 
+import EmployerTaxFactoringModal from './EmployerTaxFactoringModal';
+
 // ─── Main Component ────────────────────────────────────────────────────────
 
 export default function EmployerMyPage() {
@@ -288,6 +290,7 @@ export default function EmployerMyPage() {
   const [loading, setLoading] = useState(true);
   const [isLive, setIsLive] = useState(false);
   const [lastFetched, setLastFetched] = useState<string | null>(null);
+  const [showFactoringModal, setShowFactoringModal] = useState(false);
 
 const FALLBACK_DASHBOARD_DATA: DashboardData = {
   source: 'fallback',
@@ -409,6 +412,30 @@ const FALLBACK_DASHBOARD_DATA: DashboardData = {
             <p className="text-[10px] text-slate-500 mt-1">알바몬 대비 ₩34,200 절감 · 광고비 0원</p>
           </div>
         )}
+
+        {/* 💳 신한카드 매출담보 선정산 팩토링 & 세무 B2B 대시보드 바로가기 */}
+        <div
+          onClick={() => setShowFactoringModal(true)}
+          className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-3.5 text-white border border-slate-800 shadow-md cursor-pointer hover:brightness-110 transition-all active:scale-[0.99] flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 border border-pink-400/30 flex items-center justify-center font-bold">
+              <CreditCard className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-black text-xs text-white">신한카드 일일 신용한도 & 세무 B2B</span>
+                <span className="text-[9px] bg-pink-500/20 text-pink-300 font-bold px-1.5 py-0.2 rounded-full border border-pink-400/30">
+                  선정산 팩토링
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-300 mt-0.5">
+                미정산 매출 ₩1,840,000 담보 ➔ 알바비 즉시 지급 한도 ₩500,000 오픈
+              </p>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
+        </div>
       </div>
 
       {/* ── Tab Navigation ── */}
@@ -561,6 +588,13 @@ const FALLBACK_DASHBOARD_DATA: DashboardData = {
           </motion.div>
         </AnimatePresence>
       )}
+
+      {/* 💳 신한카드 매출담보 선정산 팩토링 & 세무 B2B 대시보드 모달 */}
+      <EmployerTaxFactoringModal
+        isOpen={showFactoringModal}
+        onClose={() => setShowFactoringModal(false)}
+        storeName="스타벅스 강남2호점"
+      />
     </div>
   );
 }

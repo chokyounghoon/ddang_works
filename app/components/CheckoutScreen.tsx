@@ -11,10 +11,12 @@ import {
   CheckCircle2, Zap, Lock, DollarSign, Building2, User, Clock,
   FileText, ShieldCheck, Landmark, Receipt, ArrowRight, Activity,
   ChevronRight, Sparkles, Download, Check, AlertCircle, FileCheck,
-  CreditCard, TrendingUp, Store, Cpu, RefreshCw
+  CreditCard, TrendingUp, Store, Cpu, RefreshCw, ExternalLink
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAppPush } from './AppPushToast';
+import ShinhanSolTransferModal from './ShinhanSolTransferModal';
+import ShinhanBlockExplorerModal from './ShinhanBlockExplorerModal';
 
 // ─── PoA 컨소시엄 합의 레이더 ───────────────────────────────────────────────
 
@@ -124,6 +126,8 @@ export default function CheckoutScreen({
   const [result, setResult] = useState<any>(null);
   const [checkoutStep, setCheckoutStep] = useState<number>(0);
   const [activeSubTab, setActiveSubTab] = useState<'settlement' | 'tax_report'>('settlement');
+  const [showSolTransferModal, setShowSolTransferModal] = useState<boolean>(false);
+  const [showBlockExplorerModal, setShowBlockExplorerModal] = useState<boolean>(false);
   
   // 퇴근 도장 날인 상태 (기본 true)
   const [clockOutStamped, setClockOutStamped] = useState<boolean>(true);
@@ -468,21 +472,40 @@ export default function CheckoutScreen({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* 하단 액션 버튼 그룹 */}
+              <div className="space-y-2 pt-1">
                 <button
-                  onClick={() => setActiveSubTab('tax_report')}
-                  className="py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1 transition-colors"
+                  onClick={() => setShowSolTransferModal(true)}
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#0046FF] to-[#0038CC] hover:brightness-105 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20 active:scale-98 transition-all cursor-pointer"
                 >
-                  <Receipt className="w-3.5 h-3.5" />
-                  <span>세무 BATCH 리포트 보기</span>
+                  <Landmark className="w-4 h-4" />
+                  <span>⚡ 신한 SOL 공인 전자 이체확인증 발급 (PDF)</span>
                 </button>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setShowBlockExplorerModal(true)}
+                    className="py-3 rounded-2xl bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/40 text-indigo-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Cpu className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>온체인 블록 검증</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveSubTab('tax_report')}
+                    className="py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <Receipt className="w-3.5 h-3.5" />
+                    <span>세무 BATCH 리포트</span>
+                  </button>
+                </div>
 
                 <button
                   onClick={() => {
                     setResult(null);
                     setCheckoutStep(0);
                   }}
-                  className="py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-colors"
+                  className="w-full py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 font-bold text-xs transition-colors cursor-pointer"
                 >
                   다시 체험하기
                 </button>
@@ -633,6 +656,38 @@ export default function CheckoutScreen({
           </div>
         </div>
       )}
+
+      {/* 신한 SOL 공인 전자 이체확인증 모달 */}
+      <ShinhanSolTransferModal
+        isOpen={showSolTransferModal}
+        onClose={() => setShowSolTransferModal(false)}
+        data={{
+          txId: result?.txId || 'SHB-2026-0823-9941',
+          senderName: `${currentGig.storeName} 에스크로`,
+          senderBank: '신한은행',
+          senderAccount: '100-928-381920',
+          receiverName: '조이수 (워커 본인)',
+          receiverBank: '신한은행 (주거래 모계좌)',
+          receiverAccount: '110-482-881923',
+          amount: currentGig.pay,
+          fee: 0,
+          txHash: result?.txHash || '0x3a91f8c7b41e829d554a908123ef6691c781a5330e2f',
+          storeName: currentGig.storeName,
+          jobTitle: currentGig.role,
+          timestamp: result?.timestamp || new Date().toLocaleTimeString('ko-KR'),
+        }}
+        onOpenExplorer={(hash) => {
+          setShowSolTransferModal(false);
+          setShowBlockExplorerModal(true);
+        }}
+      />
+
+      {/* 신한DS PoA 분산원장 온체인 블록 익스플로러 모달 */}
+      <ShinhanBlockExplorerModal
+        isOpen={showBlockExplorerModal}
+        onClose={() => setShowBlockExplorerModal(false)}
+        initialTxHash={result?.txHash || '0x3a91f8c7b41e829d554a908123ef6691c781a5330e2f'}
+      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import {
   AlertCircle, ChevronDown, Copy, LogOut, ExternalLink,
   Coins, Activity, Layers, FileText, Scale, ShieldAlert, Receipt, Building2, Camera, X, Check, RefreshCw,
   MessageSquare, Users, UserCheck, Star, Navigation, Award, Search, SlidersHorizontal, Info, PieChart,
-  Bell, Mic, MicOff, Volume2, VolumeX, HeartHandshake, Plus, Edit3, Trash2
+  Bell, Mic, MicOff, Volume2, VolumeX, HeartHandshake, Plus, Edit3, Trash2, Globe
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useWallet } from './hooks/useWallet';
@@ -38,6 +38,10 @@ const ShinhanRateDiscountModal = dynamic(() => import('./components/ShinhanRateD
 const LiveActivityWidget = dynamic(() => import('./components/LiveActivityWidget'), { ssr: false });
 const GpsCheckInModal = dynamic(() => import('./components/GpsCheckInModal'), { ssr: false });
 const OneShinhanSynergyDetailModal = dynamic(() => import('./components/OneShinhanSynergyDetailModal'), { ssr: false });
+const ShinhanSolTransferModal = dynamic(() => import('./components/ShinhanSolTransferModal'), { ssr: false });
+const ShinhanBlockExplorerModal = dynamic(() => import('./components/ShinhanBlockExplorerModal'), { ssr: false });
+const ShinhanInvestSimulatorModal = dynamic(() => import('./components/ShinhanInvestSimulatorModal'), { ssr: false });
+const ShinhanLoanCascadeModal = dynamic(() => import('./components/ShinhanLoanCascadeModal'), { ssr: false });
 const WorkerProfileDetailModal = dynamic(() => import('./components/WorkerProfileDetailModal'), { ssr: false });
 const LiveNotificationModal = dynamic(() => import('./components/LiveNotificationModal'), { ssr: false });
 const GigWorkerBenefitsGuideModal = dynamic(() => import('./components/GigWorkerBenefitsGuideModal'), { ssr: false });
@@ -46,6 +50,11 @@ const EmployerFeeCostSavingsCard = dynamic(() => import('./components/EmployerFe
 const P2PGigScreen = dynamic(() => import('./components/P2PGigScreen'), { ssr: false });
 const GigPostEditModal = dynamic(() => import('./components/GigPostEditModal'), { ssr: false });
 const ApplicantLiveGpsModal = dynamic(() => import('./components/ApplicantLiveGpsModal'), { ssr: false });
+const LiveGeofenceBeaconModal = dynamic(() => import('./components/LiveGeofenceBeaconModal'), { ssr: false });
+const EmployerTaxFactoringModal = dynamic(() => import('./components/EmployerTaxFactoringModal'), { ssr: false });
+const VoiceDodamModal = dynamic(() => import('./components/VoiceDodamModal'), { ssr: false });
+const StreamingCashModal = dynamic(() => import('./components/StreamingCashModal'), { ssr: false });
+const GlobalTranslateChatModal = dynamic(() => import('./components/GlobalTranslateChatModal'), { ssr: false });
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
@@ -2848,6 +2857,11 @@ function MyPageScreen({
   const [selectedAffiliateId, setSelectedAffiliateId] = useState('bank');
   const [showBenefitsGuideModal, setShowBenefitsGuideModal] = useState(false);
   const [showAlbamonModal, setShowAlbamonModal] = useState(false);
+  const [showSolTransferModal, setShowSolTransferModal] = useState(false);
+  const [showBlockExplorerModal, setShowBlockExplorerModal] = useState(false);
+  const [showInvestSimulatorModal, setShowInvestSimulatorModal] = useState(false);
+  const [showLoanCascadeModal, setShowLoanCascadeModal] = useState(false);
+  const [showEzClaimModal, setShowEzClaimModal] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -3878,6 +3892,49 @@ function MyPageScreen({
             isOpen={showSynergyModal}
             onClose={() => setShowSynergyModal(false)}
             initialAffiliateId={selectedAffiliateId}
+            onOpenSolTransfer={() => setShowSolTransferModal(true)}
+            onOpenInvestSimulator={() => setShowInvestSimulatorModal(true)}
+            onOpenClaimModal={() => setShowEzClaimModal(true)}
+            onOpenLoanCascade={() => setShowLoanCascadeModal(true)}
+            onOpenExplorer={() => setShowBlockExplorerModal(true)}
+          />
+
+          {/* ⚡ 신한 SOL 공인 전자 이체확인증 모달 */}
+          <ShinhanSolTransferModal
+            isOpen={showSolTransferModal}
+            onClose={() => setShowSolTransferModal(false)}
+            onOpenExplorer={() => {
+              setShowSolTransferModal(false);
+              setShowBlockExplorerModal(true);
+            }}
+          />
+
+          {/* ⛓️ 신한DS PoA 분산원장 온체인 블록 익스플로러 모달 */}
+          <ShinhanBlockExplorerModal
+            isOpen={showBlockExplorerModal}
+            onClose={() => setShowBlockExplorerModal(false)}
+          />
+
+          {/* 📈 신한투자증권 잔돈 소수점 복리 투자 시뮬레이터 */}
+          <ShinhanInvestSimulatorModal
+            isOpen={showInvestSimulatorModal}
+            onClose={() => setShowInvestSimulatorModal(false)}
+          />
+
+          {/* 🏛️ 신한은행-저축은행 Cascade 포용대출 심사기 */}
+          <ShinhanLoanCascadeModal
+            isOpen={showLoanCascadeModal}
+            onClose={() => setShowLoanCascadeModal(false)}
+          />
+
+          {/* 🛡️ 신한EZ손해보험 원클릭 AI 즉시 보상금 청구 모달 */}
+          <ShinhanEZClaimModal
+            isOpen={showEzClaimModal}
+            onClose={() => setShowEzClaimModal(false)}
+            onOpenExplorer={() => {
+              setShowEzClaimModal(false);
+              setShowBlockExplorerModal(true);
+            }}
           />
 
           {/* 📘 땡겨요 WORKS 긱워커 안심 혜택 4단계 프로세스 가이드 모달 */}
@@ -4033,6 +4090,11 @@ export default function ShinhanDDangApp() {
   const [showHealthCertModal, setShowHealthCertModal] = useState(false);
   const [showEZClaimModal, setShowEZClaimModal] = useState(false);
   const [showRateDiscountModal, setShowRateDiscountModal] = useState(false);
+  const [showGeofenceModal, setShowGeofenceModal] = useState(false);
+  const [showEmployerTaxModal, setShowEmployerTaxModal] = useState(false);
+  const [showVoiceDodamModal, setShowVoiceDodamModal] = useState(false);
+  const [showStreamingCashModal, setShowStreamingCashModal] = useState(false);
+  const [showGlobalTranslateModal, setShowGlobalTranslateModal] = useState(false);
 
   // ── Web3 지갑 훅 (Option C: 신한 슈퍼SOL 딥링크 전용)
   const wallet = useWallet();
@@ -4155,6 +4217,25 @@ export default function ShinhanDDangApp() {
 
           {/* 우측: 알림 & 조이수 프로필 & 슈퍼SOL 지갑 */}
           <div className="flex items-center gap-1 shrink-0 ml-auto">
+            {/* 🎙️ 보이스 도담이 (Gemini Live 실시간 음성 AI) */}
+            <button
+              onClick={() => setShowVoiceDodamModal(true)}
+              className="relative w-6 h-6 rounded-full bg-gradient-to-tr from-[#FB521C] to-orange-500 hover:brightness-110 active:scale-90 flex items-center justify-center text-white transition-all shadow-xs shrink-0 cursor-pointer"
+              title="보이스 도담이 (실시간 음성 AI)"
+            >
+              <Mic className="w-3.5 h-3.5 text-white animate-pulse" />
+              <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping" />
+            </button>
+
+            {/* 🌐 10개국어 AI 실시간 동시통역 */}
+            <button
+              onClick={() => setShowGlobalTranslateModal(true)}
+              className="w-5.5 h-5.5 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 flex items-center justify-center text-slate-700 transition-all border border-slate-200 shrink-0 cursor-pointer"
+              title="10개국어 AI 실시간 동시통역"
+            >
+              <Globe className="w-3 h-3 text-blue-600" />
+            </button>
+
             {/* 🔔 실시간 정산/에스크로 알림 아이콘 */}
             <button
               onClick={() => setShowLiveNotificationModal(true)}
@@ -4491,7 +4572,16 @@ export default function ShinhanDDangApp() {
       </main>
 
       {/* 🚀 Dynamic Island / Live Activity 실시간 긱 타이머 & 누적 수익 위젯 */}
-      <LiveActivityWidget />
+      <LiveActivityWidget
+        storeName="CU 강남파이낸스점"
+        hourlyRate={16000}
+        durationHours={1}
+        isClockedIn={true}
+        onOpenGeofence={() => setShowGeofenceModal(true)}
+        onOpenChat={() => setActiveTab('chat')}
+        onOpenStreamingCash={() => setShowStreamingCashModal(true)}
+        onClockOut={() => setActiveTab('checkout')}
+      />
 
       {/* 역할 기반 슬림 동적 하단 내비게이션 바 */}
       <nav className="sticky bottom-0 shrink-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-[0_-4px_25px_rgba(0,0,0,0.06)]">
@@ -4565,6 +4655,48 @@ export default function ShinhanDDangApp() {
         <ShinhanRateDiscountModal
           isOpen={showRateDiscountModal}
           onClose={() => setShowRateDiscountModal(false)}
+        />
+
+        {/* 📍 매장 비콘 지오펜싱 & AI 노쇼 예측 모달 */}
+        <LiveGeofenceBeaconModal
+          isOpen={showGeofenceModal}
+          onClose={() => setShowGeofenceModal(false)}
+          storeName="CU 강남파이낸스점"
+          workerName="조이수"
+          onOpenChat={() => setActiveTab('chat')}
+        />
+
+        {/* 💳 신한카드 매출담보 선정산 팩토링 & 세무 B2B 대시보드 모달 */}
+        <EmployerTaxFactoringModal
+          isOpen={showEmployerTaxModal}
+          onClose={() => setShowEmployerTaxModal(false)}
+          storeName="스타벅스 강남2호점"
+        />
+
+        {/* 🎙️ 차세대 실시간 보이스 AI 어시스턴트 "보이스 도담이" 모달 */}
+        <VoiceDodamModal
+          isOpen={showVoiceDodamModal}
+          onClose={() => setShowVoiceDodamModal(false)}
+          onActionMatch={() => setActiveTab('agent')}
+          onActionCheckout={() => setActiveTab('checkout')}
+          onActionChat={() => setActiveTab('chat')}
+        />
+
+        {/* 💸 초단위 실시간 급여 스트리밍 머니 모달 */}
+        <StreamingCashModal
+          isOpen={showStreamingCashModal}
+          onClose={() => setShowStreamingCashModal(false)}
+          hourlyRate={16000}
+          workerName="조이수"
+          storeName="CU 강남파이낸스점"
+        />
+
+        {/* 🌐 10개국어 AI 실시간 동시통역 글로벌 안심채팅 모달 */}
+        <GlobalTranslateChatModal
+          isOpen={showGlobalTranslateModal}
+          onClose={() => setShowGlobalTranslateModal(false)}
+          storeName="스타벅스 강남2호점 점주님"
+          workerName="조이수 (Nguyen Van A)"
         />
       </div>
     </div>
