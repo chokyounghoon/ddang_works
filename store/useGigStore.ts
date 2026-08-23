@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { GENERATED_200_P2P_GIGS } from '../app/lib/p2pGigsData';
+import { GENERATED_200_GIGS } from '../app/lib/gigsData';
 
 export interface GigItem {
   id: string;
@@ -133,7 +135,7 @@ export const useGigStore = create<GigState>((set) => ({
   highlightedGigIds: [],
   chatTriggerMessage: null,
   
-  employerGigs: INITIAL_EMPLOYER_GIGS,
+  employerGigs: GENERATED_200_GIGS.slice(0, 20),
   addEmployerGig: (gig) => set((state) => ({ employerGigs: [gig, ...state.employerGigs] })),
   updateEmployerGig: (gig) => set((state) => ({
     employerGigs: state.employerGigs.map(g => g.id === gig.id ? gig : g)
@@ -142,7 +144,7 @@ export const useGigStore = create<GigState>((set) => ({
     employerGigs: state.employerGigs.filter(g => g.id !== id)
   })),
 
-  p2pGigs: [INITIAL_P2P_GIG],
+  p2pGigs: GENERATED_200_P2P_GIGS,
   addP2PGig: (gig) => set((state) => ({ p2pGigs: [gig, ...state.p2pGigs] })),
   updateP2PGig: (gig) => set((state) => ({
     p2pGigs: state.p2pGigs.map(g => g.id === gig.id ? gig : g)
@@ -152,16 +154,9 @@ export const useGigStore = create<GigState>((set) => ({
   })),
 
   setGigStatus: (status) => set({ status }),
-  setAppliedGig: (gig) => set({ appliedGig: gig }),
-  setSelectedMapGig: (gig) => set({ selectedMapGig: gig }),
+  setAppliedGig: (appliedGig) => set({ appliedGig }),
+  setSelectedMapGig: (selectedMapGig) => set({ selectedMapGig }),
   setHighlightedGigIds: (highlightedGigIds) => set({ highlightedGigIds }),
   setChatTriggerMessage: (chatTriggerMessage) => set({ chatTriggerMessage }),
-  resetGig: () =>
-    set({
-      status: 'idle',
-      appliedGig: null,
-      selectedMapGig: null,
-      highlightedGigIds: [],
-      chatTriggerMessage: null,
-    }),
+  resetGig: () => set({ status: 'idle', appliedGig: null, selectedMapGig: null, highlightedGigIds: [], chatTriggerMessage: null })
 }));

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useGigStore } from '../../store/useGigStore';
+import { GENERATED_200_CHAT_ROOMS } from '../lib/chatRoomsData';
 
 export type ChatMessage = {
   id: string;
@@ -40,136 +41,8 @@ export type ChatRoom = {
   messages: ChatMessage[];
 };
 
-const INITIAL_ROOMS: ChatRoom[] = [
-  {
-    id: 'room-1',
-    gigId: 'g1',
-    storeName: 'CU 강남파이낸스점',
-    category: '편의점 물류',
-    employerName: '최신한 점주님',
-    applicantName: '박지훈 (지원자)',
-    wage: 16000,
-    shiftTime: '12:00 ~ 13:00 (1시간)',
-    aiMatchScore: 98,
-    status: 'APPLIED',
-    lastMessage: '점주님! 신한 0.1초 정산 연동 확인했습니다. 12시 정각 도착 가능합니다!',
-    lastMessageTime: '방금 전',
-    unreadCount: 1,
-    isSurge: true,
-    avatarBg: 'bg-emerald-500',
-    messages: [
-      {
-        id: 'm1',
-        sender: 'system',
-        text: '⚡ [AI 땡격발 자동매칭] 박지훈 지원자님이 \'CU 강남파이낸스점 1시간 물류알바\'에 지원하셨습니다. (AI 적합도 98%, D-GCS 신용평가 1등급)',
-        timestamp: '오후 11:30',
-      },
-      {
-        id: 'm2',
-        sender: 'system',
-        text: '💳 [신한 BaaS 연동] S-Bridge 본인확인 및 0.1초 퇴근 후 자동입금 계좌 연동이 완료되었습니다.',
-        timestamp: '오후 11:30',
-      },
-      {
-        id: 'm3',
-        sender: 'employer',
-        text: '안녕하세요 지훈님! 오늘 12시 피크 타임 물류 입고 알바 가능하신가요? 1시간 집중 작업 후 0.1초로 즉시 정산해드립니다.',
-        timestamp: '오후 11:32',
-        isRead: true,
-      },
-      {
-        id: 'm4',
-        sender: 'worker',
-        text: '네 점주님! 신한 0.1초 정산 연동 확인했습니다. 12시 정각 도착 가능합니다!',
-        timestamp: '오후 11:34',
-        isRead: true,
-      },
-    ],
-  },
-  {
-    id: 'room-2',
-    gigId: 'g2',
-    storeName: '컴포즈커피 역삼역점',
-    category: '카페 음료제조',
-    employerName: '박컴포즈 점주님',
-    applicantName: '김아름 (지원자)',
-    wage: 15000,
-    shiftTime: '11:30 ~ 13:30 (2시간)',
-    aiMatchScore: 94,
-    status: 'CONTRACT_CONFIRMED',
-    lastMessage: '🎉 채용이 확정되었습니다! 출근시간 10분 전 매장 도착 부탁드립니다.',
-    lastMessageTime: '15분 전',
-    unreadCount: 0,
-    isSurge: false,
-    avatarBg: 'bg-amber-500',
-    messages: [
-      {
-        id: 'm1',
-        sender: 'system',
-        text: '⚡ [AI 매칭 알림] 김아름 지원자님이 지원하셨습니다. (바리스타 자격 SBT 인증 완료)',
-        timestamp: '오전 10:15',
-      },
-      {
-        id: 'm2',
-        sender: 'employer',
-        text: '음료 조리 경력 및 포스기 사용 가능하신가요?',
-        timestamp: '오전 10:20',
-        isRead: true,
-      },
-      {
-        id: 'm3',
-        sender: 'worker',
-        text: '네! 컴포즈커피 6개월 경력 있고 땡겨요 웍스 SBT 인증서도 프로필에 첨부되어 있습니다.',
-        timestamp: '오전 10:22',
-        isRead: true,
-      },
-      {
-        id: 'm4',
-        sender: 'employer',
-        text: '🎉 채용이 확정되었습니다! 출근시간 10분 전 매장 도착 부탁드립니다.',
-        timestamp: '오전 10:25',
-        isRead: true,
-        cardType: 'contract_confirm',
-        cardData: { wage: 15000, hours: 2, total: 30000 },
-      },
-    ],
-  },
-  {
-    id: 'room-3',
-    gigId: 'g4',
-    storeName: '올리브영 강남역점',
-    category: '매장 재고정리',
-    employerName: '이올영 점주님',
-    applicantName: '정알바 (지원자)',
-    wage: 14500,
-    shiftTime: '15:00 ~ 19:00 (4시간)',
-    aiMatchScore: 91,
-    status: 'APPLIED',
-    lastMessage: '보건증 사진 첨부해주시면 즉시 확인하겠습니다.',
-    lastMessageTime: '1시간 전',
-    unreadCount: 2,
-    isSurge: true,
-    avatarBg: 'bg-indigo-500',
-    messages: [
-      {
-        id: 'm1',
-        sender: 'system',
-        text: '⚡ [알바 땡톡] 신규 구인 문의가 접수되었습니다.',
-        timestamp: '오전 09:00',
-      },
-      {
-        id: 'm2',
-        sender: 'employer',
-        text: '보건증 사진 첨부해주시면 즉시 확인하겠습니다.',
-        timestamp: '오전 09:05',
-        isRead: false,
-      },
-    ],
-  },
-];
-
 export default function AlbamonChatScreen() {
-  const [rooms, setRooms] = useState<ChatRoom[]>(INITIAL_ROOMS);
+  const [rooms, setRooms] = useState<ChatRoom[]>(GENERATED_200_CHAT_ROOMS);
   const [activeRoomId, setActiveRoomId] = useState<string | null>(null);
   const [inputText, setInputText] = useState('');
   const [filter, setFilter] = useState<'all' | 'unread' | 'confirmed'>('all');

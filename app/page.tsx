@@ -63,6 +63,7 @@ const AdminTaxScreen = dynamic(() => import('./components/AdminTaxScreen'), { ss
 import { AppPushProvider, useAppPush } from './components/AppPushToast';
 import { useGigStore } from '../store/useGigStore';
 import { parseIntentAndExecuteTools } from './lib/dodamAgent';
+import { GENERATED_200_GIGS } from './lib/gigsData';
 
 // ─── 신한투자증권 연계 포트폴리오 데이터 ───────────────────────────────────
 
@@ -452,58 +453,7 @@ function AgentTab() {
     }
   }, [chatTriggerMessage]);
 
-  const [matchedGigsState, setMatchedGigsState] = useState([
-    { id: 'ag1', storeName: 'CU 강남파이낸스점',    category: '편의점', district: '강남구',       distanceM: 150, role: '1시간 물류 하역 초단기 알바',    hours: 1, startTime: '12:00', endTime: '13:00', pay: 16000, hourlyRate: 16000, aiScore: 99, urgency: true,  applied: false },
-    { id: 'ag2', storeName: '컴포즈커피 역삼역점',  category: '카페',  district: '강남구',       distanceM: 220, role: '점심 2시간 음료 조리 픽업',        hours: 2, startTime: '11:30', endTime: '13:30', pay: 30000, hourlyRate: 15000, aiScore: 97, urgency: true,  applied: false },
-    { id: 'ag3', storeName: '스타벅스 강남2호점',   category: '카페',  district: '강남구',       distanceM: 480, role: '홀 서빙 & 음료 조리',              hours: 4, startTime: '14:00', endTime: '18:00', pay: 54000, hourlyRate: 13500, aiScore: 98, urgency: true,  applied: false },
-    { id: 'ag4', storeName: '하남돼지집 부평역점',  category: '서빙',  district: '인천 부평구',  distanceM: 320, role: '야간 메인 서빙',                   hours: 4, startTime: '18:00', endTime: '22:00', pay: 58000, hourlyRate: 14500, aiScore: 95, urgency: true,  applied: false },
-    { id: 'ag5', storeName: '세븐일레븐 테헤란점',  category: '편의점', district: '강남구',      distanceM: 380, role: '1시간 매장 세팅 긴급 보조',        hours: 1, startTime: '09:00', endTime: '10:00', pay: 15000, hourlyRate: 15000, aiScore: 89, urgency: false, applied: false },
-    { id: 'ag6', storeName: '이마트 역삼점',        category: '마트',  district: '강남구',       distanceM: 900, role: '매장 진열 & 물류 관리',             hours: 5, startTime: '10:00', endTime: '15:00', pay: 65000, hourlyRate: 13000, aiScore: 81, urgency: false, applied: false },
-    { id: 'ag7', storeName: '올리브영 강남대로점', category: '마트',  district: '강남구',       distanceM: 250, role: '올리브영 재고정리 & 상품 진열',     hours: 4, startTime: '15:00', endTime: '19:00', pay: 58000, hourlyRate: 14500, aiScore: 94, urgency: true,  applied: false },
-    { id: 'ag8', storeName: '쉑쉑버거 강남점',     category: '패스트푸드', district: '강남구',   distanceM: 180, role: '피크 타임 홀 서빙 & 퇴식 관리',     hours: 2, startTime: '12:00', endTime: '14:00', pay: 36000, hourlyRate: 18000, aiScore: 96, urgency: true,  applied: false },
-    { id: 'ag9', storeName: '메가커피 역삼포스코점', category: '카페', district: '강남구',       distanceM: 410, role: '오전 피크 테이크아웃 전담',         hours: 4, startTime: '08:00', endTime: '12:00', pay: 50000, hourlyRate: 12500, aiScore: 90, urgency: false, applied: false },
-    { id: 'ag10', storeName: '교보문고 강남점',    category: '마트',  district: '서초구',       distanceM: 520, role: '주말 도서 분류 및 라벨링',          hours: 5, startTime: '13:00', endTime: '18:00', pay: 60000, hourlyRate: 12000, aiScore: 88, urgency: false, applied: false },
-    { id: 'ag11', storeName: 'CGV 강남점',         category: '서빙',  district: '강남구',       distanceM: 350, role: '저녁 영화 피크 매점 포장',          hours: 3, startTime: '18:00', endTime: '21:00', pay: 39000, hourlyRate: 13000, aiScore: 92, urgency: true,  applied: false },
-    { id: 'ag12', storeName: '무신사 스탠다드 강남점', category: '마트', district: '강남구',     distanceM: 290, role: '피팅룸 정리 및 의류 정리',          hours: 2, startTime: '16:00', endTime: '18:00', pay: 28000, hourlyRate: 14000, aiScore: 93, urgency: true,  applied: false },
-    { id: 'ag13', storeName: '얌샘김밥 강남점',     category: '서빙',  district: '강남구',       distanceM: 190, role: '점심 피크 김밥 포장 & 홀 정리',     hours: 2, startTime: '11:30', endTime: '13:30', pay: 33000, hourlyRate: 16500, aiScore: 95, urgency: true,  applied: false },
-    { id: 'ag14', storeName: '투썸플레이스 역삼GFC점', category: '카페', district: '강남구',    distanceM: 310, role: '오후 음료조리 & 케이크 보조',      hours: 4, startTime: '13:00', endTime: '17:00', pay: 55200, hourlyRate: 13800, aiScore: 91, urgency: false, applied: false },
-    { id: 'ag15', storeName: '맘스터치 강남역점',   category: '패스트푸드', district: '강남구',   distanceM: 400, role: '저녁 버거 조리보조 & 튀김기 관리',  hours: 4, startTime: '17:00', endTime: '21:00', pay: 56000, hourlyRate: 14000, aiScore: 89, urgency: false, applied: false },
-    { id: 'ag16', storeName: '서브웨이 테헤란로점', category: '패스트푸드', district: '강남구',   distanceM: 210, role: '피크타임 샌드위치 메이커',          hours: 2, startTime: '11:00', endTime: '13:00', pay: 31000, hourlyRate: 15500, aiScore: 96, urgency: true,  applied: false },
-    { id: 'ag17', storeName: '다이소 강남역점',     category: '마트',  district: '강남구',       distanceM: 450, role: '오전 매장 재고 수량 전수조사',       hours: 3, startTime: '09:00', endTime: '12:00', pay: 39000, hourlyRate: 13000, aiScore: 87, urgency: false, applied: false },
-    { id: 'ag18', storeName: 'GS25 강남역중앙점',   category: '편의점', district: '강남구',      distanceM: 160, role: '1시간 야간 수불물류 1인 피크',       hours: 1, startTime: '22:00', endTime: '23:00', pay: 17000, hourlyRate: 17000, aiScore: 98, urgency: true,  applied: false },
-    { id: 'ag19', storeName: '버거킹 뱅뱅사거리점', category: '패스트푸드', district: '강남구',   distanceM: 620, role: '점심 딜리버리 픽업 보조',          hours: 2, startTime: '12:00', endTime: '14:00', pay: 30000, hourlyRate: 15000, aiScore: 90, urgency: false, applied: false },
-    { id: 'ag20', storeName: '배스킨라빈스 강남대로점', category: '카페', district: '강남구',   distanceM: 340, role: '저녁 디저트 패킹 & 결제 보조',      hours: 3, startTime: '19:00', endTime: '22:00', pay: 40500, hourlyRate: 13500, aiScore: 91, urgency: false, applied: false },
-    { id: 'ag21', storeName: '롭스 역삼역점',       category: '마트',  district: '강남구',       distanceM: 280, role: '오후 매장 디스플레이 및 뷰티 정리', hours: 2, startTime: '14:00', endTime: '16:00', pay: 28000, hourlyRate: 14000, aiScore: 92, urgency: true,  applied: false },
-    { id: 'ag22', storeName: '쉐이크쉑 강남 2호점', category: '패스트푸드', district: '강남구',   distanceM: 230, role: '퇴근길 패스트 포장 팩맨',          hours: 2, startTime: '18:00', endTime: '20:00', pay: 35000, hourlyRate: 17500, aiScore: 97, urgency: true,  applied: false },
-    { id: 'ag23', storeName: '롯데리아 강남역점',   category: '패스트푸드', district: '강남구',   distanceM: 500, role: '모닝 청결 관리자 및 주방 정리',    hours: 2, startTime: '07:00', endTime: '09:00', pay: 29000, hourlyRate: 14500, aiScore: 86, urgency: false, applied: false },
-    { id: 'ag24', storeName: '노브랜드버거 역삼점', category: '패스트푸드', district: '강남구',   distanceM: 370, role: '1시간 점심 피크 홀 청결 관리',      hours: 1, startTime: '12:00', endTime: '13:00', pay: 16000, hourlyRate: 16000, aiScore: 95, urgency: true,  applied: false },
-    { id: 'ag25', storeName: '아리따움 강남역점',   category: '마트',  district: '강남구',       distanceM: 430, role: '화장품 진열 및 재고 세팅',          hours: 3, startTime: '15:00', endTime: '18:00', pay: 40500, hourlyRate: 13500, aiScore: 88, urgency: false, applied: false },
-    { id: 'ag26', storeName: '이디야커피 아침 피크 바리스타', category: '카페', district: '강남구', distanceM: 210, role: '아침 출근 피크 음료 조리', hours: 2, startTime: '08:00', endTime: '10:00', pay: 29000, hourlyRate: 14500, aiScore: 93, urgency: true, applied: false },
-    { id: 'ag27', storeName: 'CU 초단기 물류 하역 및 진열', category: '편의점', district: '강남구', distanceM: 330, role: '1시간 긴급 입고 물류 보조', hours: 1, startTime: '13:00', endTime: '14:00', pay: 16000, hourlyRate: 16000, aiScore: 98, urgency: true, applied: false },
-    { id: 'ag28', storeName: '올리브영 신상품 디스플레이 세팅', category: '마트', district: '강남구', distanceM: 390, role: '뷰티 앤 메이크업 진열 세팅', hours: 3, startTime: '14:00', endTime: '17:00', pay: 42000, hourlyRate: 14000, aiScore: 90, urgency: false, applied: false },
-    { id: 'ag29', storeName: '롤링파스타 주말 홀서빙 긱', category: '서빙', district: '강남구', distanceM: 410, role: '피크 파스타 패밀리 테이블 서빙', hours: 4, startTime: '18:00', endTime: '22:00', pay: 62000, hourlyRate: 15500, aiScore: 95, urgency: true, applied: false },
-    { id: 'ag30', storeName: '맥도날드 야간 픽업 포장 메이커', category: '패스트푸드', district: '강남구', distanceM: 260, role: '야간 긴급 픽업 포장 드라이브', hours: 2, startTime: '21:00', endTime: '23:00', pay: 35000, hourlyRate: 17500, aiScore: 97, urgency: true, applied: false },
-    { id: 'ag31', storeName: '다이소 저녁 매장 진열 마감', category: '마트', district: '강남구', distanceM: 110, role: '마감 세팅 및 진열 정리', hours: 3, startTime: '19:00', endTime: '22:00', pay: 40500, hourlyRate: 13500, aiScore: 89, urgency: false, applied: false },
-    { id: 'ag32', storeName: 'GS25 야간 끝전 1인 수불 긱', category: '편의점', district: '강남구', distanceM: 440, role: '1시간 정산 수불 피크 1인 알바', hours: 1, startTime: '23:00', endTime: '24:00', pay: 16500, hourlyRate: 16500, aiScore: 96, urgency: true, applied: false },
-    { id: 'ag33', storeName: '블루보틀 드리퍼 조리 보조', category: '카페', district: '강남구', distanceM: 350, role: '오후 드립 커피 보조 & 포장', hours: 3, startTime: '13:00', endTime: '16:00', pay: 48000, hourlyRate: 16000, aiScore: 94, urgency: true, applied: false },
-    { id: 'ag34', storeName: '하남돼지집 주말 피크 홀 전담', category: '서빙', district: '강남구', distanceM: 170, role: '주말 저녁 고기 테이블 케어', hours: 4, startTime: '17:00', endTime: '21:00', pay: 60000, hourlyRate: 15000, aiScore: 92, urgency: false, applied: false },
-    { id: 'ag35', storeName: 'ZARA 피팅룸 카운팅 & 패킹', category: '마트', district: '강남구', distanceM: 290, role: '의류 피팅룸 개수 확인 및 포장', hours: 4, startTime: '15:00', endTime: '19:00', pay: 58000, hourlyRate: 14500, aiScore: 91, urgency: false, applied: false },
-    { id: 'ag36', storeName: '투썸플레이스 케이크 데코 보조', category: '카페', district: '강남구', distanceM: 330, role: '오전 케이크 세팅 & 음료 조리', hours: 3, startTime: '10:00', endTime: '13:00', pay: 42000, hourlyRate: 14000, aiScore: 93, urgency: true, applied: false },
-    { id: 'ag37', storeName: '세븐일레븐 모닝 출근길 세팅', category: '편의점', district: '강남구', distanceM: 140, role: '오전 출근길 직장인 시리얼 진열 1시간', hours: 1, startTime: '08:30', endTime: '09:30', pay: 15000, hourlyRate: 15000, aiScore: 95, urgency: true, applied: false },
-    { id: 'ag38', storeName: '시코르 뷰티 아이템 카운팅', category: '마트', district: '강남구', distanceM: 480, role: '뷰티 품목 수량 픽업 체크 2시간', hours: 2, startTime: '16:00', endTime: '18:00', pay: 27600, hourlyRate: 13800, aiScore: 88, urgency: false, applied: false },
-    { id: 'ag39', storeName: '맘스터치 버거 조리보조 긱', category: '패스트푸드', district: '강남구', distanceM: 430, role: '점심 2시간 팩맨 버거 튀김 보조', hours: 2, startTime: '11:30', endTime: '13:30', pay: 31000, hourlyRate: 15500, aiScore: 94, urgency: true, applied: false },
-    { id: 'ag40', storeName: '컴포즈커피 드링크 포장 헬퍼', category: '카페', district: '강남구', distanceM: 210, role: '피크 테이크아웃 홀 포장 헬퍼', hours: 3, startTime: '12:00', endTime: '15:00', pay: 40500, hourlyRate: 13500, aiScore: 90, urgency: false, applied: false },
-    { id: 'ag41', storeName: '교보문고 베스트셀러 진열 보조', category: '마트', district: '강남구', distanceM: 370, role: '신간 도서 박스 언패킹 & 진열', hours: 4, startTime: '09:00', endTime: '13:00', pay: 50000, hourlyRate: 12500, aiScore: 87, urgency: false, applied: false },
-    { id: 'ag42', storeName: '아웃백 스테이크하우스 디너 서빙', category: '서빙', district: '강남구', distanceM: 140, role: '디너 4시간 전용 스테이크 테이블 세팅', hours: 4, startTime: '17:30', endTime: '21:30', pay: 66000, hourlyRate: 16500, aiScore: 96, urgency: true, applied: false },
-    { id: 'ag43', storeName: '이마트24 스윕 1시간 물류 알바', category: '편의점', district: '강남구', distanceM: 230, role: '1시간 스윕 물류 박스 하역 정리', hours: 1, startTime: '14:00', endTime: '15:00', pay: 16000, hourlyRate: 16000, aiScore: 97, urgency: true, applied: false },
-    { id: 'ag44', storeName: 'CGV 영화 피크 미소지기 지원', category: '서빙', district: '강남구', distanceM: 410, role: '주말 팝콘 & 오더 팩맨 헬퍼', hours: 3, startTime: '15:00', endTime: '18:00', pay: 40500, hourlyRate: 13500, aiScore: 89, urgency: false, applied: false },
-    { id: 'ag45', storeName: '빽다방 점심 아이스 음료 픽업', category: '카페', district: '강남구', distanceM: 180, role: '점심 직장인 대용량 커피 조리 보조', hours: 2, startTime: '12:00', endTime: '14:00', pay: 26000, hourlyRate: 13000, aiScore: 88, urgency: false, applied: false },
-    { id: 'ag46', storeName: '서브웨이 디너 샌드위치 메이커', category: '패스트푸드', district: '강남구', distanceM: 360, role: '저녁 퇴근길 샌드위치 보조', hours: 2, startTime: '18:00', endTime: '20:00', pay: 30000, hourlyRate: 15000, aiScore: 93, urgency: true, applied: false },
-    { id: 'ag47', storeName: '하이오커피 샷 서포터 알바', category: '카페', district: '강남구', distanceM: 460, role: '아침 모닝 커피 샷 조리 팩맨 헬퍼', hours: 3, startTime: '08:00', endTime: '11:00', pay: 43500, hourlyRate: 14500, aiScore: 94, urgency: true, applied: false },
-    { id: 'ag48', storeName: '감성커피 오더 팩맨 헬퍼', category: '카페', district: '강남구', distanceM: 290, role: '디저트 패킹 및 음료 라벨링 2시간', hours: 2, startTime: '13:00', endTime: '15:00', pay: 27000, hourlyRate: 13500, aiScore: 89, urgency: false, applied: false },
-    { id: 'ag49', storeName: '무신사 재고 라벨링 야간 알바', category: '마트', district: '강남구', distanceM: 310, role: '야간 3시간 재고 바코드 라벨링 스캔', hours: 3, startTime: '20:00', endTime: '23:00', pay: 45000, hourlyRate: 15000, aiScore: 95, urgency: true, applied: false },
-    { id: 'ag50', storeName: 'CU 야간 1인 물류 1시간 피크', category: '편의점', district: '강남구', distanceM: 110, role: '심야 물류 1시간 하역 세팅 1인 피크', hours: 1, startTime: '23:00', endTime: '24:00', pay: 17000, hourlyRate: 17000, aiScore: 98, urgency: true, applied: false }
-  ]);
+  const [matchedGigsState, setMatchedGigsState] = useState(GENERATED_200_GIGS);
 
   // 땡겨요 웍스 VS 알바몬 파괴적 혁신 비교 모달 팝업 상태
   const [showAlbamonModal, setShowAlbamonModal] = useState(false);
@@ -1124,57 +1074,64 @@ function AgentTab() {
                     </div>
                   )}
 
-                  {/* 가게명 / 의뢰인명 & 시급/총액 */}
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <h5 className="font-black text-sm text-slate-900 truncate flex items-center gap-1">
-                        <span className={(g as any).isP2P ? "text-purple-600" : "text-blue-600"}>
-                          {(g as any).isP2P ? "🏡" : "🏬"}
-                        </span>
-                        {g.storeName}
-                        {(g as any).isP2P ? (
-                          <span className="text-[8px] font-black text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200 shrink-0">
-                            개인의뢰
-                          </span>
-                        ) : (
-                          <span className="text-[8px] font-black text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded border border-blue-200 shrink-0">
-                            점주의뢰
-                          </span>
-                        )}
-                        <span className="text-[9px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 flex items-center gap-0.5 shrink-0">
-                          <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" /> 4.9
-                        </span>
-                      </h5>
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-orange-50 text-[#FB521C] border border-orange-200/80 shrink-0">
-                        {g.category}
+                  {/* 1. 가게명 / 의뢰인명 & 뱃지 라인 */}
+                  <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+                    <h5 className="font-black text-xs text-slate-800 flex items-center gap-1">
+                      <span className={(g as any).isP2P ? "text-purple-600" : "text-blue-600"}>
+                        {(g as any).isP2P ? "🏡" : "🏬"}
                       </span>
-                      {g.urgency ? (
-                        <span className="text-[8.5px] font-black px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200 shrink-0">
-                          🚨 1시간 이내 임박
-                        </span>
-                      ) : (
-                        <span className="text-[8.5px] font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
-                          🕐 1시간 이후
+                      {g.storeName}
+                    </h5>
+                    {(g as any).isP2P ? (
+                      <span className="text-[8px] font-black text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200 shrink-0">
+                        개인의뢰
+                      </span>
+                    ) : (
+                      <span className="text-[8px] font-black text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded border border-blue-200 shrink-0">
+                        점주의뢰
+                      </span>
+                    )}
+                    <span className="text-[8.5px] font-bold px-1.5 py-0.2 rounded bg-orange-50 text-[#FB521C] border border-orange-200/80 shrink-0">
+                      {g.category}
+                    </span>
+                    <span className="text-[8.5px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 flex items-center gap-0.5 shrink-0">
+                      <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" /> 4.9
+                    </span>
+                  </div>
+
+                  {/* 2. 업무 제목 (100% 전체 표시 - 말줄임 없이 전부 노출) */}
+                  <h4 className="font-black text-[13.5px] sm:text-sm text-slate-900 leading-snug break-keep text-left">
+                    {g.role}
+                  </h4>
+
+                  {/* 3. 근무 시간 및 급여/시급 라인 (우측 요소를 아래로 내려 넓고 시원하게 배치) */}
+                  <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100/80">
+                    {/* 좌측: 근무 시간 및 긴급도 */}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className={`text-[10px] font-black px-2 py-0.5 rounded-lg flex items-center gap-1 ${
+                        g.urgency
+                          ? 'text-rose-700 bg-rose-50 border border-rose-200 shadow-2xs'
+                          : 'text-slate-700 bg-slate-100 border border-slate-200'
+                      }`}>
+                        <Clock className="w-3 h-3 text-slate-500" />
+                        <span>{g.startTime} ~ {g.endTime} ({g.hours}시간)</span>
+                      </span>
+                      {g.urgency && (
+                        <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-md bg-rose-500 text-white shadow-2xs animate-pulse shrink-0">
+                          🚨 긴급임박
                         </span>
                       )}
                     </div>
 
+                    {/* 우측: 총 급여 및 시급 (대형 강조) */}
                     <div className="text-right shrink-0">
-                      <div className="text-base font-black text-[#FB521C] leading-tight">₩{g.pay.toLocaleString()}</div>
-                      <div className="text-[9px] font-bold text-slate-500">시급 ₩{g.hourlyRate.toLocaleString()}</div>
+                      <div className="text-base sm:text-lg font-black text-[#FB521C] leading-none font-mono">
+                        ₩{g.pay.toLocaleString()}
+                      </div>
+                      <div className="text-[9.5px] font-bold text-slate-500 mt-0.5">
+                        시급 ₩{g.hourlyRate.toLocaleString()}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* 역할 & 근무시간 1줄 */}
-                  <div className="flex items-center justify-between text-xs text-slate-700 font-medium">
-                    <p className="truncate font-bold text-slate-800">{g.role}</p>
-                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-md shrink-0 ml-2 ${
-                      g.urgency
-                        ? 'text-rose-700 bg-rose-50 border border-rose-200 shadow-xs'
-                        : 'text-slate-700 bg-slate-100 border border-slate-200'
-                    }`}>
-                      {g.urgency ? `🚨 ${g.startTime}–${g.endTime} (${g.hours}h)` : `🕐 ${g.startTime}–${g.endTime} (${g.hours}h)`}
-                    </span>
                   </div>
 
                   {/* 메타데이터 배지 1줄 (위치 / 도보시간 / ⚡ 0.1초 땡겨받기 / 보건증 상태) */}
@@ -4157,11 +4114,30 @@ export default function ShinhanDDangApp() {
         <div className="flex items-center justify-between px-2 sm:px-3 py-1.5 gap-1 w-full max-w-full overflow-hidden">
           {/* 좌측: 로고 및 역할 스위처 */}
           <div className="flex items-center gap-1 shrink-0 min-w-0">
-            <div className="flex items-center gap-1 shrink-0">
-              <h1 className="font-black text-[11px] sm:text-xs text-slate-900 tracking-tight leading-none whitespace-nowrap">
+            <button
+              onClick={() => {
+                setUserRole('worker');
+                setActiveTab('agent');
+                setShowCreditDropdown(false);
+                setShowWalletDropdown(false);
+                setShowWorkerProfileModal(false);
+                setShowLiveNotificationModal(false);
+                setShowHealthCertModal(false);
+                setShowEZClaimModal(false);
+                setShowRateDiscountModal(false);
+                setShowGeofenceModal(false);
+                setShowEmployerTaxModal(false);
+                setShowVoiceDodamModal(false);
+                setShowStreamingCashModal(false);
+                setShowGlobalTranslateModal(false);
+              }}
+              className="flex items-center gap-1 shrink-0 active:scale-95 transition-all cursor-pointer group"
+              title="메인 홈으로 이동 (새로고침)"
+            >
+              <h1 className="font-black text-[11px] sm:text-xs text-slate-900 tracking-tight leading-none whitespace-nowrap group-hover:opacity-80">
                 땡겨요 <span className="text-[#FB521C]">WORKS</span>
               </h1>
-            </div>
+            </button>
             
             {/* 동적 역할 모드 스위처 캡슐 버튼 (워커 / 점주 / 개인의뢰 / 관리자 4가지 스위칭) */}
             <div className="flex items-center bg-slate-100 p-0.5 rounded-full border border-slate-200 shrink-0 gap-0.5">

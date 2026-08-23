@@ -107,7 +107,7 @@ export default function AdminTaxScreen() {
               익월 10일 대행 완료
             </span>
           </div>
-          <p className="text-[11px] text-slate-500 leading-relaxed">
+          <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
             일 15만원 비과세 한도 자동 적용 ➔ 원천징수세액 ₩0 판정 리포트 생성 및 홈택스 표준 전산 파일(XLSX) 자동 전송.
           </p>
           <button
@@ -132,7 +132,7 @@ export default function AdminTaxScreen() {
               0초 즉시 취득/상실
             </span>
           </div>
-          <p className="text-[11px] text-slate-500 leading-relaxed">
+          <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
             비콘 지오펜싱 출퇴근 검증 즉시 근로복지공단 전산망으로 전자 신고서가 실시간 접수되어 과태료(최대 300만원) 리스크 100% 차단.
           </p>
           <button

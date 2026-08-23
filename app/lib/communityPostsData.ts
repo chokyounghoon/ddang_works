@@ -1,654 +1,4980 @@
+// 땡겨요 웍스 땡썰 커뮤니티 샘플 데이터 (200건)
 import { CommunityPost } from '../components/AlbamonCommunityScreen';
 
-export const INITIAL_POSTS_100: CommunityPost[] = [
-  // ── 💖 심금을 울리는 땡겨요 웍스 감동 실화 BEST 5 ──
+export const GENERATED_200_POSTS: CommunityPost[] = [
   {
-    id: 'post-heart-1',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '💖 눈물의 실화',
-    title: '[눈물의 실화] 0.1초 정산 덕분에 오늘 밤 홀로 키우는 아기 해열제와 분유를 살 수 있었습니다 😭👶',
-    content: '혼자서 두 살배기 딸아이를 키우고 있는 미혼부입니다. 아이가 갑자기 열이 39도까지 치솟았는데 통장에 잔고가 딱 3,200원뿐이었습니다. 지푸라기라도 잡는 심정으로 땡겨요 웍스를 켜서 집 앞 편의점 2시간 야간 대타(32,000원)를 뛰었습니다. 일을 마치고 퇴근 스와이프를 누르자마자 0.1초 만에 32,000원이 신한은행 통장으로 즉시 입금되는 알림이 울렸습니다. 곧바로 편의점 약국 코너에서 아이 해열제와 분유를 사 들고 집으로 뛰어가며 길거리에서 얼마나 눈물을 흘렸는지 모릅니다. 기다릴 필요 없는 0.1초 정산이 제 아이의 생명을 구한 밤이었습니다. 신한 땡겨요 웍스 개발자분들께 진심으로 머리 숙여 감사드립니다.',
-    author: '지우아빠 (미혼부)',
-    authorBadge: 'CU 야간대타 · D-GCS 990점',
-    role: 'worker',
-    timestamp: '5분 전',
-    likes: 524,
-    views: 4120,
-    isHot: true,
-    storeCategory: '편의점',
-    comments: [
-      { id: 'ch-1', author: '강남역점주', role: 'employer', content: '지우아버님 글 읽고 눈물이 핑 도네요... 언제든 저희 매장 오시면 따뜻한 식사와 함께 일거리 챙겨드리겠습니다. 힘내세요!', likes: 88, timestamp: '3분 전' },
-      { id: 'ch-2', author: '신한 쏠이 AI', role: 'admin', content: '지우아버님의 성실한 땀방울이 아이의 건강을 지켜내어 다행입니다. 땡겨요 웍스는 앞으로도 근로자분들의 0.1초 정산을 100% 안전하게 책임지겠습니다.', likes: 120, timestamp: '1분 전' }
+    "id": "post-heart-1",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💖 0.1초 기적 실화",
+    "title": "0.1초 정산이 구한 아기 해열제와 분유",
+    "content": "혼자 돌 지난 아이를 키우는 미혼부입니다. 새벽에 아기가 39도 고열로 펄펄 끓는데 통장 잔고가 2,400원이었습니다. 당장 해열제와 급한 분유를 살 돈이 없어 눈물만 흘리다가 땡겨요 WORKS 1시간 긴급 편의점 물류 긱을 뛰었습니다. 새벽 3시에 퇴근 스와이프 하자마자 신한은행 계좌로 ₩16,000원이 0.1초 만에 꽂히는 순간 눈물이 쏟아졌습니다. 바로 24시 약국으로 달려가 해열제를 사 먹였고 아이 열이 내렸습니다. 땡겨요 웍스의 0.1초 정산은 단순한 기능이 아니라 누군가에겐 목숨을 살리는 기적입니다.",
+    "author": "준우아빠 (조이수)",
+    "authorBadge": "미혼부 청년 가장 · D-GCS 995점",
+    "role": "worker",
+    "timestamp": "방금 전",
+    "likes": 1240,
+    "isHot": true,
+    "views": 8420,
+    "comments": [
+      {
+        "id": "c1",
+        "author": "강남 CU 점주",
+        "role": "employer",
+        "content": "글 읽고 가슴이 뭉클하네요. 준우아빠님 힘내세요! 저희 매장 언제든 대환영입니다.",
+        "timestamp": "10분 전",
+        "likes": 88
+      },
+      {
+        "id": "c2",
+        "author": "신한금융 파트너",
+        "role": "admin",
+        "content": "신한 0.1초 BaaS 인프라가 실질적인 생명선이 되었다니 큰 보람을 느낍니다.",
+        "timestamp": "5분 전",
+        "likes": 120
+      }
     ]
   },
   {
-    id: 'post-heart-2',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🍗 점주의 고백',
-    title: '[점주의 고백] 알바몬 60만원 광고비에도 밥 먹듯 당하던 \'당일 노쇼\'... 땡겨요 웍스 만나고 8개월째 노쇼 0건의 기적을 봅니다 😭',
-    content: '골목에서 통닭집을 9년째 하고 있는 50대 자영업자입니다. 대형 알바 플랫폼에 비싼 유료 공고비 매달 50~60만원씩 쏟아부어도 면접 약속 어기고 첫날 출근 안 하는 알바생들 때문에 주방에서 주저앉아 운 적이 한두 번이 아니었습니다. 그러다 지인 추천으로 땡겨요 웍스를 시작했는데, 신한금융 D-GCS 성실 평판 점수와 보건증이 100% 사전 검증된 조이수님, 박민우님 같은 성실한 청년들이 찾아왔습니다. 지난 8개월 동안 노쇼 단 한 건도 없이 피크타임을 함께 버텨주고 있습니다. 아낀 광고비와 세무 비용으로 우리 알바생들에게 따뜻한 치킨 한 마리씩 더 챙겨줄 수 있어 매일이 행복합니다.',
-    author: '장터치킨 김사장',
-    authorBadge: '자영업 9년차 · D-GCS 우수 업장',
-    role: 'employer',
-    timestamp: '12분 전',
-    likes: 468,
-    views: 3890,
-    isHot: true,
-    storeCategory: '음식점/치킨',
-    comments: [
-      { id: 'ch2-1', author: '조이수 (워커)', role: 'worker', content: '사장님! 지난주 금요일에 갓 튀겨주신 닭다리 너무 맛있었습니다 ㅠㅠ 사장님 따뜻한 마음에 더 열심히 일하게 돼요!', likes: 64, timestamp: '8분 전' }
+    "id": "post-heart-2",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🍗 점주 상생 실화",
+    "title": "알바몬 60만원 노쇼 지옥 ➔ 8개월 노쇼 0건의 기적",
+    "content": "치킨집 운영 5년 차입니다. 이전 플랫폼에서는 상단 배너 광고비로 월 60만원씩 쓰면서도 당일 알바가 말도 없이 안 나오는 노쇼 때문에 주방에서 혼자 울며 닭 튀기던 날이 부지기수였습니다. 땡겨요 웍스로 바꾸고 D-GCS 900점 이상 워커만 자동 매칭받으니 지난 8개월 동안 노쇼가 정확히 0건입니다. 5% 수수료도 신한EZ 상해보험이랑 워커 ETF 적립금으로 전액 환원되니 알바생들이 책임감을 갖고 일합니다.",
+    "author": "황금올리브 역삼점 대표",
+    "authorBadge": "신한 파트너 점주 3년차",
+    "role": "employer",
+    "timestamp": "2시간 전",
+    "likes": 890,
+    "isHot": true,
+    "views": 6210,
+    "comments": [
+      {
+        "id": "c3",
+        "author": "빽다방 사장",
+        "role": "employer",
+        "content": "진짜 공감합니다. 광고비 낭비 안 하고 5% 수수료로 보험까지 다 되니 비교불가입니다.",
+        "timestamp": "1시간 전",
+        "likes": 45
+      }
     ]
   },
   {
-    id: 'post-heart-3',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '🛡️ 무상보험의 기적',
-    title: '[감동] 홀서빙 중 접시 파편에 손가락 찢어졌는데... 사장님 눈치 안 보고 신한EZ보험 100% 무상 치료비 입금되었습니다 🏥',
-    content: '주말 파스타집에서 3시간 서빙 알바하다가 손님이 실수로 떨어뜨린 유리잔 파편에 손가락을 깊게 베였습니다. 너무 죄송하고 창피해서 꾹 참으려 했는데, 땡겨요 웍스는 출근하자마자 신한EZ손해보험 단기 상해보험이 무상 가입되어 있더라고요! 응급실 봉합 치료비와 약값 76,000원이 앱에서 영수증 사진 한 장 올리자마자 10분 만에 제 계좌로 전액 환급 입금되었습니다. 사장님께 병원비 달라고 눈치 보거나 죄송해할 필요 없이 금융 플랫폼이 뒤를 든든하게 받쳐주니, \'나도 소중한 근로자로 보호받고 있구나\' 하는 생각에 가슴이 뭉클했습니다.',
-    author: '서빙꿈나무',
-    authorBadge: '파스타집 4개월차 · EZ안심인증',
-    role: 'worker',
-    timestamp: '18분 전',
-    likes: 412,
-    views: 3250,
-    isHot: true,
-    storeCategory: '양식/레스토랑',
-    comments: [
-      { id: 'ch3-1', author: '신한EZ손해보험', role: 'admin', content: '근로 중 부상 시 소상공인 점주와 근로자 모두에게 금전적 부담이 발생하지 않도록 땡겨요 웍스가 비급여 의료비까지 전액 무상 케어합니다.', likes: 92, timestamp: '10분 전' }
+    "id": "post-heart-3",
+    "category": "WORKER_STORY",
+    "categoryLabel": "🏥 무상 안전망 실화",
+    "title": "손가락 부상 당일 병원비 100% 무상 케어 (신한EZ 상해보험)",
+    "content": "식당 주방 보조 긱을 뛰다가 칼에 깊게 베여 응급실 봉합 수술을 받았습니다. 일용직이라 산재 처리가 막막했는데, 땡겨요 WORKS 출근 도장 찍힌 걸로 신한EZ 상해보험 3천만원 보장이 자동 적용되어 치료비 24만원 전액이 당일 실손 지급되었습니다. 점주님께도 폐 안 끼치고 치료받을 수 있어서 정말 든든했습니다.",
+    "author": "김민지",
+    "authorBadge": "조리 마스터 · D-GCS 960점",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 740,
+    "views": 5120,
+    "comments": []
+  },
+  {
+    "id": "post-heart-4",
+    "category": "TIPS",
+    "categoryLabel": "🌱 청년 자립 실화",
+    "title": "알바비 끝전(800원) 모아 대학교 등록금 완납했습니다",
+    "content": "매번 긱을 뛸 때마다 잔돈 끝전 800원, 1,200원을 신한 SOL 미국 S&P500 ETF와 신한은행 청년도약적금으로 자동 적립했습니다. 1년 동안 긱 140회 뛰면서 모인 금액과 복리 수익으로 이번 학기 등록금 320만원을 전액 완납했습니다! 땡겨요 웍스 덕분에 빚 없이 졸업합니다.",
+    "author": "성실청년 박지호",
+    "authorBadge": "대학생 워커 · D-GCS 990점",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 1120,
+    "isHot": true,
+    "views": 7800,
+    "comments": []
+  },
+  {
+    "id": "post-heart-5",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "👵 할머니의 편지",
+    "title": "73세 백반집 폐업 위기 막은 세무 100% 자동 대행",
+    "content": "컴퓨터를 전혀 못 만지는 70대 노인입니다. 국세청 일용직 세무신고 과태료 나온다는 소리에 가게 문을 닫으려 했는데, 손녀가 땡겨요 웍스를 깔아주었습니다. 출퇴근만 확인하면 신한DS 전산망에서 국세청 홈택스랑 공단으로 신고서가 0초 만에 날아가니 세무사 기장료도 안 들고 너무 편합니다.",
+    "author": "원조할머니 백반집",
+    "authorBadge": "골목상권 지킴이 점주",
+    "role": "employer",
+    "timestamp": "6시간 전",
+    "likes": 950,
+    "views": 6540,
+    "comments": []
+  },
+  {
+    "id": "post-6",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 투썸플레이스 오늘 D-GCS 926점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 926점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 투썸플레이스",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 47,
+    "isLiked": false,
+    "views": 342,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-6-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
     ]
   },
   {
-    id: 'post-heart-4',
-    category: 'WORKER_STORY',
-    categoryLabel: '🌱 청년 희망 릴레이',
-    title: '[청년 희망] 하루 1시간 짬알바 끝전(800원) 모아 SOL 미국배당 ETF 투자... 마침내 첫 학기 등록금을 마련했습니다 🎓',
-    content: '지방에서 올라와 월세와 학비를 스스로 벌어야 했던 대학생입니다. 공강 시간마다 1~2시간씩 땡겨요 웍스로 동네 카페와 편의점 알바를 뛰며, 매번 정산받을 때마다 나오는 잔돈(400원~800원)과 점주 5% 지원금을 신한투자증권 SOL 미국배당다우존스 소수점 ETF로 꼬박꼬박 자동 적립했습니다. 매일매일 티끌 모아 태산이라는 말처럼 1년 동안 모인 ETF 평가금과 배당금이 어느새 240만원이 되어 이번 학기 등록금을 제 힘으로 완납했습니다. 일회성 용돈 벌이가 아니라 청년이 스스로 자립할 수 있는 금융 사다리를 놓아준 땡겨요 웍스에 감사드립니다.',
-    author: '등록금자립러',
-    authorBadge: '신한투자증권 STO 1호 · 4학기 수료',
-    role: 'worker',
-    timestamp: '25분 전',
-    likes: 589,
-    views: 4980,
-    isHot: true,
-    storeCategory: '재테크/투자',
-    comments: []
-  },
-  {
-    id: 'post-heart-5',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '👵 할머니의 감사편지',
-    title: '[눈물주의] 70대 할머니 혼자 하는 백반집, 일용직 4대보험·국세청 세무 신고 알아서 다 해줘서 가게 접으려다 다시 살았습니다 🍲',
-    content: '남편 먼저 보내고 종로 골목에서 30년 넘게 백반집을 혼자 꾸려온 73세 노인입니다. 요즘은 일용직 알바 한 명 쓰려고 해도 복잡한 근로계약서에 4대보험, 국세청 일용직 소득세 신고까지 법이 너무 까다로워서 글자도 잘 안 보이는 늙은이가 감당을 못해 가게 문을 닫으려고 했습니다. 그런데 동네 신한은행 지점 대리님이 땡겨요 웍스를 깔아주셨습니다. 버튼 하나만 누르면 신한 전산망이 국세청 비과세 판정부터 근로복지공단 EDI 신고까지 알아서 100% 대행해 주더군요. 세무 과태료 걱정 없이 다시 청년들과 웃으며 따뜻한 밥 한 그릇 더 말아줄 수 있게 되어 정말 고맙습니다.',
-    author: '종로골목할매',
-    authorBadge: '종로 백반 30년 · 신한 동행 가맹점',
-    role: 'employer',
-    timestamp: '35분 전',
-    likes: 630,
-    views: 5410,
-    isHot: true,
-    storeCategory: '한식/백반',
-    comments: []
-  },
-
-  // ── 1 ~ 25: ⚡ 0.1초 정산 / 금융 / ETF / 무상보험 후기 ──
-  {
-    id: 'post-1',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '⚡ 0.1초 정산 후기',
-    title: 'CU 물류알바 1시간 끝내자마자 카톡 띵동! 신한 0.1초 정산 미쳤네요 🚀',
-    content: '방금 강남파이낸스점 피크타임 1시간 물류 정리 끝나고 바코드 찍어서 퇴근 처리 하자마자 신한 BaaS 계좌로 16,000원 바로 입금됨 ㅋㅋㅋ 타 알바앱은 다음 주 수요일에 주거나 한 달 뒤에 주는데 땡겨요 웍스는 퇴근 버튼 누르는 순간 바로 들어옴! 수수료도 0원이라 진짜 대만족입니다.',
-    author: '강남역물류킹',
-    authorBadge: 'CU 6개월차 · D-GCS 1등급',
-    role: 'worker',
-    timestamp: '10분 전',
-    likes: 142,
-    views: 1312,
-    isHot: true,
-    storeCategory: '편의점',
-    comments: [
-      { id: 'c1-1', author: '역삼카페러버', role: 'worker', content: '인정 ㅋㅋㅋ 나도 컴포즈커피 2시간 대타 뛰고 바로 지갑 확인했는데 계좌 꽂혀있어서 야식 바로 시킴', likes: 15, timestamp: '8분 전' },
-      { id: 'c1-2', author: '최신한 점주', role: 'employer', content: '지훈님 오늘 물류 정리 너무 깔끔하게 잘해주셔서 감사합니다! 담에도 피크 타임 때 땡톡으로 연락드릴게요 ㅎㅎ', likes: 22, timestamp: '5분 전' }
+    "id": "post-7",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 927점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 54,
+    "isLiked": false,
+    "views": 379,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-7-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
     ]
   },
   {
-    id: 'post-ez-1',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '🛡️ 신한EZ 무상보험 후기',
-    title: '카페 서빙하다 살짝 데였는데, 출근 즉시 100% 무상 상해보험으로 치료비 당일 환급 😭',
-    content: '역삼역 투썸 마감 알바 뛰다가 스틱 픽업 과정에서 손등에 살짝 화상 입었습니다... 타 알바앱으로 뛰었으면 4대보험도 없어서 제 돈으로 병원비 낼 뻔했는데, 땡겨요 웍스는 출근 스와이프하자마자 신한EZ손해보험 비급여 상해보험이 무상 자동 가입되더라고요! 피부과 치료비 48,000원 나온 거 앱에서 클릭 한 번으로 당일 100% 환급받았습니다. 알바생 안전 진짜 제대로 챙겨주네요 ㅠㅠ',
-    author: '바리스타지은',
-    authorBadge: '투썸 마감조 · 신한EZ 보장인증',
-    role: 'worker',
-    timestamp: '22분 전',
-    likes: 195,
-    views: 1820,
-    isHot: true,
-    storeCategory: '카페/음료',
-    comments: [
-      { id: 'cez-1', author: '신한EZ케어', role: 'admin', content: '지은님 손등 치료 잘 되셔서 다행입니다! 땡겨요 웍스 근로자분들은 본인 부담금 0원으로 무상 안전 케어를 받으실 수 있습니다. 빠른 쾌유를 빕니다.', likes: 44, timestamp: '15분 전' }
+    "id": "post-8",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 928점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 61,
+    "isLiked": true,
+    "views": 416,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-8-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
     ]
   },
   {
-    id: 'post-etf-1',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '📈 ETF 자동투자 성공기',
-    title: '알바비 잔돈(825원) KODEX 미국S&P500 자동투자했더니 한 달 만에 3만원 쏠쏠 📈',
-    content: '일당 54,000원, 16,000원 받을 때 잔돈 825원, 425원 나오는 걸 신한투자증권 소수점 매수 연동해뒀거든요. 매수 수수료 100% 무료인데다가 점주 시너지 적립금까지 1:1로 얹어줘서 미국 주식 지수 ETF에 계속 모였습니다. 매달 노는 잔돈 모으기만 했는데 수익률 +4.2% 찍히고 첫 자산 형성 시드 포인트까지 받아갑니다!',
-    author: '스마트알바생',
-    authorBadge: '신한투자증권 STO 연동 · Gold 티어',
-    role: 'worker',
-    timestamp: '45분 전',
-    likes: 228,
-    views: 2140,
-    isHot: true,
-    storeCategory: '재테크/투자',
-    comments: [
-      { id: 'cetf-1', author: '대학생김알바', role: 'worker', content: '우와 잔돈 소수점 투자가 이렇게 크다니 저도 오늘부터 100% 자동 매수 켜야겠네요 대박!', likes: 24, timestamp: '30분 전' }
+    "id": "post-9",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · 교보문고",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 68,
+    "isLiked": false,
+    "views": 453,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-9-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
     ]
   },
   {
-    id: 'post-pr-2',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '⚡ 0.1초 정산 후기',
-    title: '심야 편의점 1시간 수불 끝내고 나오면서 교통카드 충전 완료! 0.1초 즉시 입금 실화냐 💳',
-    content: '야간 23:00~24:00 1시간 수불 알바 17,000원 정산금을 퇴근 스와이프하자마자 신한 SOL 페이 지갑으로 바로 쐈습니다. 지하철 막차 타기 전에 교통카드 잔액 모자랐는데 길거리에서 바로 충전하고 무사 귀가했네요. 주휴수당 핑계대며 미루던 과거 알바들과 차원이 다릅니다.',
-    author: '야간수불파이터',
-    authorBadge: 'GS25 야간전담 · D-GCS 950점',
-    role: 'worker',
-    timestamp: '1시간 전',
-    likes: 88,
-    views: 920,
-    storeCategory: '편의점',
-    comments: []
-  },
-  {
-    id: 'post-pr-3',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '📈 SOL 미국배당 ETF 후기',
-    title: 'SOL 미국배당다우존스 월배당 주식에 알바 정산금 자동 매수 설정해뒀더니 첫 배금 입금됨 💰',
-    content: '주말 쉑쉑버거 홀서빙 일당 36,000원 정산받을 때 매번 20%씩 SOL 미국배당다우존스 ETF로 리밸런싱되도록 설정했습니다. 이번 달에 첫 달러 기반 월배당금 카톡 알림 들어왔는데 알바하면서 진짜 소형 자산가 되는 기분이에요! 신한투자증권 계좌 딥링크 연결 강추합니다.',
-    author: '서빙왕제임스',
-    authorBadge: 'SOL 미국배당 보유자 · Gold',
-    role: 'worker',
-    timestamp: '2시간 전',
-    likes: 134,
-    views: 1250,
-    isHot: true,
-    storeCategory: '재테크/투자',
-    comments: []
-  },
-  {
-    id: 'post-pr-4',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '🛡️ 신한EZ 상해보험 후기',
-    title: '올리브영 재고 박스 무겁게 들다 무릎 살짝 삐끗했는데, 병원비 32,000원 바로 환급 처리됨!',
-    content: '매장 진열대 정리하다가 무릎 통증으로 물리치료 받았는데 땡겨요 웍스 무상 단기상해보험 혜택 적용되어서 실비 신청 1분 만에 접수 완료되었습니다. 소상공인 점주님한테 눈치 안 보여서 너무 좋아요!',
-    author: '올영메이트',
-    authorBadge: '올리브영 8개월차 · EZ안심',
-    role: 'worker',
-    timestamp: '3시간 전',
-    likes: 76,
-    views: 710,
-    storeCategory: '마트/리테일',
-    comments: []
-  },
-  {
-    id: 'post-pr-5',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '⚡ 0.1초 정산 후기',
-    title: '하루에 미니 알바 3개 뛰고 98,000원 당일 삼분할 즉시 정산받았습니다 ㅋㅋㅋ',
-    content: '오전 세븐일레븐 1시간(15,000원) + 점심 맘스터치 2시간(31,000원) + 저녁 하남돼지집 4시간(58,000원) 3탕 뛰었습니다. 각 일정이 끝날 때마다 통장에 0.1초 만에 꽂혀서 하루 만에 10만원 가깝게 현금 확보했네요. 땡겨요 웍스 없었으면 어떻게 살았나 싶음.',
-    author: 'N잡러김프로',
-    authorBadge: '하루 3탕 N잡러 · D-GCS 980점',
-    role: 'worker',
-    timestamp: '4시간 전',
-    likes: 210,
-    views: 2050,
-    isHot: true,
-    storeCategory: 'N잡/투잡',
-    comments: []
-  },
-  {
-    id: 'post-pr-6',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '📈 STO 조각투자 후기',
-    title: '신한 STO 강남 타워 건물 조각투자에 알바비 적립했더니 월 임대 배당금 쏠쏠하게 들어오네요 🏢',
-    content: '강남역 근처 상가 건물 부동산 STO 상품에 매번 5천원씩 자동 분할 투자했습니다. 매달 건물 임대 수익 배당금이 알바 계좌로 정산되는데, 내가 일하는 강남 건물 지분을 갖고 일한다는 기분이 들어서 일도 더 즐겁게 하게 됩니다.',
-    author: '건물주꿈나무',
-    authorBadge: '신한 STO 조각투자자',
-    role: 'worker',
-    timestamp: '5시간 전',
-    likes: 112,
-    views: 1040,
-    storeCategory: '재테크/투자',
-    comments: []
-  },
-  {
-    id: 'post-pr-7',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '⚡ 0.1초 정산 후기',
-    title: '타 구인앱 주급 정산 기다리다 피말랐는데... 0.1초 즉시 입금은 자영업자와 알바생 모두의 구원임',
-    content: '급전 필요할 때 단기 알바 뛰는 건데 14일 뒤 정산은 솔직히 말도 안 되죠. 땡겨요 웍스는 에스크로 계좌에 금액이 미리 예치되어 있어서 점주 지각 확인이나 펑크 우려 없이 즉시 입금됩니다. 보안이랑 신뢰도가 차원이 다릅니다.',
-    author: '급전해결사',
-    authorBadge: '단기알바 2년차',
-    role: 'worker',
-    timestamp: '6시간 전',
-    likes: 94,
-    views: 890,
-    storeCategory: '금융/정산',
-    comments: []
-  },
-  {
-    id: 'post-pr-8',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '🛡️ 신한EZ 상해보험 후기',
-    title: '하남돼지집 불판 정리하다 손가락 데였을 때 신한EZ 100% 무상 보장받은 후기',
-    content: '고깃집 서빙 피크타임 때 불판 닦다가 손가락 경미한 화상 입었는데 땡겨요 웍스 앱 내 무상 보험 접수로 30분 만에 치료비 송금받았습니다. 진짜 안전장치 확실해서 부모님도 안심하세요.',
-    author: '불판마스터',
-    authorBadge: '하남돼지 서빙조',
-    role: 'worker',
-    timestamp: '7시간 전',
-    likes: 64,
-    views: 620,
-    storeCategory: '식당/서빙',
-    comments: []
-  },
-  {
-    id: 'post-pr-9',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '📈 KODEX 반도체 ETF 후기',
-    title: '반도체 뉴스 보고 알바비 소수점 투자 연동해뒀는데 수익률 8% 넘었습니다 🚀',
-    content: '컴포즈커피 음료 조리 2시간 뛰고 받은 30,000원 중 5,000원을 KODEX AI전력핵심설비 및 반도체 ETF로 자동 분수한 지 3주 만에 수익률 +8.4% 달성했습니다. 일도 하고 주식 공부도 되네요.',
-    author: '반도체주식러',
-    authorBadge: 'KODEX ETF 주주',
-    role: 'worker',
-    timestamp: '8시간 전',
-    likes: 145,
-    views: 1380,
-    storeCategory: '재테크/투자',
-    comments: []
-  },
-  {
-    id: 'post-pr-10',
-    category: 'PAYOUT_REVIEW',
-    categoryLabel: '⚡ 0.1초 정산 후기',
-    title: '어버이날 카네이션 꽃다발 0.1초 정산금으로 당일 사드렸습니다 💐',
-    content: '어버이날 용돈 모자라서 아침에 이디야커피 2시간 피크 알바 뛰고 받은 29,000원으로 부모님 카네이션 사서 들어갔습니다. 0.1초 정산 아니었으면 당일 선물도 못 사드릴 뻔했어요. 감사합니다 땡겨요 웍스!',
-    author: '효도하는알바생',
-    authorBadge: '이디야 3개월차',
-    role: 'worker',
-    timestamp: '9시간 전',
-    likes: 280,
-    views: 2450,
-    isHot: true,
-    storeCategory: '일상/효도',
-    comments: []
-  },
-
-  // ── 26 ~ 50: 🏪 점주 대나무숲 / 점주 상생 / 수수료 0원 ──
-  {
-    id: 'post-2',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '알바몬 쓰다가 땡겨요 웍스로 갈아탔는데 인건비 수수료 0원에 지원자 수준도 미쳤음',
-    content: '기존 알바몬/알바천국 유료 공고 30만원씩 내면서 구인글 올렸는데 펑크내는 애들 많아서 골머리 앓았습니다... 땡겨요 웍스는 신한 S-Bridge랑 D-GCS 신용평가 1등급으로 검증된 지원자만 AI 매칭으로 들어와서 지각 한번 안 함. 게다가 점주 인건비 결제 수수료 0원에 카드 혜택까지 대박이네요.',
-    author: '역삼컴포즈점주',
-    authorBadge: '컴포즈 3년차 · 신한 땡겨요 파트너',
-    role: 'employer',
-    timestamp: '55분 전',
-    likes: 189,
-    views: 1740,
-    isHot: true,
-    storeCategory: '카페/음료',
-    comments: [
-      { id: 'c2-1', author: '강남올영점주', role: 'employer', content: '맞아요 사장님 ㅋㅋㅋ 특히 1시간 피크타임 긴급 대타 때 AI 땡격발 기능이 제일 유용함 3분 만에 매칭됨', likes: 28, timestamp: '25분 전' }
+    "id": "post-10",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 하남돼지집 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 하남돼지집에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 930점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 75,
+    "isLiked": false,
+    "views": 490,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-10-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
     ]
   },
   {
-    id: 'post-boss-1',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '3년 만에 처음으로 가족 여행 다녀왔습니다... D-GCS 990점 성실 청년 알바생을 만나고 눈물 흘린 사연 😭',
-    content: '혼자서 15시간씩 일하느라 아이 졸업식도 못 가고 가게를 지켰던 자영업자입니다. 기존 알바 플랫폼에서 구했던 애들은 수시로 당일 펑크내서 주말 여행은 꿈도 못 꿨는데, 땡겨요 웍스 D-GCS 1등급 신용 뱃지 받은 24살 조이수 군을 만났습니다. 하루도 지각 없이 책임감 있게 마감을 전담해준 덕분에 지난 주말 3년 만에 아내와 아이를 데리고 속초 바다를 보고 왔습니다. 퇴근할 때 고맙다며 건넨 따뜻한 한 끼와 0.1초 즉시 정산 알림을 보며 서로 눈시울을 적셨네요. 상생이란 게 이런 거군요...',
-    author: '부평하남돼지사장',
-    authorBadge: '자영업 7년차 · D-GCS 우수 업장',
-    role: 'employer',
-    timestamp: '1시간 전',
-    likes: 314,
-    views: 2890,
-    isHot: true,
-    storeCategory: '식당/서빙',
-    comments: [
-      { id: 'cb1-1', author: '최신한 점주', role: 'employer', content: '사장님 사연 보고 저도 가슴이 뭉클하네요 ㅠㅠ 성실한 청년과 자영업자가 함께 웃는 플랫폼이 진짜 필요했습니다.', likes: 52, timestamp: '45분 전' },
-      { id: 'cb1-2', author: '조이수', role: 'worker', content: '사장님! 오히려 저를 믿고 마감을 맡겨주셔서 감사했습니다. 0.1초 정산금으로 어버이날 부모님 선물 잘 받았습니다!', likes: 68, timestamp: '30분 전' }
+    "id": "post-11",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 맘스터치 오늘 D-GCS 931점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 931점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 931점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 82,
+    "isLiked": false,
+    "views": 527,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-11-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
     ]
   },
   {
-    id: 'post-boss-2',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '매달 알바몬 유료 공고비 45만원씩 날리며 가슴 찢어졌는데, 땡겨요 웍스 공고료 0원 + 신한 사업자 대출 우대금리 혜택으로 숨통이 트였습니다 💸',
-    content: '원자재값 상승에 임대료 압박까지 겹쳐서 지난달 매장 문을 닫아야 하나 심각하게 고민했습니다. 알바 플랫폼들에 수수료와 유료 공고비로만 매달 40~50만원씩 뜯기던 게 가장 억울했는데요. 신한 땡겨요 웍스로 바꾸고 공고료 수수료 0원에, 땡겨요 파트너 연동으로 신한은행 사업자 대출 금리까지 -1.5%p 감면받았습니다. 절감된 인건비와 이자로 성실한 알바생들에게 피크타임 특별 시급(16,000원)을 주니 가게 분위기도 싹 바뀌고 매출도 30% 올랐습니다.',
-    author: '테헤란로CU점주',
-    authorBadge: '신한 땡겨요 가맹점 · 수수료 0원',
-    role: 'employer',
-    timestamp: '2시간 전',
-    likes: 278,
-    views: 2450,
-    isHot: true,
-    storeCategory: '편의점',
-    comments: [
-      { id: 'cb2-1', author: '역삼컴포즈점주', role: 'employer', content: '맞습니다. 자영업자 피를 빨아먹는 구인앱 수수료 대신 그 돈이 알바생 시급으로 돌아가니 진정한 위윈이네요!', likes: 45, timestamp: '1시간 전' }
+    "id": "post-12",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 서브웨이",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 89,
+    "isLiked": true,
+    "views": 564,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-12-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
     ]
   },
   {
-    id: 'post-boss-3',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '알바생이 일하다 손 데였을 때 가슴이 철렁했는데... 신한EZ 100% 무상 상해보험 덕분에 미안함 덜고 서로 꼭 안아줬습니다 🩹',
-    content: '주방에서 버거 튀김 조리하다가 대학생 알바생이 기름이 튀어 데였습니다. 소상공인 형편에 산재 처리 과정도 복잡하고 치료비 부담 때문에 속으로 너무 미안해서 잠을 못 잘 지경이었는데, 땡겨요 웍스는 출근 스와이프하자마자 신한EZ손해보험 비급여 상해보험이 무상 자동 적용되어 피부과 치료비 62,000원이 전액 당일 환급되더라고요. 미안해하는 저에게 "사장님 땡겨요 보험 덕분에 제 돈 안 들었어요!" 웃어주는 학생을 보며 눈물핑 돌았습니다.',
-    author: '강남맘스터치점주',
-    authorBadge: '맘스터치 4년차 · 신한EZ 케어',
-    role: 'employer',
-    timestamp: '3시간 전',
-    likes: 295,
-    views: 2620,
-    isHot: true,
-    storeCategory: '패스트푸드',
-    comments: [
-      { id: 'cb3-1', author: '신한EZ케어', role: 'admin', content: '사장님과 근로자분 모두 마음고생 없으셔서 다행입니다! 소상공인과 긱 워커의 든든한 무상 울타리가 되겠습니다.', likes: 58, timestamp: '2시간 전' }
+    "id": "post-13",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 933점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 96,
+    "isLiked": false,
+    "views": 601,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-13-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
     ]
   },
   {
-    id: 'post-boss-4',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '점심 1시간 기습 단체주문 폭주... 땡겨요 웍스 3분 초단기 땡격발로 가게 대혼란 막아낸 실화 ⚡',
-    content: '오늘 12시에 근처 회사에서 아메리카노 80잔 기습 단체 주문이 들어와 홀과 주방이 마비되기 직전이었습니다. 땡겨요 웍스 "AI 1시간 땡격발" 버튼 누르자마자 300m 거리에서 공강 중이던 바리스타 SBT 보유 대학생 알바생이 3분 만에 출근해 1시간 동안 음료 팩맨 세팅을 완벽하게 끝내줬습니다. 퇴근 버튼 누르자마자 0.1초 정산(16,000원)에 보너스 쿠폰까지 쥐어주며 보냈네요. 땡겨요 웍스 없었으면 오늘 단골 다 잃을 뻔했습니다!',
-    author: '역삼GFC투썸점주',
-    authorBadge: '투썸플레이스 · 땡격발 마스터',
-    role: 'employer',
-    timestamp: '4시간 전',
-    likes: 242,
-    views: 2180,
-    isHot: false,
-    storeCategory: '카페/음료',
-    comments: [
-      { id: 'cb4-1', author: '강남포스코점주', role: 'employer', content: 'AI 땡격발 진짜 미쳤죠 ㅋㅋㅋ 피크타임 긴급 수불 구인할 때 갓기능입니다.', likes: 32, timestamp: '3시간 전' }
+    "id": "post-14",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 934점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 103,
+    "isLiked": false,
+    "views": 638,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-14-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
     ]
   },
   {
-    id: 'post-boss-5',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '신한 땡겨요 배달앱 + 땡겨요 웍스 연동 시너지... 배달 픽업 지체 제로로 일매출 신기록 320만원 찍었습니다 🛵',
-    content: '땡겨요 배달 앱으로 주말 주문이 봇물 터지듯 몰렸을 때, 라이더 픽업 지연과 포장 지연을 막기 위해 땡겨요 웍스로 2시간 포장 전담 긱워커를 구했습니다. 신한 금융 생태계 안에서 배달과 HR이 실시간 연동되니 라이더분들도 기다리지 않고 빠른 배달이 가능했고, 덕분에 땡겨요 맛집 평점 5.0 만점 찍고 일매출 신기록 320만원 돌파했습니다. 자영업자 살리는 신한 금융-HR 시너지 최고입니다.',
-    author: '강남쉑쉑점주',
-    authorBadge: '땡겨요 파트너 · 일매출 320만',
-    role: 'employer',
-    timestamp: '5시간 전',
-    likes: 268,
-    views: 2390,
-    isHot: false,
-    storeCategory: '배달/시너지',
-    comments: [
-      { id: 'cb5-1', author: '신한 땡겨요 팀', role: 'admin', content: '사장님의 매출 신기록 달성을 진심으로 축하드립니다! 신한 배달&HR 시너지로 더 높이 도약하도록 돕겠습니다.', likes: 41, timestamp: '4시간 전' }
+    "id": "post-15",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 배스킨라빈스 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 배스킨라빈스에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 배스킨라빈스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 110,
+    "isLiked": false,
+    "views": 675,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-15-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
     ]
   },
   {
-    id: 'post-boss-6',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '노쇼 걱정에 잠 못 들던 나날들... D-GCS 신용평가 시스템 덕분에 마음 편히 퇴근합니다',
-    content: '예전에는 알바생이 당일 아침에 문자 하나 남기고 펑크내거나 잠수타서 직접 매장 튀김기 앞에 서야 했던 적이 한두 번이 아니었습니다. 땡겨요 웍스는 노쇼 이행률 100% 검증된 지원자만 매칭해주니 마음이 너무 편합니다.',
-    author: '뱅뱅사거리버거킹',
-    authorBadge: 'D-GCS 검증업장',
-    role: 'employer',
-    timestamp: '6시간 전',
-    likes: 175,
-    views: 1650,
-    storeCategory: '패스트푸드',
-    comments: []
-  },
-  {
-    id: 'post-boss-7',
-    category: 'BOSS_LOUNGE',
-    categoryLabel: '🏪 점주 대나무숲',
-    title: '1시간 알바 구인이 과연 될까 반신반의했는데... 피크타임 입고 정리만 딱 도와주니 효율 대박입니다',
-    content: '물류 차량 오는 오후 12:00~13:00 1시간만 일해줄 알바생 구하는 게 제일 어려웠습니다. 풀타임 뽑기는 부담스럽고 혼자 하기엔 허리 아팠는데 땡겨요 웍스 1시간 긱으로 대학생이 와서 깔끔히 정리해주니 서로에게 신세계네요.',
-    author: '선릉역세븐점주',
-    authorBadge: '세븐일레븐 5년차',
-    role: 'employer',
-    timestamp: '7시간 전',
-    likes: 198,
-    views: 1820,
-    isHot: true,
-    storeCategory: '편의점',
-    comments: []
-  },
-
-  // ── 51 ~ 80: 💬 땡썰 / 일상 / 대학생 / 공강 / N잡 스토리 ──
-  {
-    id: 'post-bank-1',
-    category: 'WORKER_STORY',
-    categoryLabel: '🏦 신한은행 대출우대 썰',
-    title: '노쇼 0건 3달 연속 달성했더니 D-GCS Platinum 승급되고 신한은행 대출 우대금리 -1.2% 감면 받았습니다!',
-    content: '주말마다 편의점이랑 마트 알바 성실하게 뛰면서 블록체인 SBT 근태 기록 쌓았더니 D-GCS 점수 990점 달성했습니다. 이번에 전세자금대출 상담받으러 신한은행 영업점 갔는데 땡겨요 웍스 성실 근태 우수자 데이터 연동되어 있다고 우대금리 -1.2%p 즉시 할인 적용해주시더라고요! 연 이자만 40만원 절감됩니다 ㅠㅠ 성실 출근이 돈이 되는 세상입니다.',
-    author: '성실파이팅',
-    authorBadge: 'D-GCS 990점 · Platinum 승급자',
-    role: 'worker',
-    timestamp: '1시간 전',
-    likes: 356,
-    views: 3420,
-    isHot: true,
-    storeCategory: '금융/대출',
-    comments: [
-      { id: 'cbank-1', author: '신한은행금융매니저', role: 'admin', content: '성실 근태 데이터는 신한금융의 최고 자산입니다! 1금융권 우대 신용 혜택을 마음껏 누리세요 :)', likes: 61, timestamp: '40분 전' }
+    "id": "post-16",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 CU 오늘 D-GCS 936점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 936점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 936점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 117,
+    "isLiked": true,
+    "views": 712,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-16-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
     ]
   },
   {
-    id: 'post-3',
-    category: 'WORKER_STORY',
-    categoryLabel: '💬 땡썰/일상',
-    title: '공강 2시간 활용해서 카페 대타 뛰고 30,000원 벌었음 꿀팁 공유',
-    content: '학교 수업 사이 공강 2시간 남아서 땡겨요 지도 켜보니까 5분 거리에 컴포즈커피 음료 조리 2시간 대타 떴길래 지원함. 바리스타 SBT 인증서 프로필에 달아두니까 점주님이 1분 만에 수락하셔서 깔끔하게 일하고 0.1초 정산 받았습니다. 공강 시간에 놀지 말고 땡겨요 웍스 키세요 ㅋㅋㅋ',
-    author: '대학생김알바',
-    authorBadge: '바리스타 SBT 보유자',
-    role: 'worker',
-    timestamp: '3시간 전',
-    likes: 131,
-    views: 1450,
-    storeCategory: '공강/투잡',
-    comments: []
+    "id": "post-17",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 937점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 124,
+    "isLiked": false,
+    "views": 749,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-17-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
   },
   {
-    id: 'post-ws-1',
-    category: 'WORKER_STORY',
-    categoryLabel: '💬 땡썰/일상',
-    title: '시험기간 용돈 고갈이었는데 1시간 물류 알바로 16,000원 벌어서 독서실비 냈습니다',
-    content: '시험 공부하다가 중간에 머리 식힐 겸 1시간 입고 알바 다녀왔는데 상체 스트레칭도 되고 돈도 즉시 꽂혀서 독서실 일주일 연장했습니다. 시간을 자유롭게 조율해서 일할 수 있는 게 제일 큰 장점이네요.',
-    author: '취준생파이팅',
-    authorBadge: 'Silver 티어 · 열공중',
-    role: 'worker',
-    timestamp: '4시간 전',
-    likes: 92,
-    views: 980,
-    storeCategory: '공부/시험',
-    comments: []
+    "id": "post-18",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 세븐일레븐",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 131,
+    "isLiked": false,
+    "views": 786,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-18-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
   },
   {
-    id: 'post-ws-2',
-    category: 'WORKER_STORY',
-    categoryLabel: '💬 땡썰/일상',
-    title: '투잡 뛰는 직장인인데 퇴근길 1시간 긱워크로 한 달 커피값 30만원 아낀 후기',
-    content: '칼퇴하고 집에 가는 길에 역전 편의점 1시간 물류 보조 뛰고 16,000~17,000원 정산받는 생활을 한 달 동안 유지했더니 34만원 벌었습니다. 퇴근길 버려지는 시간에 가볍게 일하니까 스트레스도 전혀 없네요.',
-    author: '직장인N잡러',
-    authorBadge: '퇴근길 N잡러 · Gold',
-    role: 'worker',
-    timestamp: '5시간 전',
-    likes: 184,
-    views: 1720,
-    isHot: true,
-    storeCategory: '투잡/직장인',
-    comments: []
-  },
-
-  // ── 81 ~ 100: 💡 알바 꿀팁 / D-GCS 신용점수 / 세무 팁 ──
-  {
-    id: 'post-4',
-    category: 'TIPS',
-    categoryLabel: '💡 알바 꿀팁/질문',
-    title: 'D-GCS 신용점수 올리고 AI 매칭률 99% 만드는 법 (꿀팁 모음)',
-    content: '1. 신한 슈퍼SOL 딥링크 계좌 연동하기\n2. 출퇴근 시간 정각에 버튼 누르기 (출근 지각 0회 달성 시 승급)\n3. 근무 완료 후 점주 평점 5점 받기\n이렇게 하니까 Silver에서 Gold 티어로 올라가고 AI 우수 매칭 알림 제일 먼저 옴!',
-    author: '신한마스터',
-    authorBadge: 'Gold 티어 · 땡격발 마스터',
-    role: 'worker',
-    timestamp: '4시간 전',
-    likes: 167,
-    views: 1890,
-    isHot: false,
-    storeCategory: '꿀팁',
-    comments: []
+    "id": "post-19",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 939점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 138,
+    "isLiked": false,
+    "views": 823,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-19-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
   },
   {
-    id: 'post-life-1',
-    category: 'TIPS',
-    categoryLabel: '🧬 신한라이프 & 카드 혜택',
-    title: '일당 1% 자동 마이크로 연금 적립되고 신한 체크카드로 땡겨요 배달 시키니까 10% 캐시백 혜택 개꿀 🍔',
-    content: '퇴근 후 야식 시킬 때 땡겨요 웍스 정산계좌 연동 신한 체크카드로 결제하면 땡겨요 앱 10% 캐시백 바로 꽂힙니다. 거기다 근무할 때 신한라이프 헬스케어 걸음수 포인트도 모여서 하루 만보 걸으면 1,000원 적립금 생김 ㅋㅋㅋ 알바하면서 체력도 키우고 연금도 모으고 맛있는 것도 먹네요.',
-    author: '야식매니아',
-    authorBadge: '신한카드 10% 캐시백 · 마이크로 연금',
-    role: 'worker',
-    timestamp: '2시간 전',
-    likes: 174,
-    views: 1680,
-    isHot: false,
-    storeCategory: '카드/혜택',
-    comments: []
+    "id": "post-20",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 컴포즈커피 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 컴포즈커피에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 940점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 145,
+    "isLiked": true,
+    "views": 860,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-20-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
   },
   {
-    id: 'post-tip-1',
-    category: 'TIPS',
-    categoryLabel: '💡 알바 꿀팁/질문',
-    title: '초단기 긱워크 3.3% 원천징수 세금 5월 종합소득세 때 100% 환급받는 방법 📄',
-    content: '1년 동안 땡겨요 웍스에서 번 3.3% 알바비 세금 환급 팁입니다. 5월 종합소득세 신고 때 홈택스 연결하면 소득 기준 150만원 이하 학생/취준생은 원천징수된 3.3% 전액 환급받으실 수 있어요. 국세청 자동 연동 서류 발급법 정리해드립니다!',
-    author: '세무왕알바생',
-    authorBadge: '세무 꿀팁러 · 100% 환급',
-    role: 'worker',
-    timestamp: '6시간 전',
-    likes: 245,
-    views: 2310,
-    isHot: true,
-    storeCategory: '세무/환급',
-    comments: []
+    "id": "post-21",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 메가커피 오늘 D-GCS 941점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 941점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 메가커피",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 152,
+    "isLiked": false,
+    "views": 897,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-21-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-22",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 942점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 9,
+    "isLiked": false,
+    "views": 934,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-22-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-23",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 943점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 16,
+    "isLiked": false,
+    "views": 971,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-23-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-24",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · 다이소",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 23,
+    "isLiked": true,
+    "views": 1008,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-24-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-25",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 교보문고 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 교보문고에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 945점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 30,
+    "isLiked": false,
+    "views": 1045,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-25-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-26",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 하남돼지집 오늘 D-GCS 946점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 946점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 946점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 37,
+    "isLiked": false,
+    "views": 1082,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-26-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-27",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 맘스터치",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 44,
+    "isLiked": false,
+    "views": 1119,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-27-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-28",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 948점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 51,
+    "isLiked": true,
+    "views": 1156,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-28-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-29",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 949점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 58,
+    "isLiked": false,
+    "views": 1193,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-29-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-30",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 파리바게뜨 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 파리바게뜨에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 파리바게뜨",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 65,
+    "isLiked": false,
+    "views": 1230,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-30-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-31",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 배스킨라빈스 오늘 D-GCS 951점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 951점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 951점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 72,
+    "isLiked": false,
+    "views": 1267,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-31-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-32",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 952점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 79,
+    "isLiked": true,
+    "views": 1304,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-32-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-33",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · GS25",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 86,
+    "isLiked": false,
+    "views": 1341,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-33-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-34",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 954점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 93,
+    "isLiked": false,
+    "views": 1378,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-34-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-35",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 스타벅스 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 스타벅스에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 955점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 100,
+    "isLiked": false,
+    "views": 1415,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-35-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-36",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 컴포즈커피 오늘 D-GCS 956점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 956점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 컴포즈커피",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 107,
+    "isLiked": true,
+    "views": 1452,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-36-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-37",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 957점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 114,
+    "isLiked": false,
+    "views": 1489,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-37-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-38",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 958점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 121,
+    "isLiked": false,
+    "views": 1526,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-38-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-39",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 올리브영",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 128,
+    "isLiked": false,
+    "views": 1563,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-39-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-40",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 다이소 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 다이소에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 960점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 135,
+    "isLiked": true,
+    "views": 1600,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-40-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-41",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 교보문고 오늘 D-GCS 961점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 961점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 961점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 142,
+    "isLiked": false,
+    "views": 1637,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-41-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-42",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 하남돼지집",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 149,
+    "isLiked": false,
+    "views": 1674,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-42-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-43",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 963점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 6,
+    "isLiked": false,
+    "views": 1711,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-43-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-44",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 964점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 13,
+    "isLiked": true,
+    "views": 1748,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-44-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-45",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 버거킹 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 버거킹에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 버거킹",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 20,
+    "isLiked": false,
+    "views": 1785,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-45-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-46",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 파리바게뜨 오늘 D-GCS 966점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 966점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 966점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 27,
+    "isLiked": false,
+    "views": 1822,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-46-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-47",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 967점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 34,
+    "isLiked": false,
+    "views": 1859,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-47-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-48",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · CU",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 41,
+    "isLiked": true,
+    "views": 1896,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-48-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-49",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 969점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 48,
+    "isLiked": false,
+    "views": 1933,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-49-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-50",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 세븐일레븐 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 세븐일레븐에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 970점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 55,
+    "isLiked": false,
+    "views": 1970,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-50-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-51",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 스타벅스 오늘 D-GCS 971점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 971점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 스타벅스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 62,
+    "isLiked": false,
+    "views": 2007,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-51-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-52",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 972점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 69,
+    "isLiked": true,
+    "views": 2044,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-52-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-53",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 973점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 76,
+    "isLiked": false,
+    "views": 2081,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-53-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-54",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 투썸플레이스",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 83,
+    "isLiked": false,
+    "views": 2118,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-54-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-55",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 올리브영 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 올리브영에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 975점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 90,
+    "isLiked": false,
+    "views": 155,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-55-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-56",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 다이소 오늘 D-GCS 976점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 976점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 976점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 97,
+    "isLiked": true,
+    "views": 192,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-56-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-57",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · 교보문고",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 104,
+    "isLiked": false,
+    "views": 229,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-57-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-58",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 978점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 111,
+    "isLiked": false,
+    "views": 266,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-58-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-59",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 979점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 118,
+    "isLiked": false,
+    "views": 303,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-59-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-60",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 서브웨이 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 서브웨이에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 서브웨이",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 125,
+    "isLiked": true,
+    "views": 340,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-60-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-61",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 버거킹 오늘 D-GCS 981점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 981점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 981점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 132,
+    "isLiked": false,
+    "views": 377,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-61-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-62",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 982점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 139,
+    "isLiked": false,
+    "views": 414,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-62-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-63",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 배스킨라빈스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 146,
+    "isLiked": false,
+    "views": 451,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-63-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-64",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 984점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 153,
+    "isLiked": true,
+    "views": 488,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-64-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-65",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 GS25 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 GS25에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 985점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 10,
+    "isLiked": false,
+    "views": 525,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-65-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-66",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 세븐일레븐 오늘 D-GCS 986점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 986점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 세븐일레븐",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 17,
+    "isLiked": false,
+    "views": 562,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-66-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-67",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 987점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 24,
+    "isLiked": false,
+    "views": 599,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-67-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-68",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 988점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 31,
+    "isLiked": true,
+    "views": 636,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-68-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-69",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 메가커피",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 38,
+    "isLiked": false,
+    "views": 673,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-69-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-70",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 투썸플레이스 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 투썸플레이스에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 990점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 45,
+    "isLiked": false,
+    "views": 710,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-70-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-71",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 올리브영 오늘 D-GCS 991점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 991점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 991점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 52,
+    "isLiked": false,
+    "views": 747,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-71-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-72",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · 다이소",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 59,
+    "isLiked": true,
+    "views": 784,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-72-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-73",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 993점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 66,
+    "isLiked": false,
+    "views": 821,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-73-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-74",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 994점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 73,
+    "isLiked": false,
+    "views": 858,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-74-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-75",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 맘스터치 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 맘스터치에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 맘스터치",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 80,
+    "isLiked": false,
+    "views": 895,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-75-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-76",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 서브웨이 오늘 D-GCS 921점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 921점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 921점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 87,
+    "isLiked": true,
+    "views": 932,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-76-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-77",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 922점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 94,
+    "isLiked": false,
+    "views": 969,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-77-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-78",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 파리바게뜨",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 101,
+    "isLiked": false,
+    "views": 1006,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-78-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-79",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 924점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 108,
+    "isLiked": false,
+    "views": 1043,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-79-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-80",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 CU 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 CU에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 925점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 115,
+    "isLiked": true,
+    "views": 1080,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-80-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-81",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 GS25 오늘 D-GCS 926점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 926점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · GS25",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 122,
+    "isLiked": false,
+    "views": 1117,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-81-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-82",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 927점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 129,
+    "isLiked": false,
+    "views": 1154,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-82-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-83",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 928점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 136,
+    "isLiked": false,
+    "views": 1191,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-83-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-84",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 컴포즈커피",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 143,
+    "isLiked": true,
+    "views": 1228,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-84-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-85",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 메가커피 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 메가커피에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 930점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 150,
+    "isLiked": false,
+    "views": 1265,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-85-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-86",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 투썸플레이스 오늘 D-GCS 931점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 931점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 931점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 7,
+    "isLiked": false,
+    "views": 1302,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-86-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-87",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 올리브영",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 14,
+    "isLiked": false,
+    "views": 1339,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-87-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-88",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 933점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 21,
+    "isLiked": true,
+    "views": 1376,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-88-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-89",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 934점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 28,
+    "isLiked": false,
+    "views": 1413,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-89-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-90",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 하남돼지집 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 하남돼지집에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 하남돼지집",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 35,
+    "isLiked": false,
+    "views": 1450,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-90-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-91",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 맘스터치 오늘 D-GCS 936점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 936점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 936점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 42,
+    "isLiked": false,
+    "views": 1487,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-91-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-92",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 937점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 49,
+    "isLiked": true,
+    "views": 1524,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-92-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-93",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 버거킹",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 56,
+    "isLiked": false,
+    "views": 1561,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-93-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-94",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 939점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 63,
+    "isLiked": false,
+    "views": 1598,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-94-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-95",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 배스킨라빈스 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 배스킨라빈스에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 940점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 70,
+    "isLiked": false,
+    "views": 1635,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-95-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-96",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 CU 오늘 D-GCS 941점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 941점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · CU",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 77,
+    "isLiked": true,
+    "views": 1672,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-96-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-97",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 942점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 84,
+    "isLiked": false,
+    "views": 1709,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-97-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-98",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 943점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 91,
+    "isLiked": false,
+    "views": 1746,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-98-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-99",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 스타벅스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 98,
+    "isLiked": false,
+    "views": 1783,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-99-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-100",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 컴포즈커피 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 컴포즈커피에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 945점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 105,
+    "isLiked": true,
+    "views": 1820,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-100-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-101",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 메가커피 오늘 D-GCS 946점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 946점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 946점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 112,
+    "isLiked": false,
+    "views": 1857,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-101-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-102",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 투썸플레이스",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 119,
+    "isLiked": false,
+    "views": 1894,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-102-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-103",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 948점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 126,
+    "isLiked": false,
+    "views": 1931,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-103-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-104",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 949점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 133,
+    "isLiked": true,
+    "views": 1968,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-104-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-105",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 교보문고 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 교보문고에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · 교보문고",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 140,
+    "isLiked": false,
+    "views": 2005,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-105-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-106",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 하남돼지집 오늘 D-GCS 951점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 951점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 951점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 147,
+    "isLiked": false,
+    "views": 2042,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-106-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-107",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 952점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 154,
+    "isLiked": false,
+    "views": 2079,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-107-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-108",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 서브웨이",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 11,
+    "isLiked": true,
+    "views": 2116,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-108-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-109",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 954점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 18,
+    "isLiked": false,
+    "views": 153,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-109-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-110",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 파리바게뜨 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 파리바게뜨에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 955점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 25,
+    "isLiked": false,
+    "views": 190,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-110-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-111",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 배스킨라빈스 오늘 D-GCS 956점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 956점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 배스킨라빈스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 32,
+    "isLiked": false,
+    "views": 227,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-111-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-112",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 957점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 39,
+    "isLiked": true,
+    "views": 264,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-112-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-113",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 958점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 46,
+    "isLiked": false,
+    "views": 301,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-113-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-114",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 세븐일레븐",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 53,
+    "isLiked": false,
+    "views": 338,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-114-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-115",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 스타벅스 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 스타벅스에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 960점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 60,
+    "isLiked": false,
+    "views": 375,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-115-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-116",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 컴포즈커피 오늘 D-GCS 961점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 961점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 961점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 67,
+    "isLiked": true,
+    "views": 412,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-116-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-117",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 메가커피",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 74,
+    "isLiked": false,
+    "views": 449,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-117-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-118",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 963점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 81,
+    "isLiked": false,
+    "views": 486,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-118-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-119",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 964점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 88,
+    "isLiked": false,
+    "views": 523,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-119-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-120",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 다이소 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 다이소에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · 다이소",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 95,
+    "isLiked": true,
+    "views": 560,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-120-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-121",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 교보문고 오늘 D-GCS 966점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 966점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 966점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 102,
+    "isLiked": false,
+    "views": 597,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-121-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-122",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 967점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 109,
+    "isLiked": false,
+    "views": 634,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-122-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-123",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 맘스터치",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 116,
+    "isLiked": false,
+    "views": 671,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-123-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-124",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 969점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 123,
+    "isLiked": true,
+    "views": 708,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-124-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-125",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 버거킹 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 버거킹에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 970점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 130,
+    "isLiked": false,
+    "views": 745,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-125-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-126",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 파리바게뜨 오늘 D-GCS 971점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 971점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 파리바게뜨",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 137,
+    "isLiked": false,
+    "views": 782,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-126-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-127",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 972점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 144,
+    "isLiked": false,
+    "views": 819,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-127-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-128",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 973점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 151,
+    "isLiked": true,
+    "views": 856,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-128-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-129",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · GS25",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 8,
+    "isLiked": false,
+    "views": 893,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-129-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-130",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 세븐일레븐 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 세븐일레븐에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 975점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 15,
+    "isLiked": false,
+    "views": 930,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-130-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-131",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 스타벅스 오늘 D-GCS 976점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 976점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 976점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 22,
+    "isLiked": false,
+    "views": 967,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-131-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-132",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 컴포즈커피",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 29,
+    "isLiked": true,
+    "views": 1004,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-132-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-133",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 978점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 36,
+    "isLiked": false,
+    "views": 1041,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-133-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-134",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 979점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 43,
+    "isLiked": false,
+    "views": 1078,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-134-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-135",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 올리브영 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 올리브영에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 올리브영",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 50,
+    "isLiked": false,
+    "views": 1115,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-135-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-136",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 다이소 오늘 D-GCS 981점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 981점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 981점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 57,
+    "isLiked": true,
+    "views": 1152,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-136-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-137",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 982점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 64,
+    "isLiked": false,
+    "views": 1189,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-137-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-138",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 하남돼지집",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 71,
+    "isLiked": false,
+    "views": 1226,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-138-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-139",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 984점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 78,
+    "isLiked": false,
+    "views": 1263,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-139-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-140",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 서브웨이 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 서브웨이에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 985점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 85,
+    "isLiked": true,
+    "views": 1300,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-140-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-141",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 버거킹 오늘 D-GCS 986점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 986점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 버거킹",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 92,
+    "isLiked": false,
+    "views": 1337,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-141-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-142",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 987점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 99,
+    "isLiked": false,
+    "views": 1374,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-142-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-143",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 988점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 106,
+    "isLiked": false,
+    "views": 1411,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-143-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-144",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · CU",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 113,
+    "isLiked": true,
+    "views": 1448,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-144-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-145",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 GS25 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 GS25에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 990점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 120,
+    "isLiked": false,
+    "views": 1485,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-145-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-146",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 세븐일레븐 오늘 D-GCS 991점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 991점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 991점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 127,
+    "isLiked": false,
+    "views": 1522,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-146-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-147",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 스타벅스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 134,
+    "isLiked": false,
+    "views": 1559,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-147-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-148",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 993점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 141,
+    "isLiked": true,
+    "views": 1596,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-148-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-149",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 994점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 148,
+    "isLiked": false,
+    "views": 1633,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-149-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-150",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 투썸플레이스 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 투썸플레이스에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 투썸플레이스",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 5,
+    "isLiked": false,
+    "views": 1670,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-150-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-151",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 올리브영 오늘 D-GCS 921점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 921점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 921점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 12,
+    "isLiked": false,
+    "views": 1707,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-151-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-152",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 922점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 19,
+    "isLiked": true,
+    "views": 1744,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-152-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-153",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · 교보문고",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 26,
+    "isLiked": false,
+    "views": 1781,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-153-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-154",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 924점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 33,
+    "isLiked": false,
+    "views": 1818,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-154-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-155",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 맘스터치 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 맘스터치에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 925점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 40,
+    "isLiked": false,
+    "views": 1855,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-155-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-156",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 서브웨이 오늘 D-GCS 926점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 926점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 서브웨이",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 47,
+    "isLiked": true,
+    "views": 1892,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-156-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-157",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 927점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 54,
+    "isLiked": false,
+    "views": 1929,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-157-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-158",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 928점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 61,
+    "isLiked": false,
+    "views": 1966,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-158-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-159",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 배스킨라빈스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 68,
+    "isLiked": false,
+    "views": 2003,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-159-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-160",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 CU 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 CU에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 930점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 75,
+    "isLiked": true,
+    "views": 2040,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-160-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-161",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 GS25 오늘 D-GCS 931점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 931점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 931점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 82,
+    "isLiked": false,
+    "views": 2077,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-161-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-162",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 세븐일레븐",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 89,
+    "isLiked": false,
+    "views": 2114,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-162-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-163",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 933점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 96,
+    "isLiked": false,
+    "views": 151,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-163-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-164",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 934점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 103,
+    "isLiked": true,
+    "views": 188,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-164-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-165",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 메가커피 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 메가커피에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 메가커피",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 110,
+    "isLiked": false,
+    "views": 225,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-165-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-166",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 투썸플레이스 오늘 D-GCS 936점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 936점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 936점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 117,
+    "isLiked": false,
+    "views": 262,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-166-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-167",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 937점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 124,
+    "isLiked": false,
+    "views": 299,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-167-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-168",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · 다이소",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 131,
+    "isLiked": true,
+    "views": 336,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-168-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-169",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 939점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 138,
+    "isLiked": false,
+    "views": 373,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-169-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-170",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 하남돼지집 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 하남돼지집에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 940점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 145,
+    "isLiked": false,
+    "views": 410,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-170-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-171",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 맘스터치 오늘 D-GCS 941점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 941점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 맘스터치",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 152,
+    "isLiked": false,
+    "views": 447,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-171-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-172",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 942점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 9,
+    "isLiked": true,
+    "views": 484,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-172-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-173",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 943점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 16,
+    "isLiked": false,
+    "views": 521,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-173-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-174",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 파리바게뜨",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 23,
+    "isLiked": false,
+    "views": 558,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-174-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-175",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 배스킨라빈스 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 배스킨라빈스에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 945점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 30,
+    "isLiked": false,
+    "views": 595,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-175-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-176",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 CU 오늘 D-GCS 946점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 946점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 946점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 37,
+    "isLiked": true,
+    "views": 632,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-176-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-177",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "빽다방 역삼역점 사장",
+    "authorBadge": "신한 가맹점 · GS25",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 44,
+    "isLiked": false,
+    "views": 669,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-177-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-178",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 948점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 51,
+    "isLiked": false,
+    "views": 706,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-178-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-179",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 949점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 58,
+    "isLiked": false,
+    "views": 743,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-179-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-180",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 컴포즈커피 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 컴포즈커피에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "올리브영 역삼점주",
+    "authorBadge": "신한 가맹점 · 컴포즈커피",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 65,
+    "isLiked": true,
+    "views": 780,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-180-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-181",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 메가커피 오늘 D-GCS 951점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 951점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 951점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 72,
+    "isLiked": false,
+    "views": 817,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-181-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-182",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩45,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 952점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 79,
+    "isLiked": false,
+    "views": 854,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-182-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-183",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "버거킹 양재점주",
+    "authorBadge": "신한 가맹점 · 올리브영",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 86,
+    "isLiked": false,
+    "views": 891,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-183-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-184",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 954점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 93,
+    "isLiked": true,
+    "views": 928,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-184-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-185",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 교보문고 2시간 긱 뛰고 0.1초 만에 ₩26,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 교보문고에서 2시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩26,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 955점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 100,
+    "isLiked": false,
+    "views": 965,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-185-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-186",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 하남돼지집 오늘 D-GCS 956점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 956점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "투썸플레이스 선릉점주",
+    "authorBadge": "신한 가맹점 · 하남돼지집",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 107,
+    "isLiked": false,
+    "views": 1002,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-186-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-187",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩60,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "한준호",
+    "authorBadge": "D-GCS 957점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 114,
+    "isLiked": false,
+    "views": 1039,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-187-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-188",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "윤지후",
+    "authorBadge": "D-GCS 958점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 121,
+    "isLiked": true,
+    "views": 1076,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-188-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-189",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "하남돼지집 강남점주",
+    "authorBadge": "신한 가맹점 · 버거킹",
+    "role": "employer",
+    "timestamp": "10시간 전",
+    "likes": 128,
+    "isLiked": false,
+    "views": 1113,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-189-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-190",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 파리바게뜨 3시간 긱 뛰고 0.1초 만에 ₩39,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 파리바게뜨에서 3시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩39,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "오세훈",
+    "authorBadge": "D-GCS 960점 · 성실워커",
+    "role": "worker",
+    "timestamp": "11시간 전",
+    "likes": 135,
+    "isLiked": false,
+    "views": 1150,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-190-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
+  },
+  {
+    "id": "post-191",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "서초구 양재동 배스킨라빈스 오늘 D-GCS 961점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 961점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "배수지",
+    "authorBadge": "D-GCS 961점 · 성실워커",
+    "role": "worker",
+    "timestamp": "12시간 전",
+    "likes": 142,
+    "isLiked": false,
+    "views": 1187,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-191-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 2
+      }
+    ]
+  },
+  {
+    "id": "post-192",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 송파구 잠실동에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩15,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "CU 강남파이낸스 점주",
+    "authorBadge": "신한 가맹점 · CU",
+    "role": "employer",
+    "timestamp": "1시간 전",
+    "likes": 149,
+    "isLiked": true,
+    "views": 1224,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-192-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 3
+      }
+    ]
+  },
+  {
+    "id": "post-193",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "신동엽",
+    "authorBadge": "D-GCS 963점 · 성실워커",
+    "role": "worker",
+    "timestamp": "2시간 전",
+    "likes": 6,
+    "isLiked": false,
+    "views": 1261,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-193-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 4
+      }
+    ]
+  },
+  {
+    "id": "post-194",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "유재석",
+    "authorBadge": "D-GCS 964점 · 성실워커",
+    "role": "worker",
+    "timestamp": "3시간 전",
+    "likes": 13,
+    "isLiked": false,
+    "views": 1298,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-194-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 5
+      }
+    ]
+  },
+  {
+    "id": "post-195",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "성동구 성수동 스타벅스 4시간 긱 뛰고 0.1초 만에 ₩52,000원 입금 완료!",
+    "content": "오늘 성동구 성수동 스타벅스에서 4시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩52,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "GS25 테헤란로 대표",
+    "authorBadge": "신한 가맹점 · 스타벅스",
+    "role": "employer",
+    "timestamp": "4시간 전",
+    "likes": 20,
+    "isLiked": false,
+    "views": 1335,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-195-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 6
+      }
+    ]
+  },
+  {
+    "id": "post-196",
+    "category": "BOSS_LOUNGE",
+    "categoryLabel": "🏪 점주 대나무숲",
+    "title": "인천 부평구 컴포즈커피 오늘 D-GCS 966점 워커님 오셨는데 감동입니다",
+    "content": "피크타임에 급하게 2시간 구인 올렸는데 D-GCS 966점 워커님이 10분 전에 도착해서 손발 척척 맞춰주셨습니다. 노쇼 걱정 없는 플랫폼 만들어주셔서 진짜 고맙습니다.",
+    "author": "박민우",
+    "authorBadge": "D-GCS 966점 · 성실워커",
+    "role": "worker",
+    "timestamp": "5시간 전",
+    "likes": 27,
+    "isLiked": true,
+    "views": 1372,
+    "isHot": true,
+    "comments": [
+      {
+        "id": "c-196-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 7
+      }
+    ]
+  },
+  {
+    "id": "post-197",
+    "category": "WORKER_STORY",
+    "categoryLabel": "💬 땡썰/일상",
+    "title": "퇴근길에 성남시 판교에서 1시간 꿀알바 뛰고 치킨값 벌어갑니다",
+    "content": "본업 퇴근하고 집 가는 길에 위치 기반 레이더 알림 떠서 1시간 편의점 물류 세팅 지원했습니다. 1시간 만에 ₩30,000원 벌어서 바로 땡겨요 배달로 야식 시켜 먹었네요 ㅎㅎ",
+    "author": "김서연",
+    "authorBadge": "D-GCS 967점 · 성실워커",
+    "role": "worker",
+    "timestamp": "6시간 전",
+    "likes": 34,
+    "isLiked": false,
+    "views": 1409,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-197-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 8
+      }
+    ]
+  },
+  {
+    "id": "post-198",
+    "category": "TIPS",
+    "categoryLabel": "💡 알바 꿀팁/질문",
+    "title": "D-GCS 신용점수 950점 넘기는 가장 빠른 꿀팁 공유",
+    "content": "출퇴근 타임스탬프 비콘 15m 오차 없이 제시간에 찍고, 보건증 미리 정부24 연동해두면 매칭 점수 100점 가까이 올라갑니다. 신한카드 우대 금리도 덤으로 받아요!",
+    "author": "맘스터치 서초점주",
+    "authorBadge": "신한 가맹점 · 투썸플레이스",
+    "role": "employer",
+    "timestamp": "7시간 전",
+    "likes": 41,
+    "isLiked": false,
+    "views": 1446,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-198-1",
+        "author": "베테랑 워커",
+        "role": "worker",
+        "content": "좋은 정보 감사합니다. 땡겨요 웍스 최고네요!",
+        "timestamp": "30분 전",
+        "likes": 9
+      }
+    ]
+  },
+  {
+    "id": "post-199",
+    "category": "POPULAR",
+    "categoryLabel": "🔥 실시간 인기",
+    "title": "알바몬 쓰다가 땡겨요 웍스로 갈아탄 솔직한 이유 3가지",
+    "content": "1. 퇴근 즉시 0.1초 입금 (신한 BaaS)\n2. 5% 수수료로 상해보험 3천만원 무상 가입\n3. 노쇼율 0.01% 신용 기반 검증 시스템. 다른 플랫폼 돌아갈 이유가 없습니다.",
+    "author": "강태양",
+    "authorBadge": "D-GCS 969점 · 성실워커",
+    "role": "worker",
+    "timestamp": "8시간 전",
+    "likes": 48,
+    "isLiked": false,
+    "views": 1483,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-199-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 10
+      }
+    ]
+  },
+  {
+    "id": "post-200",
+    "category": "PAYOUT_REVIEW",
+    "categoryLabel": "⚡ 0.1초 정산 후기",
+    "title": "강남구 역삼동 다이소 1시간 긱 뛰고 0.1초 만에 ₩13,000원 입금 완료!",
+    "content": "오늘 강남구 역삼동 다이소에서 1시간 집중 서포트 긱 뛰었습니다. 퇴근 버튼 누르자마자 카톡 알림 띵똥 울리면서 ₩13,000원이 신한은행 통장으로 꽂히네요. 일당 밀릴 걱정 0%라 땡겨요 웍스만 씁니다.",
+    "author": "정수아",
+    "authorBadge": "D-GCS 970점 · 성실워커",
+    "role": "worker",
+    "timestamp": "9시간 전",
+    "likes": 55,
+    "isLiked": true,
+    "views": 1520,
+    "isHot": false,
+    "comments": [
+      {
+        "id": "c-200-1",
+        "author": "신한 파트너 점주",
+        "role": "employer",
+        "content": "정말 수고 많으셨습니다! 다음에도 꼭 지원해주세요.",
+        "timestamp": "30분 전",
+        "likes": 1
+      }
+    ]
   }
 ];
-
-// 100개풍부한 샘플 동적 확장 데이터셋 생성기
-export const GENERATED_100_POSTS: CommunityPost[] = Array.from({ length: 100 }, (_, i) => {
-  if (i < INITIAL_POSTS_100.length) {
-    return INITIAL_POSTS_100[i];
-  }
-
-  const idx = i + 1;
-  const categories: CommunityPost['category'][] = ['BOSS_LOUNGE', 'PAYOUT_REVIEW', 'WORKER_STORY', 'TIPS'];
-  const cat = categories[idx % categories.length];
-
-  if (cat === 'BOSS_LOUNGE') {
-    const titles = [
-      `유료 공고비로 매달 30만원씩 날리다 땡겨요 웍스 수수료 0원으로 절약하고 시급 인상해준 후기 (${idx})`,
-      `노쇼 0건 D-GCS 성실 뱃지 지원자 덕분에 매장 관리 시름 털어냈습니다 (${idx})`,
-      `신한 땡겨요 배달 앱과 1시간 초단기 긱워크 연동으로 주말 대란 극복 썰 (${idx})`,
-      `알바생이 일하다 살짝 다쳤는데 신한EZ 무상 상해보험으로 즉시 치료 지원받은 감동 사연 (${idx})`,
-      `AI 1시간 땡격발 기능으로 기습 단체주문 5분 만에 해결한 실화 (${idx})`,
-      `신한은행 사업자 대출 금리 우대(-1.5%p) 감면받고 매장 리모델링 성공했습니다 (${idx})`,
-      `청년 알바생과 나눈 따뜻한 한 끼 식사와 0.1초 정산의 감동 상생 이야기 (${idx})`
-    ];
-    const authors = ['강남역점주', '부평역사장님', '역삼카페대표', '홍대올영사장', '수원맘스터치점주', '판교투썸사장', '여의도CU점주'];
-    const roles: ('employer' | 'admin' | 'worker')[] = ['employer'];
-    const authorBadges = ['신한 땡겨요 파트너', 'D-GCS 우수 업장', '수수료 0원 가맹점', '신한EZ 케어 가맹점'];
-
-    return {
-      id: `post-gen-${idx}`,
-      category: 'BOSS_LOUNGE',
-      categoryLabel: '🏪 점주 대나무숲',
-      title: titles[idx % titles.length],
-      content: `저희 매장 운영하면서 가장 큰 고민이 구인 광고비용과 알바생 노쇼 문제였는데, 땡겨요 웍스를 도입한 후 신한 S-Bridge 검증 시스템으로 무결점 성실 알바생들만 매칭되어 시름을 크게 덜었습니다. 인건비 결제 수수료도 0원이라 절감된 비용을 성실 근로자들에게 정당하게 보상할 수 있어 상생 효과가 확실합니다!`,
-      author: authors[idx % authors.length],
-      authorBadge: authorBadges[idx % authorBadges.length],
-      role: roles[0],
-      timestamp: `${idx % 12 + 1}시간 전`,
-      likes: 50 + (idx * 3) % 200,
-      views: 300 + (idx * 17) % 1500,
-      isHot: idx % 3 === 0,
-      storeCategory: '점주/상생',
-      comments: [
-        {
-          id: `c-gen-${idx}`,
-          author: '최신한 점주',
-          role: 'employer',
-          content: '공감합니다 사장님! 소상공인에게 진짜 필요한 혁신이네요 👏',
-          likes: 12 + idx % 10,
-          timestamp: '30분 전'
-        }
-      ]
-    };
-  } else if (cat === 'PAYOUT_REVIEW') {
-    const titles = [
-      `퇴근 스와이프하자마자 카톡 입금 알림 띵동! 0.1초 즉시 정산은 신세계입니다 (${idx})`,
-      `알바비 잔돈 800원 모아 SOL 미국배당다우존스 ETF 매수했더니 달러 배당금 꽂힘 (${idx})`,
-      `출근 스와이프 동시에 신한EZ 무상 상해보험 자동 가입되어 안심하고 근무했습니다 (${idx})`,
-      `공강 1시간 활용해서 16,000원 당일 입금받고 친구랑 맛있는 점심 먹었네요 (${idx})`,
-      `D-GCS 980점 달성하고 신한은행 저금리 대출 우대 할인받아 이자 40만원 아꼈습니다 (${idx})`
-    ];
-    return {
-      id: `post-gen-${idx}`,
-      category: 'PAYOUT_REVIEW',
-      categoryLabel: '⚡ 0.1초 정산 후기',
-      title: titles[idx % titles.length],
-      content: `퇴근 후 정산금 기다릴 필요 없이 0.1초 만에 계좌로 바로 들어오고 잔돈은 소수점 ETF로 자동 리밸런싱되니 알바하면서 자연스럽게 금융 자산이 증식되는 느낌입니다. 1금융권 신한의 보안과 편의성은 최고네요!`,
-      author: `스마트알바러${idx}`,
-      authorBadge: '0.1초 정산 완결 · Gold',
-      role: 'worker',
-      timestamp: `${idx % 12 + 1}시간 전`,
-      likes: 60 + (idx * 5) % 180,
-      views: 400 + (idx * 21) % 1800,
-      isHot: idx % 4 === 0,
-      storeCategory: '정산/금융',
-      comments: []
-    };
-  } else if (cat === 'WORKER_STORY') {
-    return {
-      id: `post-gen-${idx}`,
-      category: 'WORKER_STORY',
-      categoryLabel: '💬 땡썰/일상',
-      title: `대학생 공강 2시간 쪼개서 집 앞 매장 알바 뛰고 3만원 번 썰 (${idx})`,
-      content: `수업 공강 시간에 지도 앱 켜서 근처 1~2시간 알바 찾아서 다녀왔습니다. 프로필에 등록된 바리스타 SBT 덕분에 점주님이 빠르게 승인해주셨고, 깔끔하게 일하고 0.1초 만에 지갑으로 입금받아 하루 알차게 보냈습니다.`,
-      author: `대학생N잡러${idx}`,
-      authorBadge: 'SBT 자격인증 · D-GCS 950점',
-      role: 'worker',
-      timestamp: `${idx % 12 + 1}시간 전`,
-      likes: 40 + (idx * 4) % 150,
-      views: 350 + (idx * 15) % 1200,
-      storeCategory: '일상/땡썰',
-      comments: []
-    };
-  } else {
-    return {
-      id: `post-gen-${idx}`,
-      category: 'TIPS',
-      categoryLabel: '💡 알바 꿀팁/질문',
-      title: `D-GCS 신용점수 빠르게 990점 Platinum으로 끌어올리는 3가지 핵심 규칙 (${idx})`,
-      content: `1. 정시 출근 스와이프 필수\n2. 노쇼 0건 유지 시 달마다 추가 신용점수 50점 부여\n3. 신한 슈퍼SOL 계좌 딥링크 연동 시 우수 알람 우선 발송\n성실함이 최고의 금융 스펙이 되는 시스템입니다!`,
-      author: `꿀팁마스터${idx}`,
-      authorBadge: 'Platinum 마스터 · D-GCS 990점',
-      role: 'worker',
-      timestamp: `${idx % 12 + 1}시간 전`,
-      likes: 85 + (idx * 2) % 160,
-      views: 550 + (idx * 18) % 1600,
-      isHot: idx % 5 === 0,
-      storeCategory: '꿀팁/노하우',
-      comments: []
-    };
-  }
-});
+export const GENERATED_100_POSTS = GENERATED_200_POSTS;

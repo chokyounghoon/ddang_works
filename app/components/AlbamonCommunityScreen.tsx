@@ -151,51 +151,55 @@ export default function AlbamonCommunityScreen() {
   });
 
   return (
-    <div className="flex flex-col h-full bg-white text-slate-900 rounded-3xl overflow-hidden border border-slate-200 shadow-sm relative">
+    <div className="flex flex-col h-full bg-white text-slate-900 rounded-3xl overflow-hidden border border-slate-200 shadow-sm relative w-full max-w-full">
       {/* ─── 상단 커뮤니티 헤더 ─── */}
-      <div className="bg-white border-b border-slate-100 px-4 py-3 shrink-0 flex items-center justify-between z-10">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#1D4ED8] to-blue-500 flex items-center justify-center shadow-xs">
-            <Users className="w-4.5 h-4.5 text-white" />
+      <div className="bg-white border-b border-slate-100 px-3 sm:px-4 py-2.5 sm:py-3 shrink-0 flex items-center justify-between gap-2 z-10 w-full">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#1D4ED8] to-blue-500 flex items-center justify-center shadow-xs shrink-0">
+            <Users className="w-4 h-4 text-white" />
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h2 className="text-sm font-black tracking-tight text-slate-900">땡썰 라운지</h2>
-              <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-0.5">
-                <Flame className="w-2.5 h-2.5 text-amber-500" /> HOT 커뮤니티
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h2 className="text-xs sm:text-sm font-black tracking-tight text-slate-900 leading-none">땡썰 라운지</h2>
+              <span className="text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-0.5 shrink-0">
+                <Flame className="w-2.5 h-2.5 text-amber-500" /> HOT
               </span>
             </div>
-            <p className="text-[10px] text-slate-500 font-medium">
-              점주 & 지원자가 나누는 0.1초 정산 및 긱워크 생생 후기
+            <p className="text-[9.5px] sm:text-[10px] text-slate-500 font-medium truncate mt-0.5">
+              점주 & 지원자 0.1초 정산 생생 후기
             </p>
           </div>
         </div>
 
-        {/* 글쓰기 버튼 */}
+        {/* 글쓰기 버튼 (절대 안 잘리도록 shrink-0 및 고정 여백) */}
         <button
+          type="button"
           onClick={() => setShowWriteModal(true)}
-          className="bg-[#FB521C] hover:bg-[#E4410E] active:scale-95 text-white text-[11px] font-black px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 transition-all shrink-0"
+          className="bg-[#FB521C] hover:bg-[#E4410E] active:scale-95 text-white text-[10.5px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 transition-all shrink-0 cursor-pointer"
         >
-          <PenTool className="w-3.5 h-3.5" /> 글쓰기
+          <PenTool className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          <span>글쓰기</span>
         </button>
       </div>
 
       {/* ─── 💖 심금을 울리는 땡겨요 웍스 5대 상생 감동 스토리 스포트라이트 ─── */}
-      <div className="bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 p-3.5 text-white shrink-0 border-b border-slate-800 relative overflow-hidden">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-1.5">
-            <span className="w-5 h-5 rounded-full bg-rose-500/30 border border-rose-400/50 flex items-center justify-center text-rose-300 text-xs">
+      <div className="bg-[#0F172A] p-3 text-white shrink-0 border-b border-slate-800 relative overflow-hidden w-full">
+        <div className="flex items-center justify-between mb-2 gap-1">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="w-4.5 h-4.5 rounded-full bg-rose-500/30 border border-rose-400/50 flex items-center justify-center text-rose-300 text-[10px] shrink-0">
               💖
             </span>
-            <span className="text-[11px] font-black text-white tracking-tight">
-              심금을 울리는 땡겨요 웍스 기적의 실화 & 상생 가치
+            <span className="text-[10.5px] sm:text-[11px] font-black text-white tracking-tight truncate">
+              심금을 울리는 땡겨요 웍스 기적의 실화
             </span>
           </div>
-          <span className="text-[9.5px] font-bold text-rose-300">실화 5선</span>
+          <span className="text-[9px] font-bold text-rose-300 shrink-0 bg-rose-950/80 px-1.5 py-0.5 rounded border border-rose-500/30">
+            실화 5선
+          </span>
         </div>
 
         {/* 가로 스크롤 감동 스토리 칩 카드 */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
           {[
             { id: 'post-heart-1', tag: '🍼 미혼부의 눈물', title: '0.1초 정산이 구한 아기 해열제와 분유', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-200' },
             { id: 'post-heart-2', tag: '🍗 점주의 감사', title: '알바몬 60만원 노쇼 지옥 ➔ 8개월 노쇼 0건', color: 'from-amber-500/20 to-orange-500/20 border-amber-400/40 text-amber-200' },
@@ -206,10 +210,10 @@ export default function AlbamonCommunityScreen() {
             <button
               key={story.id}
               onClick={() => setSelectedPostId(story.id)}
-              className={`bg-gradient-to-r ${story.color} border rounded-xl px-2.5 py-1.5 text-left shrink-0 max-w-[200px] hover:brightness-125 active:scale-95 transition-all cursor-pointer shadow-xs`}
+              className={`bg-gradient-to-r ${story.color} border rounded-xl px-2.5 py-1.5 text-left shrink-0 max-w-[160px] sm:max-w-[190px] hover:brightness-125 active:scale-95 transition-all cursor-pointer shadow-xs`}
             >
-              <span className="text-[9px] font-black block tracking-wider opacity-90">{story.tag}</span>
-              <p className="text-[10.5px] font-black text-white truncate mt-0.5">{story.title}</p>
+              <span className="text-[8.5px] font-black block tracking-wider opacity-90">{story.tag}</span>
+              <p className="text-[10px] sm:text-[10.5px] font-black text-white truncate mt-0.5">{story.title}</p>
             </button>
           ))}
         </div>

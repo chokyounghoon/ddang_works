@@ -63,11 +63,11 @@ export default function AdminFdsScreen() {
   ]);
 
   const [liveLogs, setLiveLogs] = useState([
-    { time: '14:24:12', type: 'SAFE', desc: '역삼동 CU 강남파이낸스점 BLE 비콘 15m 지오펜스 일치', action: '정상 승인 (신뢰도 99.9%)', ip: '121.134.**.**', color: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30' },
-    { time: '14:22:05', type: 'BLOCK', desc: '가상 GPS 모의위치 조작 탐지 (서울 ➔ 부산 0.1초 이동)', action: 'FDS Rule #1 작동 (차단)', ip: '211.234.**.**', color: 'text-rose-400 bg-rose-950/40 border-rose-500/30' },
-    { time: '14:19:30', type: 'BLOCK', desc: '신한EZ 10분 내 동일 사고 중복 접수 감지', action: 'FDS Rule #2 작동 (반려)', ip: '175.209.**.**', color: 'text-rose-400 bg-rose-950/40 border-rose-500/30' },
-    { time: '14:15:20', type: 'SAFE', desc: '강남구 역삼동 래미안 P2P 의뢰 ₩30,000 에스크로 해제', action: '정상 정산 완료', ip: '220.89.**.**', color: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30' },
-    { time: '14:08:44', type: 'SAFE', desc: '빽다방 역삼역점 조이수 워커 출근 도장 타임스탬프 박제', action: '블록 #18,492,104 승인', ip: '118.235.**.**', color: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30' },
+    { time: '14:24:12', type: 'SAFE', desc: '역삼동 CU 강남파이낸스점 BLE 비콘 15m 지오펜스 일치', action: '정상 승인 (신뢰도 99.9%)', ip: '121.134.**.**', isSafe: true },
+    { time: '14:22:05', type: 'BLOCK', desc: '가상 GPS 모의위치 조작 탐지 (서울 ➔ 부산 0.1초 이동)', action: 'FDS Rule #1 작동 (차단)', ip: '211.234.**.**', isSafe: false },
+    { time: '14:19:30', type: 'BLOCK', desc: '신한EZ 10분 내 동일 사고 중복 접수 감지', action: 'FDS Rule #2 작동 (반려)', ip: '175.209.**.**', isSafe: false },
+    { time: '14:15:20', type: 'SAFE', desc: '강남구 역삼동 래미안 P2P 의뢰 ₩30,000 에스크로 해제', action: '정상 정산 완료', ip: '220.89.**.**', isSafe: true },
+    { time: '14:08:44', type: 'SAFE', desc: '빽다방 역삼역점 조이수 워커 출근 도장 타임스탬프 박제', action: '블록 #18,492,104 승인', ip: '118.235.**.**', isSafe: true },
   ]);
 
   // FDS 룰 ON/OFF 토글
@@ -89,99 +89,121 @@ export default function AdminFdsScreen() {
   };
 
   return (
-    <div className="space-y-4 font-sans pb-6">
-      {/* 상단 FDS 관제 요약 전광판 */}
-      <div className="bg-gradient-to-br from-rose-950 via-slate-900 to-indigo-950 rounded-3xl p-4.5 border border-rose-500/30 text-white shadow-xl space-y-3.5">
-        <div className="flex items-center justify-between border-b border-rose-500/20 pb-3">
+    <div className="space-y-4 font-sans pb-6 text-left">
+      {/* 상단 FDS 관제 요약 전광판 (솔리드 다크) */}
+      <div className="bg-[#0F172A] rounded-3xl p-4 sm:p-5 border border-slate-800 text-white shadow-xl space-y-3.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 font-black">
+            <div className="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 font-black shrink-0">
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-black text-sm text-white">신한EZ 4중 AI FDS 실시간 이상거래 관제 센터</h4>
+                <h4 className="font-black text-sm text-white">신한EZ 4중 AI FDS 실시간 관제</h4>
                 <span className="flex items-center gap-1 text-[9px] font-black px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping" />
-                  AI 24/7 ACTIVE
+                  AI ACTIVE
                 </span>
               </div>
-              <p className="text-xs text-slate-300">고의 자해 · 허위 출퇴근 · 보험 사기 0.1초 원천 차단율 99.98% 달성</p>
+              <p className="text-[11px] text-slate-300 mt-0.5 font-medium">고의 자해 · 허위 출퇴근 · 보험 사기 0.1초 원천 차단율 99.98%</p>
             </div>
           </div>
 
-          <div className="text-right">
-            <span className="text-[10px] text-slate-400 block font-mono">오늘 차단된 이상 시도</span>
-            <span className="text-xl font-black text-rose-400 font-mono">12건 (100% 방어)</span>
+          <div className="text-left sm:text-right bg-slate-800/80 p-2 sm:p-0 rounded-xl sm:bg-transparent">
+            <span className="text-[10px] text-slate-400 block font-mono font-semibold">오늘 차단된 이상 시도</span>
+            <span className="text-lg sm:text-xl font-black text-rose-400 font-mono">12건 (100% 방어)</span>
           </div>
         </div>
 
         {/* 4대 방어 지표 */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-          <div className="bg-slate-900/80 p-2.5 rounded-2xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-medium">GPS 조작 차단</span>
+          <div className="bg-[#090D16] p-2.5 rounded-2xl border border-slate-800">
+            <span className="text-[10px] text-slate-400 block font-bold">GPS 조작 차단</span>
             <span className="text-base font-black text-rose-400 font-mono">5건</span>
           </div>
-          <div className="bg-slate-900/80 p-2.5 rounded-2xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-medium">중복 청구 방어</span>
+          <div className="bg-[#090D16] p-2.5 rounded-2xl border border-slate-800">
+            <span className="text-[10px] text-slate-400 block font-bold">중복 청구 방어</span>
             <span className="text-base font-black text-amber-400 font-mono">3건</span>
           </div>
-          <div className="bg-slate-900/80 p-2.5 rounded-2xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-medium">대리 출퇴근 방어</span>
+          <div className="bg-[#090D16] p-2.5 rounded-2xl border border-slate-800">
+            <span className="text-[10px] text-slate-400 block font-bold">대리 출퇴근 방어</span>
             <span className="text-base font-black text-blue-400 font-mono">4건</span>
           </div>
-          <div className="bg-slate-900/80 p-2.5 rounded-2xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 block font-medium">누적 피해 방어액</span>
+          <div className="bg-[#090D16] p-2.5 rounded-2xl border border-slate-800">
+            <span className="text-[10px] text-slate-400 block font-bold">누적 피해 방어액</span>
             <span className="text-base font-black text-emerald-400 font-mono">₩1.42억원</span>
           </div>
         </div>
       </div>
 
       {/* 탭 스위처: 실시간 스트림 VS FDS 룰셋 관리 */}
-      <div className="bg-white p-2.5 rounded-3xl border border-slate-200 shadow-2xs flex items-center justify-between">
+      <div className="bg-white p-2 sm:p-2.5 rounded-3xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
         <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-2xl border border-slate-200 text-xs font-bold">
           <button
             onClick={() => setActiveFdsTab('realtime')}
-            className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
-              activeFdsTab === 'realtime' ? 'bg-slate-900 text-white font-black shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-xl transition-all cursor-pointer text-center ${
+              activeFdsTab === 'realtime' ? 'bg-slate-900 text-white font-black shadow-xs' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             실시간 탐지 스트림
           </button>
           <button
             onClick={() => setActiveFdsTab('rules')}
-            className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
-              activeFdsTab === 'rules' ? 'bg-slate-900 text-white font-black shadow-2xs' : 'text-slate-500 hover:text-slate-800'
+            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-xl transition-all cursor-pointer text-center ${
+              activeFdsTab === 'rules' ? 'bg-slate-900 text-white font-black shadow-xs' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            FDS 보안 룰셋 제어 ({rules.filter((r) => r.isActive).length}/{rules.length})
+            보안 룰셋 ({rules.filter((r) => r.isActive).length}/{rules.length})
           </button>
         </div>
 
-        <span className="text-[10.5px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 flex items-center gap-1 shrink-0">
+        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 flex items-center justify-center gap-1 shrink-0">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
           신한 FDS Engine v4.2
         </span>
       </div>
 
-      {/* 1. 실시간 스트림 뷰 */}
+      {/* 1. 실시간 스트림 뷰 (선명한 고대비 라이트 카드) */}
       {activeFdsTab === 'realtime' && (
         <div className="space-y-2">
-          <span className="text-[10.5px] font-bold text-slate-400 uppercase tracking-wider block px-1">
+          <span className="text-xs font-black text-slate-900 uppercase tracking-wider block px-1">
             실시간 트랜잭션 & 이상 징후 라이브 로그 (최근)
           </span>
-          <div className="space-y-1.5 font-mono text-[11px]">
+          <div className="space-y-2 font-mono text-[11px]">
             {liveLogs.map((log, idx) => (
-              <div key={idx} className={`p-3 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs ${log.color}`}>
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-slate-400 font-bold shrink-0">{log.time}</span>
-                  <span className={`text-[9px] font-black px-1.5 py-0.2 rounded-md ${log.type === 'SAFE' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}`}>
+              <div
+                key={idx}
+                className={`p-3.5 rounded-2xl border shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                  log.isSafe
+                    ? 'bg-white border-slate-200 hover:border-emerald-300'
+                    : 'bg-rose-50/90 border-rose-200 hover:border-rose-300'
+                }`}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-slate-900 font-bold shrink-0">{log.time}</span>
+                  <span
+                    className={`text-[9.5px] font-black px-1.5 py-0.5 rounded-md border shrink-0 ${
+                      log.isSafe
+                        ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                        : 'bg-rose-100 text-rose-800 border-rose-300'
+                    }`}
+                  >
                     {log.type}
                   </span>
-                  <span className="truncate">{log.desc}</span>
+                  <span className={`truncate font-semibold ${log.isSafe ? 'text-slate-900' : 'text-rose-950 font-bold'}`}>
+                    {log.desc}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
-                  <span className="text-[9.5px] text-slate-400">IP: {log.ip}</span>
-                  <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-black/40 border border-white/10">
+
+                <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
+                  <span className="text-[10px] text-slate-500 font-medium">IP: {log.ip}</span>
+                  <span
+                    className={`text-[10px] font-black px-2 py-0.5 rounded-lg shadow-xs ${
+                      log.isSafe
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-rose-600 text-white'
+                    }`}
+                  >
                     {log.action}
                   </span>
                 </div>
@@ -197,7 +219,7 @@ export default function AdminFdsScreen() {
           {rules.map((r) => (
             <div
               key={r.id}
-              className={`p-3.5 rounded-2xl border transition-all bg-white shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+              className={`p-3.5 rounded-2xl border transition-all bg-white shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                 !r.isActive ? 'opacity-60 bg-slate-50' : 'border-slate-200'
               }`}
             >
@@ -210,9 +232,9 @@ export default function AdminFdsScreen() {
                     {r.riskLevel}
                   </span>
                   <h5 className="font-black text-xs text-slate-900">{r.name}</h5>
-                  <span className="text-[10px] text-slate-400 font-mono">[{r.category}]</span>
+                  <span className="text-[10px] text-slate-500 font-mono font-bold">[{r.category}]</span>
                 </div>
-                <p className="text-[11px] text-slate-500">{r.description}</p>
+                <p className="text-[11px] text-slate-600 font-medium">{r.description}</p>
                 <span className="text-[10px] text-rose-600 font-bold block">
                   오늘 차단 실적: {r.blockedToday}건
                 </span>
@@ -223,8 +245,8 @@ export default function AdminFdsScreen() {
                 onClick={() => handleToggleRule(r.id)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-black border transition-all cursor-pointer shrink-0 ${
                   r.isActive
-                    ? 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-500 shadow-2xs'
-                    : 'bg-slate-200 text-slate-500 border-slate-300 hover:bg-slate-300'
+                    ? 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-500 shadow-xs'
+                    : 'bg-slate-200 text-slate-600 border-slate-300 hover:bg-slate-300'
                 }`}
               >
                 {r.isActive ? '✓ 감시 가동중 (ON)' : '감시 중지 (OFF)'}
